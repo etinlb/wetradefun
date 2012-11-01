@@ -129,10 +129,8 @@ def checkXml(dataRoot):
 def buildFilterStr(params):
   """converts the parmas passed in to the syntax of the GB database query
   """
+
   filters = '&field_list='
   for x in params:
     filters += x + ','
   return filters  
-
-
-
