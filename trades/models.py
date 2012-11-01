@@ -56,9 +56,3 @@ class Gameratings (models.Model):
   rating = models.IntegerField(default=-1)
   usersID = models.ForeignKey(Users)
   gamesID = models.ForeignKey(Games)
-
-
-
-
-
-
