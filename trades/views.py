@@ -47,26 +47,3 @@ def get_request(request):
 
 def search_game(request):
     return render_to_response('search_game.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
