@@ -25,30 +25,29 @@ class Currentlists(models.Model):
   usersID = models.ForeignKey(Users)
   gamesID = models.ForeignKey(Games)
 
-class Makeoffers(models.Model):
+class Transactions(models.Model):
   status = models.CharField(max_length=64)
-  dateOffered = models.IntegerField()
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
-
-class Getoffers(models.Model):
-  status = models.CharField(max_length=64)
-  usersID = models.ForeignKey(Users)
-  makeoffersID = models.ForeignKey(Makeoffers)
+  dateRequested = models.IntegerField()
+  dateTraded = models.IntegerField()
+  senderID = models.ForeignKey(Users)
+  senderGameID = models.ForeignKey(Games)
+  receiverID = models.ForeignKey(Users)
+  receiverGameID = models.ForeignKey(Games)
 
 class Gamecomments (models.Model):
   content = models.CharField(max_length=64)
   usersID = models.ForeignKey(Users)
   gamesID = models.ForeignKey(Games)
+  datePosted = models.IntegerField()
 
 class Messages (models.Model):
-  content = models.CharField(max_length=64)
-  dateSent = models.IntegerField()
+  content = models.CharField(max_length=128)
+  datePosted = models.IntegerField()
   senderID = models.ForeignKey(Users)
   receiverID = models.ForeignKey(Users)
-  getoffersID = models.ForeignKey(Getoffers)
+  transactionsID = models.ForeignKey(Transactions)
 
-class Userrating (models.Model):
+class Userratings (models.Model):
   rating = models.IntegerField()
   senderID = models.ForeignKey(Users)
   receiverID = models.ForeignKey(Users)
