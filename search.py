@@ -1,120 +1,138 @@
-#http://api.giantbomb.com/characters/?api_key=308d89c435a454c3943316fb25c73ceba1f8bf72&gender=M&sort=birth_date&format=xml
-#I have no idea what this will be doing but something along the lines of requesting
-#a list from giantbomb then parsing the xml. This is mainly for educational 
-#purposes but I hope it preforms welll enough so we can use.
+"""
+Module that currently holds all of the search functions 
+"""
 
-#so to request the database, pass in api key(it was long so I put it in it's own
-#varible) and then append filtes to it. The filters have a format of 
-#&filter=what_field_you_want_filtered_by
-#list of usefull filters
-#field_list
-#limit, the maximum amount of games 
-#list of useful feilds
-#aliases = other names that the name goes by
-#descritpion = a discription of the game WARNING VERY LARGE
-#id = unique id to game, may want to mimic it in our database for ease
-#image = main image of the game
-#resource, only available in search, specify what we want, will always be games
-#or game
-#query = what you want to search for. THere is a litmitation in that this need to be 
-#as close as possible to real a game, doesn't work well with partial names
+import urllib2 #open urls
+import xml.etree.ElementTree as ET #parse xml
 
-#example url to search the games "resource" for anything called halo and display only
-#the name of the query
-#http://api.giantbomb.com/search/?api_key=308d89c435a454c3943316fb25c73ceba1f8bf72\
-#&resources=game&field_list=name&format=xml&limit=10&query=halo
-import urllib2
-#import pdb
-#from xml.dom.minidom import parseString
-import xml.etree.ElementTree as ET
-
-
+#api_key is needed for access to the GB database
 api_key = '?api_key=308d89c435a454c3943316fb25c73ceba1f8bf72'
-searchStart = 'http://api.giantbomb.com/search/' + api_key
+searchStart = 'http://api.giantbomb.com/search/' + api_key 
 specificGame = 'http://api.giantbomb.com/game/' 
 
 def getList(searchQuery, *params):
-  filters = buildFilterStr(params) #'&field_list='
-  # for x in params:
-  #   filters += x + ','
-  searchString = searchStart + '&query='+ searchQuery +'&resources=game' +filters+'limit=10'
+  """ Returns a nested dictionary based on the string passed in as searchQuery
+  currently the outer dictionary uses the game name as a key and the inner uses
+  the param associated with it as a key.
+
+  params is a varible arugment of strings that are used to filter the resutls.
+  what can be used as a param
+  'name' : the name of the game
+  'original_release_date' : when the game came out
+  'aliases' : what else the games are know as
+  'deck' : a short discription of the game
+  'id' : the  games id
+  'platform' : not implemented yet
+  'image' : for now it returns multiple image urls.
+
+  example
+    x = getList('halo', 'name', 'id')
+    x.keys() #prints out all the keys
+    y = x['Halo 4'] #gets the nested halo 4 dict
+    y['id'] #gets the id of Halo 4
+    x['Halo 4']['id'] #access inner dictionary id value
+
+  """
+  #makes the params entered in the proper filter format
+  filters = buildFilterStr(params) 
+  searchString = searchStart + '&resources=game&query='+ searchQuery + filters+'limit=10'
+  #queries the video game database
   file = urllib2.urlopen(searchString)
+  #make the dictionary
   gameList = parseFields(file, params)
   return gameList
 
-# def parseXml(file, fields):
-#   data = file.read()
-#   root = ET.fromstring(data)
-#   x = root.find('results')
-#   gameList = parseFields(x, fields);
-#   print gameList
+def getGameDetsById(gameId, *params):
+  """ returns a dict with the details on a specific game
+  gameId is the id of the game you want details on
+  params is a varible arugment of strings that are used to filter the resutls.
+  what can be used as a param
+  
+  'name' : the name of the game
+  'original_release_date' : when the game came out
+  'aliases' : what else the games are know as
+  'deck' : a short discription of the game
+  'id' : the  games id
+  'platform' : not implemented yet
+  'image' : for now it returns multiple image urls.
+  example
+    x = getGameDetsById(2600)
+    x['name'] #returns the game's name
+    x['image'] #return a urls of the main image 
+  """
+  filters = buildFilterStr(params)
+  searchString = specificGame + gameId +'/' + api_key + filters
+  file = urllib2.urlopen(searchString)  
+  game = parseFieldsSpecific(file)
+  return game
 
+def parseFields(file, params):
+  """ parses the xml file for search query and returns a nested dict 
+  It uses the name of the game as the outter dict key. If no 'name' tag is found
+  it uses the games id as a key.
 
-def parseFields(file, fields):
+  """
   data = file.read()
   root = ET.fromstring(data)
-  resNode = root.find('results')
+  if checkXml(root) != 1:
+    return None # check if the xml is good
+  resNode = root.find('results') # get the node with the game data
   mainDict = {}
   innerDict = {}
+  grandKey = ''
+  #Loop over the game nodes 
   for gameNode in resNode:
-    for y in fields:
+    #get the specified parameters and add them to the inner dict
+    for y in params:
       if gameNode.find(y).tag == 'name':
         grandKey = gameNode.find(y).text
       else:
-        key = gameNode.find(y).tag;
-        text = gameNode.find(y).text# + ' '
-        innerDict[key] = text
-    mainDict[grandKey] = innerDict
+        innerDict[gameNode.find(y).tag] = gameNode.find(y).text
+    #no name node was found
+    if  grandKey == '': 
+      mainDict[innerDict['id']] = innerDict
+    else:
+      mainDict[grandKey] = innerDict
     innerDict = {}  
   return mainDict  
 
-def parseFieldsSpec(file, fields):
+def parseFieldsSpecific(file):
+  """ Parses the xml sheet for one 
+  returns a dict with each node's tag as a key.
+  If the xml sheet is bad or empty, it returns none
+
+  """
   data = file.read()
-  print data
   root = ET.fromstring(data)
+  if checkXml(root) != 1: # check if the xml is good
+    return None
   resNode = root.find('results')
-  print resNode
+  gameDict = {}
   for child in resNode:
-    print child.tag
+    gameDict[child.tag] = child.text
+  return gameDict  
 
-
-
-# def getGameDetsByName(name, *params):
+def checkXml(dataRoot):
+  """checks the meta data of the xml sheet
+  returns -1 if there was a problem with the query
+  returns 0 if there was no search results found
+  returns 1 if the xml sheet is fine
+  """
+  if dataRoot.find('status_code').text != '1':
+    #error_message = dataRoot.find('error').text
+    return -1
+  elif dataRoot.find('number_of_page_results').text == '0':
+    return 0
+  else: 
+    return 1
 
 def buildFilterStr(params):
+  """converts the parmas passed in to the syntax of the GB database query
+  """
   filters = '&field_list='
   for x in params:
     filters += x + ','
   return filters  
 
 
-#   searchString = api_key_specific +'&name=' + name 
-#   file = urllib2.urlopen(searchString)
 
-#   return node.text
-
-def getGameDetsById(gameId, *params):
-  filters = buildFilterStr(params)
-  searchString = specificGame + gameId +'/' + api_key + filters
-  file = urllib2.urlopen(searchString)  
-  game = parseFieldsSpec(file, params)
-  return game
-
-
-
-
-  # x = root.find('game')
-  # print x.atrib
-  # print x.tag
-  # file.close
-  #dom = parseString(data)
-
-  # xmlData = ''
-  # for node in dom.getElementsByTagName('game'):
-  #   print node.getAttribute('name')
-  # x = ET.Element('results')  
-  # xmlData = ''
-  # for x in xrange(0,10):
-  #   xmlData += dom.getElementsByTagName('name')[x].firstChild.data + '\n'
-  # print xmlData
-  
