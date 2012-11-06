@@ -2,13 +2,13 @@ body {
     background-image: url(../img/az_subtle.png);
 }
 .hoverwithtext {
-    width: 730px;
-    height: 133px;
+/*    width: 100px;
+    height: 50px;*/
     line-height: 0px;
     color: transparent;
-    font-size: 50px;
+    font-size: 12px;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-       font-weight: 300;
+       font-weight: 30;
     text-transform: uppercase;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -16,11 +16,11 @@ body {
 }
  
 .hoverwithtext:hover {
-    line-height: 133px;
-    color: #575858;
+    line-height: 50px;
+    color: red;
 }
  
 .hoverwithtext img{
-    float: left;
+    float: down;
     margin: 0 15px;
 }
