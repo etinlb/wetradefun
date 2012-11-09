@@ -24,3 +24,7 @@ body {
     float: down;
     margin: 0 15px;
 }
+
+.miniature-result{
+    max-height: 80px;
+}
