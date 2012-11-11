@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type = "text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+    $("#div2").text("==========");
+    $.get("/trades/get_json/", {q :$("#input").val()}, function(data) {
+        $("#div3").text(data);
+    });
+	$("#div4").text("==========");
+  });
+});
+
+</script>
+</head>
+<body>
+
+<div id="div1"><h2>Game Search Form</h2></div>
+<div id>Game Name: <input type="text" id="input" value="call of duty">
+<button>Search</button>
+<div id="div2"></div>
+<div id="div3"></div>
+<div id="div4"></div>
+
+</body>
+</html>
+
+	

@@ -1,5 +1,15 @@
+from trades.models import Users, Games
+from trades.models import Wishlists, Currentlists, Transactions
+from trades.models import Gamecomments, Messages, Userratings, Gameratings
 from django.http import HttpResponse
-from trades.models import Users, Games, Wishlists, Currentlists, Makeoffers, Getoffers, Gamecomments, Messages, Userrating, Gameratings
+from django.shortcuts import render_to_response
+from django.utils import simplejson
+from django.shortcuts import get_object_or_404
+from django.http import Http404
+from django.template.loader import get_template
+from django.template import RequestContext
+from django.template import Context
+from trades import giantbomb
 
 def index(request):
     return HttpResponse("Hello, world. You're at the trades index.")
@@ -12,3 +22,48 @@ def save(request, users_name):
 def load(request, users_id):
     u=Users.objects.get(id=users_id)
     return HttpResponse("You load a user whose name is %s." % u.name)
+
+def search_form(request):
+    return render_to_response('search_form.html')
+	
+def search(request):
+    q=request.GET.get('q')
+    response_data={}
+    response_data['q'] = q
+    response_data['message'] = 'You messed up'
+    return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
+
+def get_json(request):
+    if request.is_ajax():
+        gb = giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+        input=request.GET.get('q')
+        message = gb.search(input)
+    else:
+        message = "Not AJAX"
+    return HttpResponse(message)
+
+def search_game(request):
+    return render_to_response('search_game.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
