@@ -26,14 +26,17 @@ def load(request, users_id):
 def search_form(request):
     return render_to_response('search_form.html')
 	
-def search(request):
-    q=request.GET.get('q')
+def post_request(request):
+    account=request.POST.get('account')
+    password=request.POST.get('password')
+    email=request.POST.get('email')
     response_data={}
-    response_data['q'] = q
-    response_data['message'] = 'You messed up'
+    response_data['account'] = account
+    response_data['password'] = password
+    response_data['email'] = email
     return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
 
-def get_json(request):
+def get_request(request):
     if request.is_ajax():
         gb = giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
         input=request.GET.get('q')
