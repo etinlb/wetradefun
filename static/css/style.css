@@ -1,6 +1,7 @@
 body { 
     background-image: url(../img/az_subtle.png);
 }
+
 .hoverwithtext {
 /*    width: 100px;
     height: 50px;*/
@@ -28,3 +29,4 @@ body {
 .miniature-result{
     max-height: 80px;
 }
+
