@@ -1,6 +1,6 @@
-from trades.models import Users, Games
-from trades.models import Wishlists, Currentlists, Transactions
-from trades.models import Gamecomments, Messages, Userratings, Gameratings
+from trades.models import User, Game
+from trades.models import Wishlist, Currentlist, Transaction
+from trades.models import Gamecomment, Message, Userrating, Gamerating
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
@@ -15,12 +15,12 @@ def index(request):
     return HttpResponse("Hello, world. You're at the trades index.")
 
 def save(request, users_name):
-    u=Users(name=users_name)
+    u=User(name=users_name)
     u.save()
     return HttpResponse("You save a user. Please load his name by using id %s." % u.id)
 
 def load(request, users_id):
-    u=Users.objects.get(id=users_id)
+    u=User.objects.get(id=users_id)
     return HttpResponse("You load a user whose name is %s." % u.name)
 
 def search_form(request):
