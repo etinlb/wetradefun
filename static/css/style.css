@@ -18,12 +18,12 @@ body {
  
 .hoverwithtext:hover {
     line-height: 50px;
-    color: red;
+    color: blue;
 }
  
 .hoverwithtext img{
     float: down;
-    margin: 0 15px;
+    margin: 15 15px;
 }
 
 .miniature-result{
