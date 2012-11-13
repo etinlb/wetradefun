@@ -1,6 +1,6 @@
 from django.db import models
 
-class Users(models.Model):
+class User(models.Model):
   account = models.CharField(max_length=64)
   password = models.CharField(max_length=64)
   name = models.CharField(max_length=64)
@@ -9,50 +9,50 @@ class Users(models.Model):
   rating = models.IntegerField()
   dateRegistered = models.IntegerField()
 
-class Games(models.Model):
+class Game(models.Model):
   name = models.CharField(max_length=64)
   gianBombID = models.IntegerField()
   rating = models.IntegerField()
 
-class Wishlists(models.Model):
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+class Wishlist(models.Model):
+  usersID = models.ForeignKey(User)
+  gamesID = models.ForeignKey(Game)
   datePosted = models.IntegerField()
 
-class Currentlists(models.Model):
+class Currentlist(models.Model):
   status = models.CharField(max_length=64)
   datePosted = models.IntegerField()
-  usersID = models.ForeignKey(Users)
+  usersID = models.ForeignKey(User)
   gamesID = models.ForeignKey(Games)
 
-class Transactions(models.Model):
+class Transaction(models.Model):
   status = models.CharField(max_length=64)
   dateRequested = models.IntegerField()
   dateTraded = models.IntegerField()
-  senderID = models.ForeignKey(Users)
-  senderGameID = models.ForeignKey(Games)
-  receiverID = models.ForeignKey(Users)
-  receiverGameID = models.ForeignKey(Games)
+  senderID = models.ForeignKey(User)
+  senderGameID = models.ForeignKey(Game)
+  receiverID = models.ForeignKey(User)
+  receiverGameID = models.ForeignKey(Game)
 
-class Gamecomments (models.Model):
+class Gamecomment(models.Model):
   content = models.CharField(max_length=64)
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+  usersID = models.ForeignKey(User)
+  gamesID = models.ForeignKey(Game)
   datePosted = models.IntegerField()
 
-class Messages (models.Model):
+class Message (models.Model):
   content = models.CharField(max_length=128)
   datePosted = models.IntegerField()
-  senderID = models.ForeignKey(Users)
-  receiverID = models.ForeignKey(Users)
+  senderID = models.ForeignKey(User)
+  receiverID = models.ForeignKey(User)
   transactionsID = models.ForeignKey(Transactions)
 
-class Userratings (models.Model):
+class Userrating (models.Model):
   rating = models.IntegerField()
-  senderID = models.ForeignKey(Users)
-  receiverID = models.ForeignKey(Users)
+  senderID = models.ForeignKey(User)
+  receiverID = models.ForeignKey(User)
 
-class Gameratings (models.Model):
+class Gamerating (models.Model):
   rating = models.IntegerField()
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+  usersID = models.ForeignKey(User)
+  gamesID = models.ForeignKey(Game)
