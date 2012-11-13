@@ -23,7 +23,8 @@ class Currentlists(models.Model):
   status = models.CharField(max_length=64)
   datePosted = models.IntegerField()
   usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+  gamesID = models.IntegerField()
+  #gamesID = models.ForeignKey(Games)
 
 class Transactions(models.Model):
   status = models.CharField(max_length=64)
