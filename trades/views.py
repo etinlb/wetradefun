@@ -1,11 +1,19 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponse
-from trades.models import Users, Games, Wishlists, Currentlists, Makeoffers, Getoffers, Gamecomments, Messages, Userrating, Gameratings
+
+from trades.models import UserProfile
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the trades index.")
+    user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    user_profile = UserProfile(user = user, account='account', address='address', rating=1)
+    user_profile.save()
+    return HttpResponse("")
+
+# def index(request):
+#     return HttpResponse("Hello, world. You're at the trades index.")
 
 def save(request, users_name):
-    u=Users(name=users_name)
+    u=UserProfile(name=users_name)
     u.save()
     return HttpResponse("You save a user. Please load his name by using id %s." % u.id)
 
