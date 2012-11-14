@@ -1,24 +1,31 @@
-<html lang="en">
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<title> We Trade Fun Homepage</title>
+  <meta charset="utf-8" />
 
-	<style> 
-		.navbar-search {
-			padding-top: 5px;
-		}
-	</style>
-	<link href="./css/bluebootstrap.min.css" rel="stylesheet">
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
 
+  <title>Welcome to Foundation | Blog</title>
+
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.css">
+-->
+
+<!-- Included CSS Files (Compressed) -->
+<link rel="stylesheet" href="stylesheets/foundation.min.css">
+<link rel="stylesheet" href="stylesheets/app.css">
+
+<script src="javascripts/modernizr.foundation.js"></script>
 </head>
-	
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="home.html">We Trade Fun</a>
-
-				<ul class="nav">
+		<!-- 		<ul class="nav">
 					<li class="divider-vertical"></li>
 					<li>
 						<a href="accountManagement.html">Account Management</a>
@@ -38,13 +45,63 @@
 						<a href="createAccount.html">Create Account</a>	
 					</li>
 					<li class="divider-vertical"></li>
-				<ul>
+                    <ul>
 
-			</div>
-		</div>
-	</div>
+                    </div>
+                </div>
+              </div> -->
 
-		
+              <!-- Top Bar -->
 
-</body>
-</html>
+              <nav class="top-bar">
+                <ul>
+                  <!-- Title Area -->
+                  <li class="name">
+                    <h1>
+                      <a href="#">
+                        We Trade Fun
+                      </a>
+                    </h1>
+                  </li>
+                  <li class="toggle-topbar"><a href="#"></a></li>
+                </ul>
+
+                <section>
+                  <!-- Right Nav Section -->
+                  <ul class="right">
+                    <li class="divider"></li>
+                    <li class="has-dropdown">
+                      <a href="#">User</a>
+                      <ul class="dropdown">
+                        <li><label>Section Name</label></li>
+                        <li class="has-dropdown">
+                          <a href="#" class="">Has Dropdown, Level 1</a>
+                          <ul class="dropdown">
+                            <li><a href="#">Dropdown Options</a></li>
+                            <li><a href="#">Dropdown Options</a></li>
+                            <li><a href="#">Level 2</a></li>
+                            <li><a href="#">Subdropdown Option</a></li>
+                            <li><a href="#">Subdropdown Option</a></li>
+                            <li><a href="#">Subdropdown Option</a></li>
+                          </ul>
+                        </li>
+                        <li><a href="#">Dropdown Option</a></li>
+                        <li><a href="#">Dropdown Option</a></li>
+                        <li class="divider"></li>
+                        <li><label>Section Name</label></li>
+                        <li><a href="#">Dropdown Option</a></li>
+                        <li><a href="#">Dropdown Option</a></li>
+                        <li><a href="#">Dropdown Option</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">See all &rarr;</a></li>
+                      </ul>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="#">Main Item 2</a></li>
+                  </ul>
+                </section>
+              </nav>
+
+              <!-- End Top Bar -->
+
+
