@@ -1,53 +1,176 @@
 <!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-    dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
-    xml:lang="{% firstof LANGUAGE_CODE 'en' %}"
-    lang="{% firstof LANGUAGE_CODE 'en' %}">
-  <head>
-    <title>{% block title %}{% endblock %} - Nonrel-testapp</title>
+dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
+xml:lang="{% firstof LANGUAGE_CODE 'en' %}"
+lang="{% firstof LANGUAGE_CODE 'en' %}">
+<head>
+  <meta charset="utf-8" />
 
-    {% block css %}
-    {% endblock %}
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
 
-    {% block preload_js %}
-    {% endblock %}
+  <title>{% block title %}{% endblock %}We Trade Fun</title>
 
-    {% block extra-head %}{% endblock %}
-  </head>
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="static/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="static/stylesheets/app.css">
+  {% block css %}
+  {% endblock %}
 
-  <body>
-    <div id="header">
-      <a id="logo" href="/">Nonrel-testapp</a>
+  <script src="static/javascripts/modernizr.foundation.js"></script>
+  {% block preload_js %}
+  {% endblock %}
+
+  {% block extra-head %}{% endblock %}
+</head>
+
+<body>
+  <!-- Top Bar -->
+  <nav class="top-bar">
+    <ul>
+      <!-- Title Area -->
+      <li class="name">
+        <h1>
+          <a href="#">
+            We Trade Fun
+          </a>
+        </h1>
+      </li>
+      <li class="toggle-topbar"><a href="#"></a></li>
+    </ul>
+
+    <section>
+      <!-- Right Nav Section -->
+      <ul class="right">
+        <li class="divider"></li>
+        <li class="has-dropdown">
+          <a href="#">User</a>
+          <ul class="dropdown">
+            <li><label>Section Name</label></li>
+            <li class="has-dropdown">
+              <a href="#" class="">Has Dropdown, Level 1</a>
+              <ul class="dropdown">
+                <li><a href="#">Dropdown Options</a></li>
+                <li><a href="#">Dropdown Options</a></li>
+                <li><a href="#">Level 2</a></li>
+                <li><a href="#">Subdropdown Option</a></li>
+                <li><a href="#">Subdropdown Option</a></li>
+                <li><a href="#">Subdropdown Option</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li class="divider"></li>
+            <li><label>Section Name</label></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li class="divider"></li>
+            <li><a href="#">See all &rarr;</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+        <li><a href="#">Main Item 2</a></li>
+      </ul>
+    </section>
+  </nav>
+  <!-- End Top Bar -->
+
+  <div class="row">
+    <div id="content">
+      {% block content-header %}
+      {% if error %}<div class="error">{{ error }}</div>{% endif %}
+      {% if info %}<div class="info">{{ info }}</div>{% endif %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="info">{{ message }}</div>
+      {% endfor %}
+      {% endif %}
+      {% endblock %}
+
+      {% block content %}{% endblock %}
     </div>
+  </div>
 
-    <div class="columns">
-      <div id="content" class="column">
-        {% block content-header %}
-          {% if error %}<div class="error">{{ error }}</div>{% endif %}
-          {% if info %}<div class="info">{{ info }}</div>{% endif %}
-          {% if messages %}
-            {% for message in messages %}
-              <div class="info">{{ message }}</div>
-            {% endfor %}
-          {% endif %}
-        {% endblock %}
+  <!-- Footer -->
 
-        {% block content %}{% endblock %}
+  <footer class="row">
+    <div class="twelve columns">
+      <hr />
+      <div class="row">
+        <div class="six columns">
+          <p>&copy; Copyright no one at all. Go to town.</p>
+        </div>
+        <div class="six columns">
+          <ul class="link-list right">
+            <li><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+            <li><a href="#">Link 3</a></li>
+            <li><a href="#">Link 4</a></li>
+          </ul>
+        </div>
       </div>
-
-      <div id="sidebar" class="column">
-        {% block sidebar %}
-        {% endblock %}
-      </div>
     </div>
+  </footer>
 
-    <div id="footer">
-      <p>Powered by <a href="https://github.com/django-nonrel">Django-nonrel</a></p>
-    </div>
+  <!-- End Footer -->
 
-    {% block js %}
-    {% endblock %}
-  </body>
+
+
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="static/javascripts/jquery.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="static/javascripts/jquery.placeholder.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.alerts.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.topbar.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.joyride.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.clearing.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.magellan.js"></script>
+  
+-->
+
+<!-- Included JS Files (Compressed) -->
+<script src="static/javascripts/jquery.js"></script>
+<script src="static/javascripts/foundation.min.js"></script>
+
+<!-- Initialize JS Plugins -->
+<script src="static/javascripts/app.js"></script>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+  s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+{% block js %}
+{% endblock %}
+</body>
 </html>
