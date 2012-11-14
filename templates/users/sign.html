@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<!-- Contact Details -->
+
 <div class="twelve columns">
 
   <dl class="contained tabs">
@@ -32,39 +32,50 @@
     </li>
 
     <li id="signUpTab">
-      <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Username</label>
+      <form action="" method="post">
+        {{ form.non_field_errors }}
+        <div class="row collapse fieldWrapper">
+            {{ form.username.errors }}
+            <div class="two columns">
+              <label for="id_username">Username</label>
+            </div>
+            <div class="ten columns">
+              {{ form.username }}
+            </div>            
         </div>
-        <div class="ten columns">
-          <input type="text" id="username" placeholder="username" />
+
+        <div class="row collapse fieldWrapper">
+            {{ form.email.errors }}
+            <div class="two columns">
+              <label for="id_email">Email</label>
+            </div>
+            <div class="ten columns">
+              {{ form.email }}
+            </div>            
         </div>
-      </div>
-      <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Email</label>
+
+        <div class="row collapse fieldWrapper">
+            {{ form.password.errors }}
+            <div class="two columns">
+              <label for="id_password">Password</label>
+            </div>
+            <div class="ten columns">
+              {{ form.password }}
+            </div>            
         </div>
-        <div class="ten columns">
-          <input type="email" id="email" placeholder="email@domain.com" />
+
+        <div class="row collapse fieldWrapper">
+            {{ form.check_password.errors }}
+            <div class="two columns">
+              <label for="id_check_password">Repeat Password</label>
+            </div>
+            <div class="ten columns">
+              {{ form.check_password }}
+            </div>            
         </div>
-      </div>
-      <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Password</label>
-        </div>
-        <div class="ten columns">
-          <input type="password" id="password" placeholder="*****" />
-        </div>
-      </div>
-      <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Repeat Password</label>
-        </div>
-        <div class="ten columns">
-          <input type="password" id="repeat_password" placeholder="*****" />
-        </div>
-      </div>
-      <button type="submit" class="radius button">Submit</button>
+
+        <button type="submit" class="radius button">Submit</button>
+      </form>
     </li>
   </ul>
 
