@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Contact Details -->
+<div class="twelve columns">
+
+  <dl class="contained tabs">
+    <dd class="active"><a href="#logIn">Log In</a></dd>
+    <dd><a href="#signUp">Sign Up</a></dd>
+  </dl>
+
+  <ul class="tabs-content contained">
+    <li id="logInTab" class="active">
+      <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Username</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="username" placeholder="username" />
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Password</label>
+        </div>
+        <div class="ten columns">
+          <input type="password" id="password" placeholder="*****" />
+        </div>
+      </div>
+      <button type="submit" class="radius button">Submit</button>
+    </li>
+
+    <li id="signUpTab">
+      <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Username</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="username" placeholder="username" />
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Email</label>
+        </div>
+        <div class="ten columns">
+          <input type="email" id="email" placeholder="email@domain.com" />
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Password</label>
+        </div>
+        <div class="ten columns">
+          <input type="password" id="password" placeholder="*****" />
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Repeat Password</label>
+        </div>
+        <div class="ten columns">
+          <input type="password" id="repeat_password" placeholder="*****" />
+        </div>
+      </div>
+      <button type="submit" class="radius button">Submit</button>
+    </li>
+  </ul>
+
+</div>
+
+{% endblock %}
+
