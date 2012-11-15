@@ -13,6 +13,9 @@ body {
     background-image: url(../img/az_subtle.png);
 }
 
+.search {
+  padding-top: 10px;
+}
 /* -----------------------------------------
    Index
 ----------------------------------------- */
