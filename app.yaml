@@ -15,6 +15,15 @@ libraries:
   version: latest
 
 handlers:
+- url: /static/javascripts
+  static_dir: static/javascripts
+
+- url: /static/images
+  static_dir: static/images
+
+- url: /static/stylesheets
+  static_dir: static/stylesheets
+
 - url: /_ah/queue/deferred
   script: djangoappengine.deferred.handler.application
   login: admin
