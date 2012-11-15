@@ -133,6 +133,3 @@ def buildFilterStr(params):
   for x in params:
     filters += x + ','
   return filters  
-
-
-

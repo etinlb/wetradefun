@@ -1,4 +1,5 @@
 import search as s
+
 print 'Testing search on just name'
 print s.getList('assassin', 'name') 
 print '\n'
