@@ -24,6 +24,7 @@ INSTALLED_APPS = (
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
+    'trades',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -47,5 +48,15 @@ TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
 
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+
+STATIC_URL = '/static/'
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 ROOT_URLCONF = 'urls'

@@ -1,58 +1,61 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-class Users(models.Model):
+class UserProfile(models.Model):
+  user = models.ForeignKey(User, unique=True)
   account = models.CharField(max_length=64)
-  password = models.CharField(max_length=64)
-  name = models.CharField(max_length=64)
-  email = models.CharField(max_length=64)
+  # password = models.CharField(max_length=64)
+  # name = models.CharField(max_length=64)
+  # email = models.CharField(max_length=64)
   address = models.CharField(max_length=64)
   rating = models.IntegerField()
-  dateRegistered = models.IntegerField()
+  # dateRegistered = models.IntegerField()
 
-class Games(models.Model):
+class Game(models.Model):
   name = models.CharField(max_length=64)
   gianBombID = models.IntegerField()
   rating = models.IntegerField()
 
-class Wishlists(models.Model):
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+class Wishlist(models.Model):
+  usersID = models.ForeignKey(UserProfile)
+  gamesID = models.ForeignKey(Game)
   datePosted = models.IntegerField()
 
-class Currentlists(models.Model):
+class Currentlist(models.Model):
   status = models.CharField(max_length=64)
   datePosted = models.IntegerField()
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+  datePosted = models.IntegerField(default=-1)
+  userID = models.ForeignKey(UserProfile)
+  gameID = models.ForeignKey(Game)
 
-class Transactions(models.Model):
+class Transaction(models.Model):
   status = models.CharField(max_length=64)
   dateRequested = models.IntegerField()
   dateTraded = models.IntegerField()
-  senderID = models.ForeignKey(Users)
-  senderGameID = models.ForeignKey(Games)
-  receiverID = models.ForeignKey(Users)
-  receiverGameID = models.ForeignKey(Games)
+  senderID = models.ForeignKey(UserProfile)
+  senderGameID = models.ForeignKey(Game)
+  receiverID = models.ForeignKey(UserProfile)
+  receiverGameID = models.ForeignKey(Game)
 
-class Gamecomments (models.Model):
+class Gamecomment(models.Model):
   content = models.CharField(max_length=64)
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+  usersID = models.ForeignKey(UserProfile)
+  gamesID = models.ForeignKey(Game)
   datePosted = models.IntegerField()
 
-class Messages (models.Model):
+class Message (models.Model):
   content = models.CharField(max_length=128)
   datePosted = models.IntegerField()
-  senderID = models.ForeignKey(Users)
-  receiverID = models.ForeignKey(Users)
-  transactionsID = models.ForeignKey(Transactions)
+  senderID = models.ForeignKey(UserProfile)
+  receiverID = models.ForeignKey(UserProfile)
+  transactionsID = models.ForeignKey(Transaction)
 
-class Userratings (models.Model):
+class Userrating (models.Model):
   rating = models.IntegerField()
-  senderID = models.ForeignKey(Users)
-  receiverID = models.ForeignKey(Users)
+  senderID = models.ForeignKey(UserProfile)
+  receiverID = models.ForeignKey(UserProfile)
 
-class Gameratings (models.Model):
+class Gamerating (models.Model):
   rating = models.IntegerField()
-  usersID = models.ForeignKey(Users)
-  gamesID = models.ForeignKey(Games)
+  usersID = models.ForeignKey(UserProfile)
+  gamesID = models.ForeignKey(Game)
