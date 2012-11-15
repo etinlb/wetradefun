@@ -24,8 +24,9 @@ class Wishlist(models.Model):
 class Currentlist(models.Model):
   status = models.CharField(max_length=64)
   datePosted = models.IntegerField()
-  usersID = models.ForeignKey(UserProfile)
-  gamesID = models.ForeignKey(Game)
+  datePosted = models.IntegerField(default=-1)
+  userID = models.ForeignKey(UserProfile)
+  gameID = models.ForeignKey(Game)
 
 class Transaction(models.Model):
   status = models.CharField(max_length=64)

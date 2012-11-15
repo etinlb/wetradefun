@@ -84,8 +84,11 @@ def parseFields(file, params):
   for gameNode in resNode:
     #get the specified parameters and add them to the inner dict
     for y in params:
-      if gameNode.find(y).tag == 'name':
+      node = gameNode.find(y)
+      if node.tag == 'name':
         grandKey = gameNode.find(y).text
+      elif node.tag == 'image':
+        innerDict['image'] = node.find('thumb_url').text
       else:
         innerDict[gameNode.find(y).tag] = gameNode.find(y).text
     #no name node was found

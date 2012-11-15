@@ -20,3 +20,6 @@ class RegistrationForm(forms.Form):
       # are required by default so we don't need to worry about validation
       pass
     return self.cleaned_data
+
+class SearchForm(forms.Form):
+  query = forms.CharField()
