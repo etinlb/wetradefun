@@ -10,6 +10,7 @@ api_key = '?api_key=308d89c435a454c3943316fb25c73ceba1f8bf72'
 searchStart = 'http://api.giantbomb.com/search/' + api_key 
 specificGame = 'http://api.giantbomb.com/game/' 
 
+
 def getList(searchQuery, *params):
   """ Returns a nested dictionary based on the string passed in as searchQuery
   currently the outer dictionary uses the game name as a key and the inner uses
@@ -34,12 +35,14 @@ def getList(searchQuery, *params):
 
   """
   #makes the params entered in the proper filter format
-  filters = buildFilterStr(params) 
-  searchString = searchStart + '&resources=game&query='+ searchQuery + filters+'limit=10'
+  filters = buildFilterStr(params)
+  searchString = searchStart + '&resources=game&query='+ searchQuery + filters + '&limit=10'
+
   #queries the video game database
   file = urllib2.urlopen(searchString)
   #make the dictionary
   gameList = parseFields(file, params)
+
   return gameList
 
 def getGameDetsById(gameId, *params):
@@ -62,6 +65,7 @@ def getGameDetsById(gameId, *params):
   """
   filters = buildFilterStr(params)
   searchString = specificGame + gameId +'/' + api_key + filters
+
   file = urllib2.urlopen(searchString)  
   game = parseFieldsSpecific(file)
   return game
@@ -72,29 +76,58 @@ def parseFields(file, params):
   it uses the games id as a key.
 
   """
+
   data = file.read()
   root = ET.fromstring(data)
   if checkXml(root) != 1:
     return None # check if the xml is good
   resNode = root.find('results') # get the node with the game data
+  
+  
   mainDict = {}
   innerDict = {}
   grandKey = ''
   #Loop over the game nodes 
   for gameNode in resNode:
+    
     #get the specified parameters and add them to the inner dict
     for y in params:
-      node = gameNode.find(y)
-      if node.tag == 'name':
+      if y == 'name': # for names = key
         grandKey = gameNode.find(y).text
-      elif node.tag == 'image':
-        innerDict['image'] = node.find('thumb_url').text
-      else:
-        innerDict[gameNode.find(y).tag] = gameNode.find(y).text
+
+      else: # for any non-name = value pair
+        if y == 'platform':
+          searchPlatform = specificGame + gameNode.find('id').text + '/' + api_key + '&field_list=platforms'
+          # print searchPlatform
+          file = urllib2.urlopen(searchPlatform)
+          data2 = file.read()
+          root2 = ET.fromstring(data2)
+          if checkXml(root2) != 1:
+            return None # check if the xml is good
+          resNode2 = root2.find('results') # get the node with the game data
+          resNodeDeep = resNode2.find('platforms')
+
+          allplatforms = ""
+          for moreNodes in resNodeDeep:
+            resNodeDeeper = resNodeDeep.find('platform')
+            allplatforms += moreNodes.find('name').text + ", "
+          innerDict[y] = allplatforms
+
+          
+        elif y == 'image':
+          resNodeImage = gameNode.find('image')
+          innerDict[y] = resNodeImage.find('icon_url').text
+        
+        else:
+
+          # print gameNode.find(y).text
+          innerDict[gameNode.find(y).tag] = gameNode.find(y).text
+
     #no name node was found
-    if  grandKey == '': 
+    if  grandKey == '':
       mainDict[innerDict['id']] = innerDict
     else:
+
       mainDict[grandKey] = innerDict
     innerDict = {}  
   return mainDict  
@@ -135,4 +168,9 @@ def buildFilterStr(params):
   filters = '&field_list='
   for x in params:
     filters += x + ','
+
   return filters  
+
+
+
+
