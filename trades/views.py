@@ -49,15 +49,24 @@ def gameDetail(request, game_id):
   return render_to_response('detail.html', {'game':game, 'listing':listing, }) #render(details.html, {'game' : game})git
 
 
-def search(request):
-    results = 'j'
-    if request.method == 'POST': #form
-        form = SearchForm(request.POST)
-        # test = request.POST['q']
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            results = s.getList(query, 'name', 'image' )
-            # test = 'true'
-    else:
-        form  = SearchForm()
-    return render_to_response('Search.html', {'form': form, 't':results})  
+def search(request, query):
+    print query #'genres',
+    results = s.getList(query, 'name', 'image', 'original_release_date', 
+                        'deck', 'platforms', 'id', 'genres' )
+    for x in results:
+        listingsNum[x] = Currentlist.objects.filter(gameId=x).count() 
+    print results
+    print listings
+    # so getting the number of listings is actually very slow in django unless
+    # you do a specific database query i.e. select count(*). I'm not sure you 
+    # results = 'j'
+    # if request.method == 'POST': #form
+    #     form = SearchForm(request.POST)
+    #     # test = request.POST['q']
+    #     if form.is_valid():
+    #         query = form.cleaned_data['query']
+    #         results = s.getList(query, 'name', 'image' )
+    #         # test = 'true'
+    # else:
+    #     form  = SearchForm()
+    return render_to_response('Search.html', {'t':results})  
