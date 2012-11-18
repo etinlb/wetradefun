@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title> We Trade Fun Homepage</title>
+  
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.css">
+  -->
+  
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="stylesheets/normalize.css">
+  <link rel="stylesheet" href="stylesheets/main.css">
+  <link rel="stylesheet" href="stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="stylesheets/app.css">
+
+  <script src="javascripts/modernizr.foundation.js"></script>
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+
+
+<body>
+
+  <div class="row">
+
+    <div class="row">
+      <div class="five columns">
+          <a href="#" class="th" data-reveal-id="imageGame"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png"></a>
+      </div>
+
+      <div class="reveal-modal" id="imageGame">
+        <div class="twelve columns centered">
+            <p><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></p>
+
+            <!-- Any anchor with this class will close the modal. This also inherits certain styles, which can be overriden. -->
+            <a href="#" class="close-reveal-modal">&times;</a>
+          </div>
+      </div>
+      <div class="seven columns">
+        <ul class="pricing-table">
+          <li class="title">Halo 4</li>
+          <li class="price">5 games avaliable</li>
+          <li class="description">This game is the 4th of the .......................</li>
+          <li class="bullet-item"><a class="small button" href="#">+ Add to my wishlist</a></li>
+          <li class="bullet-item">Platform(s): Xbox 360</li>
+          <li class="bullet-item">Genres: First-Person Shooter</li>
+          <li class="bullet-item"><a class="secondary button" href="http://www.giantbomb.com/halo-4/61-35533/">See it on GiantBomb.com &raquo;</a></li>
+          <li class="cta-button"> 
+            <a href="#" class="radius button">Publish a listing</a>
+            <a href="#" class="radius button">Make an offer</a>
+            </ul>
+          </li>
+        </ul>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="javascripts/jquery.js"></script>
+<script src="javascripts/foundation.min.js"></script>
+
+<!-- Initialize JS Plugins -->
+<script src="javascripts/app.js"></script>
+
+  
+</body>
