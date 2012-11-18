@@ -29,7 +29,8 @@ def sign_up(request):
             # Send to home page
 
         else:
-            messages.add_message(request, messages.ERROR, form._errors['__all__'])
+            if "__all__" in form._errors:
+                messages.add_message(request, messages.ERROR, form._errors['__all__'])
     else:
         form = RegistrationForm() # An unbound form
 

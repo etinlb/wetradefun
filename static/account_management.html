@@ -11,38 +11,21 @@
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title> We Trade Fun Homepage</title>
-  
+  <title>Welcome to Foundation | Blog</title>
+
   <!-- Included CSS Files (Uncompressed) -->
   <!--
   <link rel="stylesheet" href="stylesheets/foundation.css">
 -->
 
 <!-- Included CSS Files (Compressed) -->
-<link rel="stylesheet" href="stylesheets/normalize.css">
-<link rel="stylesheet" href="stylesheets/main.css">
 <link rel="stylesheet" href="stylesheets/foundation.min.css">
 <link rel="stylesheet" href="stylesheets/app.css">
-<link rel="stylesheet" href="stylesheets/general_foundicons.css">
 
 <script src="javascripts/modernizr.foundation.js"></script>
+</head>
+<body>
 
-<style>
-  th {
-    text-align: center;
-  }
-  tr {
-    text-align: center;
-  }
-</style>
-
-<!-- IE Fix for HTML5 Tags -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-  </head>
-  <body>
   <!-- Top Bar -->
 
   <nav class="top-bar">
@@ -50,441 +33,342 @@
       <!-- Title Area -->
       <li class="name">
         <h1>
-          <a href="index.html">
+          <a href="#">
             We Trade Fun
           </a>
         </h1>
       </li>
+      <li class="toggle-topbar"><a href="#"></a></li>
     </ul>
 
-
-    <ul>
-      <li>
-        <a>Recycling Old Games Since 2012</a>
-      </li>
-
-      <li class="search">
-        <form class="search">
-         <input type="text" placeholder="Search for a game...">
-        </form>
-      </li>
-    </ul>
-
-
-    <ul class = "right">
-      <li class="divider"></li>
-
-      <li class="has-dropdown">
-        <a href="http://google.com">Account</a>
-        <ul class="dropdown">
-          <li><a href="users_sign_up.html">Login</a></li>
-          <li><a href="users_sign_up.html">Create Account</a></li>
-          <li class="divider"></li>
-          <li><a href="account_management.html">Manage Account</a></li>
-          <li><a href="account_management.html">Edit Account Details</a></li>
-
-          <li><a href="account_management.html">Manage Wishlist</a></li>
-        </ul>
-    </ul>
-
+    <section>
+      <!-- Right Nav Section -->
+      <ul class="right">
+        <li class="divider"></li>
+        <li class="has-dropdown">
+          <a href="#">User</a>
+          <ul class="dropdown">
+            <li><label>Section Name</label></li>
+            <li class="has-dropdown">
+              <a href="#" class="">Has Dropdown, Level 1</a>
+              <ul class="dropdown">
+                <li><a href="#">Dropdown Options</a></li>
+                <li><a href="#">Dropdown Options</a></li>
+                <li><a href="#">Level 2</a></li>
+                <li><a href="#">Subdropdown Option</a></li>
+                <li><a href="#">Subdropdown Option</a></li>
+                <li><a href="#">Subdropdown Option</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li class="divider"></li>
+            <li><label>Section Name</label></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li><a href="#">Dropdown Option</a></li>
+            <li class="divider"></li>
+            <li><a href="#">See all &rarr;</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+        <li><a href="#">Main Item 2</a></li>
+      </ul>
+    </section>
   </nav>
 
   <!-- End Top Bar -->
 
- 
+  <!-- Main Page Content and Sidebar -->
 
-  <div class="row">
-  <!-- Trades table -->
-    <div class="twelve columns">
+<div class="row">
+  <div class="twelve columns">
+    <h3>Account Management</h3>
 
-      <h3>Account Management</h3>
+    <dl class="tabs">
+      <dd class="active"><a href="#currentListings">Current Listings</a></dd>
+      <dd><a href="#currentOffers">Current Offers</a></dd>
+      <dd><a href="#tradeHistory">Trade History</a></dd>
+      <dd><a href="#viewWishlist">View Wishlist</a><dd>
+    </dl>
 
-      <dl class="contained tabs">
-        <dd class="active"><a href="#currentListings">Current Listings</a></dd>
-        <dd><a href="#currentOffers">Current Offers</a></dd>
-        <dd><a href="#tradeHistory">Trade History</a></dd>
-        <dd><a href="#viewWishlist">View Wishlist</a><dd>
-      </dl>
+    <ul class="tabs-content">
+      <li class="active" id="currentListingsTab">
+        <table class="twelve columns">
+          <thead>
+            <tr>
+              <th>My Listing</th>
+              <th>Date Posted</th>
+              <th>Current Offers</th>
+            </tr> 
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a></td>
+              <td>Febtober 2001</td>
+              <td>
+                <ul class="no-bullet">
+                  <li><!-- list item for every offer-->
+                    <ul class="no-bullet">
+                      <li>
+                        <a href="http://www.giantbomb.com/halo-4/61-35533/">Halo 3</a>
+                      </li>
+                      <li class="button-bar">
+                        <ul class="button-group">
+                          <li>
+                            <a href="#" class="small button">Accept Offer</a>
+                          </li>
+                          <li>
+                            <a href="#" class="small button">Decline Offer</a>
+                          </li>
+                          <li>
+                            <a href="#" class="small button">Remove Listing</a>
+                          </li>                            
+                        </ul>
+                      </li>
+                      <li>
+                        <p>YO THIS IS PERFECT QUALITY</p>
+                      </li>
+                    </ul>
+                  </li>
 
-      <ul class="tabs-content contained">
+                  <hr>
 
+                  <li>
+                    <ul class="no-bullet">
+                      <li>
+                        <a href="http://media.giantbomb.com">Halo 2</a>
+                      </li>
+                      <li class="button-bar">
+                        <ul class="button-group">
+                          <li>
+                            <a href="#" class="small button">Accept Offer</a>
+                          </li>
+                          <li>
+                            <a href="#" class="small button">Decline Offer</a>
+                          </li>
+                          <li>
+                            <a href="#" class="small button">Remove Listing</a>
+                          </li>                             
+                        </ul>
+                      </li>
+                      <li>
+                        <p>Shit quality but ill throw in a nickle</p>
+                      </li>
+                    </ul>                      
+                  </li>
 
+                  <hr>
 
-        <li id="currentListingsTab" class="active">  
+                  <li>
+                    <ul class="no-bullet">
+                      <li>
+                        <a href="http://media.giantbomb.com">Halo 2</a>
+                      </li>
+                      <li class="button-bar">
+                        <ul class="button-group">
+                          <li>
+                            <a href="#" class="small button">Accept Offer</a>
+                          </li>
+                          <li>
+                            <a href="#" class="small button">Decline Offer</a>
+                          </li>
+                          <li>
+                            <a href="#" class="small button">Remove Listing</a>
+                          </li>                             
+                        </ul>
+                      </li>
+                      <li>
+                        <p>Third Offer</p>
+                      </li>
+                    </ul>                      
+                  </li>
 
-          <!-- Begin Current Listings Tab -->
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li id="currentOffersTab">
+        <table class="twelve columns">
+          <thead>
+            <tr>
+              <th>Listing</th>
+              <th>My Offer</th>
+              <th>Date Offered</th>
+              <th>Status</th>
+            </tr>              
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
+              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
+              <td>Nov 12 2012</td>
 
-          <table class="responsive twelve columns">
-            <tbody>
-              <tr>
-                <th>My Listing</th>
-                <th>Date Posted</th>
-                <th>Current Offers</th>
-              </tr>
-              <tr>
-                <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a></td>
-                <td>Febtober 2001</td>
-                <td>
-                  <ul class="no-bullet">
-
-                    <li><!-- list item for every offer-->
-                      <ul class="no-bullet">
-                        <li>
-                          <a href="http://www.giantbomb.com/halo-4/61-35533/">Halo 3</a>
-                        </li>
-                        <li class="button-bar">
-                          <ul class="button-group">
-                            <li>
-                              <a href="#" class="small button">Accept Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Decline Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Remove Listing</a>
-                            </li>                            
-                          </ul>
-                        </li>
-                        <li>
-                          <p>YO THIS IS PERFECT QUALITY</p>
-                        </li>
-                      </ul>
-                    </li>
-
-                    <hr>
-
-                    <li>
-                      <ul class="no-bullet">
-                        <li>
-                          <a href="http://media.giantbomb.com">Halo 2</a>
-                        </li>
-                        <li class="button-bar">
-                          <ul class="button-group">
-                            <li>
-                              <a href="#" class="small button">Accept Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Decline Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Remove Listing</a>
-                            </li>                             
-                          </ul>
-                        </li>
-                        <li>
-                          <p>Shit quality but ill throw in a nickle</p>
-                        </li>
-                      </ul>                      
-                    </li>
-
-                    <hr>
-
-                    <li>
-                      <ul class="no-bullet">
-                        <li>
-                          <a href="http://media.giantbomb.com">Halo 2</a>
-                        </li>
-                        <li class="button-bar">
-                          <ul class="button-group">
-                            <li>
-                              <a href="#" class="small button">Accept Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Decline Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Remove Listing</a>
-                            </li>                             
-                          </ul>
-                        </li>
-                        <li>
-                          <p>Third Offer</p>
-                        </li>
-                      </ul>                      
-                    </li>
-
-                  </ul>
-                </td>
-              </tr>
- 
-              <!-- begin table item 2-->
-
-              <tr>
-                <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a></td>
-                <td>Febtober 2001</td>
-                <td>
-                  <ul class="no-bullet">
-
-                    <li><!-- list item for every offer-->
-                      <ul class="no-bullet">
-                        <li>
-                          <a href="http://www.giantbomb.com/halo-4/61-35533/">Halo 3</a>
-                        </li>
-                        <li class="button-bar">
-                          <ul class="button-group">
-                            <li>
-                              <a href="#" class="small button">Accept Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Decline Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Remove Listing</a>
-                            </li>                             
-                          </ul>
-                        </li>
-                        <li>
-                          <p>YO THIS IS PERFECT QUALITY</p>
-                        </li>
-                      </ul>
-                    </li>
-
-                    <hr></hr>
-
-                    <li>
-                      <ul class="no-bullet">
-                        <li>
-                          <a href="http://media.giantbomb.com">Halo 2</a>
-                        </li>
-                        <li class="button-bar">
-                          <ul class="button-group">
-                            <li>
-                              <a href="#" class="small button">Accept Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Decline Offer</a>
-                            </li>
-                            <li>
-                              <a href="#" class="small button">Remove Listing</a>
-                            </li>                             
-                          </ul>
-                        </li>
-                        <li>
-                          <p>Shit quality but ill throw in a nickle</p>
-                        </li>
-                      </ul>                      
-                    </li>
-
-                  </ul>
-                </td>
-              </tr>
-
-              <!-- end table item 2 -->
-
-              <tr>
-                <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a></td>
-                <td>Febtober 2001</td>
-                <td>
-                  <ul class="no-bullet">
-
-                    <li><!-- list item for every offer-->
-                      <a href="#" class="small button">Remove Listing</a>
-                    </li>
-
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <!-- End Current Listings Tab -->
-        </li>
-
-        <li id="currentOffersTab">
-
-          <!-- Begin Current OffersTab -->
-
-          <table class="responsive twelve columns">
-            <tbody>
-              <tr>
-                <th>Listing</th>
-                <th>My Offer</th>
-                <th>Date Offered</th>
-                <th>Status</th>
-              </tr>
-              <tr>
-                <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a></td>
-                <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /><br/></a></td>
-                <td>Nov 12 2012</td>
-
-                <td>
-                  <ul class="no-bullet">
-                    <li>
-                      Accepted
-                    </li>
-                    <li class="button-bar">
-                      <ul class="button-group">
-                        <li>
-                          <a href="#" class="small button">Confirm Trade</a>
-                        </li>
-                        <li>
-                          <a href="#" class="small button">Cancel Trade</a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </td>
-
-              </tr>
- 
-              <!-- begin table item 2-->
-
-              <tr>
-                <td>
-                  <a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" />
-                </td>
-
-                <td>
-                <a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /><br/></a>
-                </td>
-                <td>Nov 15 2012</td>
-                <td>
-                  <ul class="no-bullet">
-                    <li>
-                      Pending
-                    </li>
-                    <li class="button-bar">
-                      <ul class="button-group">
-                        <li>
-                          <a href="#" class="disabled small button">Confirm Trade</a>
-                        </li>
-                        <li>
-                          <a href="#" class="small button">Cancel Trade</a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-
-              <!-- end table item 2 -->
-
-
-            </tbody>
-          </table>
-
-          <!-- End Current Offers Tab -->
-        </li>
-
-        <li id="tradeHistoryTab">
-          <table class="responsive twelve columns">
-            <tbody>
-              <tr>
-                <th>Game Received</th>
-                <th>Game Offered</th>
-                <th>Completion Date</th>
-                <th>User Contact</th>
-              </tr>
-              <tr>
-                <td>
-                  <a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a>
-                </td>
-                <td>
-                  <a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /><br /></a>
-                </td>
-                <td>Nov 12 2012</td>
-
-                <td>
-                  <ul class="no-bullet">
-                    <li>
+              <td>
+                <ul class="no-bullet">
+                  <li>
+                    Accepted
+                  </li>
+                  <li class="button-bar">
+                    <ul class="button-group">
+                      <li>
+                        <a href="#" class="small button">Confirm Trade</a>
+                      </li>
+                      <li>
+                        <a href="#" class="small button">Cancel Trade</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li id="tradeHistoryTab">
+        <table class="twelve columns">
+          <thead>
+            <tr>
+              <th>Game Received</th>
+              <th>Game Offered</th>
+              <th>Completion Date</th>
+              <th>User Contact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
+              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
+              <td>Nov 12 2012</td>
+              <td>
+                <ul class="no-bullet">
+                  <li>
                       ellisbigelow@gmail.com
                     </li>
                     <li class="button-bar">
                       <ul class="button-group">
-                        <li href="#" class="small dropdown button">Rate User
+                        <li class="small dropdown button">
+                          Rate User
                           <ul>
                             <li><a href="#">5: Excellent</a></li>
                             <li><a href="#">4: Good</a></li>
                             <li><a href="#">3: Acceptable</a></li>
                             <li><a href="#">2: Would Not Trade Again</a></li>
-
                             <li><a href="#">1: Criminal</a></li>
                           </ul>
                         </li>
-                        <li>
-                          <a href="#" class="small button">Report User</a>
-                        </li>
+                        <li><a href="#" class="small button">Report User</a></li>
                       </ul>
                     </li>
-                  </ul>
-                </td>
+                </ul>
 
-              </tr>
-             
-
-
-            </tbody>
-          </table>
-        </li>
-
-        <li id="viewWishlistTab">
-          <table class="responsive eight columns">
-            <tbody>
-              <tr>
-                <th>Image</th>
-                <th>Title</th>
-                <th></th>
-              </tr>
-              <tr>
-                <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /><br/></a></td>
-                <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
-
-                <td>
-                  <div class="small button">
-                    Remove
-                  </div>
-                </td>
-
-              </tr>
-              <tr>
-                <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /><br/></a></td>
-                <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
-
-                <td>
-                  <div class="small button">
-                    Remove
-                  </div>
-                </td>
-
-              </tr>              
-            </tbody>  
-          </table>  
-          <form class="search four columns">
-            <input type="text" placeholder="Add a game to your wishlist...">
-          </form>        
-        </li>
-      </ul>
-
-    </div>
-
-      <!-- End Contact Details -->
-
-
-      <!-- Sidebar -->
-
-  <!--  <div class="three  columns"> 
-
-
-      <p>
-        <a href="#" class="th" data-reveal-id="avatarModal"><img src="http://placehold.it/350x200"></a><br />
-      </p>
-      <hr>
-
-      <ul class="no-bullet">
-        <li> <i class="foundicon-mail"></i> <a href="#">Contact this user</a></li>
-      </ul>
-
-    </div>  -->
-
-    <!-- End Sidebar -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li id="viewWishlistTab">
+        <table class="eight columns">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
+              <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
+              <td>
+                <div class="small button">
+                  Remove
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
+              <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
+              <td>
+                <div class="small button">
+                  Remove
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <form class="search four columns">
+          <input type="text" placeholder="Add a game to your wishlist...">
+        </form>
+      </li>
+    </ul>
   </div>
+</div>
 
-    <!-- End Main Content and Sidebar -->
+  <!-- End Main Content and Sidebar -->
 
 
+  <!-- Footer -->
 
+  <footer class="row">
+    <div class="twelve columns">
+      <hr />
+      <div class="row">
+        <div class="six columns">
+          <p>&copy; Copyright no one at all. Go to town.</p>
+        </div>
+        <div class="six columns">
+          <ul class="link-list right">
+            <li><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+            <li><a href="#">Link 3</a></li>
+            <li><a href="#">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-   
+  <!-- End Footer -->
+
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  <script src="javascripts/jquery.foundation.topbar.js"></script>
+  
+  <script src="javascripts/jquery.foundation.joyride.js"></script>
+  
+  <script src="javascripts/jquery.foundation.clearing.js"></script>
+  
+  <script src="javascripts/jquery.foundation.magellan.js"></script>
+  
+-->
 
 <!-- Included JS Files (Compressed) -->
 <script src="javascripts/jquery.js"></script>
