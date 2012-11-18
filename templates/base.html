@@ -33,48 +33,43 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
       <!-- Title Area -->
       <li class="name">
         <h1>
-          <a href="#">
+          <a href="index.html">
             We Trade Fun
           </a>
         </h1>
       </li>
-      <li class="toggle-topbar"><a href="#"></a></li>
     </ul>
 
-    <section>
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">User</a>
-          <ul class="dropdown">
-            <li><label>Section Name</label></li>
-            <li class="has-dropdown">
-              <a href="#" class="">Has Dropdown, Level 1</a>
-              <ul class="dropdown">
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Level 2</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><label>Section Name</label></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><a href="#">See all &rarr;</a></li>
-          </ul>
-        </li>
-        <li class="divider"></li>
-        <li><a href="#">Main Item 2</a></li>
-      </ul>
-    </section>
+
+    <ul>
+      <li>
+        <a>Recycling Old Games Since 2012</a>
+      </li>
+
+      <li class="search">
+        <form class="search">
+         <input type="text" placeholder="Search for a game...">
+        </form>
+      </li>
+    </ul>
+
+
+    <ul class = "right">
+      <li class="divider"></li>
+
+      <li class="has-dropdown">
+        <a href="http://google.com">Account</a>
+        <ul class="dropdown">
+          <li><a href="users_sign_up.html">Login</a></li>
+          <li><a href="users_sign_up.html">Create Account</a></li>
+          <li class="divider"></li>
+          <li><a href="manage_account.html">Manage Account</a></li>
+          <li><a href="manage_account.html">Edit Account Details</a></li>
+
+          <li><a href="manage_account.html">Manage Wishlist</a></li>
+        </ul>
+    </ul>
+
   </nav>
   <!-- End Top Bar -->
 
@@ -101,22 +96,59 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
   <!-- Footer -->
 
   <footer class="row">
-    <div class="twelve columns">
-      <hr />
-      <div class="row">
-        <div class="six columns">
-          <p>&copy; Copyright no one at all. Go to town.</p>
-        </div>
-        <div class="six columns">
-          <ul class="link-list right">
-            <li><a href="#">Link 1</a></li>
-            <li><a href="#">Link 2</a></li>
-            <li><a href="#">Link 3</a></li>
-            <li><a href="#">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <tr>
+      <td>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="920">
+          <tbody><tr>
+            <td colspan="2" height="10px" valign="top"><img src="../ports/0/images/default/welcome/footer.jpg" height="1" width="920"></td>
+          </tr>
+          <tr>
+            <td height="100" width="50%">
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tbody><tr>
+
+                  <!-- ABOUT -->
+
+                  <td class="footer" align="left" valign="top">
+                    <strong>About</strong><br>
+                    <a href="about.asp" class="#">About We Trade Fun</a><br>
+                    <a class="footerLink" href="#">Terms of use</a><br>
+                    <a class="footerLink" href="#">Privacy Policy</a><br>
+                    <a class="footerLink" href="#">Contact us</a><br>
+                  </td>
+                  <td class="footer" align="left" valign="top" width="25">&nbsp;</td>
+
+                  <!-- SITE AREAS -->
+
+                  <td class="footer" align="left" valign="top">
+                    <strong>Site areas</strong><br>
+                    <a class="footerLink" href="#">Games</a><br>
+                    <a class="footerLink" href="#">Users</a><br>
+
+                  <!-- More Stuff To Add Under Site Areas Section????? -->
+
+                  </td>         
+                  <td class="footer" align="left" valign="top" width="25">&nbsp;</td>
+
+                  <!-- Help and Support -->
+
+                  <td class="footer" align="left" valign="top">
+                    <strong>Help and Support</strong><br>
+                    <a class="footerLink" href="#">How it works</a><br>
+                    <a class="footerLink" href="#">FAQ</a><br>
+                    <a class="footerLink" href="#">Help</a>
+                  </td>
+
+                </tr>              <!-- End tBody -->
+              </tbody></table>
+            </td>
+            <td class="footerCopyright" align="right" valign="top" width="50%">
+              Copyright © 2006-2010 We Trade Fun - All rights reserved - Patent pending<br>
+            </td>
+          </tr>
+        </tbody></table>
+      </td>
+    </tr>
   </footer>
 
   <!-- End Footer -->
