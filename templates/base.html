@@ -11,7 +11,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title>{% block title %}{% endblock %}We Trade Fun</title>
+  <title>{% block title %}{% endblock %} - We Trade Fun</title>
 
   <!-- Included CSS Files (Compressed) -->
   <link rel="stylesheet" href="static/stylesheets/foundation.min.css">
@@ -85,7 +85,11 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
       {% if info %}<div class="info">{{ info }}</div>{% endif %}
       {% if messages %}
       {% for message in messages %}
-      <div class="info">{{ message }}</div>
+        
+        <div class="alert-box {% if message.level == 40 %}alert{% endif %}">
+          {{ message }}
+          <a href="" class="close">&times;</a>
+        </div>
       {% endfor %}
       {% endif %}
       {% endblock %}
