@@ -41,13 +41,15 @@ def load(request, users_id):
     u=Users.objects.get(id=users_id)
     return HttpResponse("You load a user whose name is %s." % u.name)
 
-def gameDetail(request, game_id):
-  game = s.getGameDetsById(game_id, 'name', 'original_release_date', 'deck', 'image')
-  listing = Currentlists.objects.get(gamesID = game_id)
-  if listing == None:
-    listing = 'There are no listings for this game'
-  return render_to_response('detail.html', {'game':game, 'listing':listing, }) #render(details.html, {'game' : game})git
+def gameDetails(request, game_id):
+  game = s.getGameDetsById(game_id, 'name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
 
+  try:
+      listing = Currentlist.objects.get(gameID = game_id)
+  except Currentlist.DoesNotExist:
+      listing = None
+
+  return render_to_response('GameDetails.html', {'game': game, 'listing': listing})
 
 def search(request):
     results = 'j'
