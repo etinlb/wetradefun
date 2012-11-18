@@ -1,9 +1,10 @@
 python manage.py runserver
 Ajax, JQuery, and GET
 http://127.0.0.1:8000/trades/search_game/
+http://cy-database.appspot.com/trades/search_game/
 POST and JSON
 http://127.0.0.1:8000/trades/search_form/
-
+http://cy-database.appspot.com/trades/search_form/
 
 python manage.py shell
 from trades.models import Users, Userratings
