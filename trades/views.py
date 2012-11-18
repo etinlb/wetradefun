@@ -45,11 +45,11 @@ def gameDetails(request, game_id):
   game = s.getGameDetsById(game_id, 'name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
 
   try:
-      listing = Currentlist.objects.get(gameID = game_id)
+      num_of_listing = Currentlist.objects.get(gameID = game_id).count()
   except Currentlist.DoesNotExist:
-      listing = None
+      num_of_listing = 0
 
-  return render_to_response('GameDetails.html', {'game': game, 'listing': listing})
+  return render_to_response('GameDetails.html', {'game': game, 'listing': num_of_listing})
 
 def search(request):
     results = 'j'
