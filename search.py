@@ -142,10 +142,12 @@ def parseFieldsSpecific(file):
   root = ET.fromstring(data)
   if checkXml(root) != 1: # check if the xml is good
     return None
+    
   resNode = root.find('results')
   gameDict = {}
   for child in resNode:
     gameDict[child.tag] = child.text
+
   return gameDict  
 
 def checkXml(dataRoot):
