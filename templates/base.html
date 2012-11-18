@@ -85,7 +85,11 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
       {% if info %}<div class="info">{{ info }}</div>{% endif %}
       {% if messages %}
       {% for message in messages %}
-      <div class="info">{{ message }}</div>
+        
+        <div class="alert-box {% if message.level == 40 %}alert{% endif %}">
+          {{ message }}
+          <a href="" class="close">&times;</a>
+        </div>
       {% endfor %}
       {% endif %}
       {% endblock %}
