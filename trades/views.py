@@ -38,3 +38,13 @@ def save(request, users_name):
 def load(request, users_id):
     u=Users.objects.get(id=users_id)
     return HttpResponse("You load a user whose name is %s." % u.name)
+
+def gamepage(request):
+  gameDict = {'genres': 'awesome', 'name': 'Ratchet & Clank: Up Your Arsenal', \
+  'deck': 'Ratchet & Clank:  Up Your Arsenal is the third game in the Ratchet \
+  and Clank series. It is also the first to include online play.', \
+  'image': 'http://media.giantbomb.com/uploads/8/87209/1974402-box_racuya_super.png', \
+  'original_release_date': '2004-11-03', 'id': '4966', 'platforms': 'PS3'}
+  currentNumOfListing = '1000'
+  #note platfrom may be a list
+  return render_to_response('gamePage.html', {'game':gameDict, 'numberOfListing':currentNumOfListing})
