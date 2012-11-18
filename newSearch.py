@@ -44,7 +44,6 @@ def getList(searchQuery, *params):
   file = urllib2.urlopen(searchString)
   #make the dictionary
   gameList = parseFieldsJson(file, params)
-
   return gameList
 
 def parseFieldsJson(file, params):
@@ -86,26 +85,6 @@ def parseFieldsJson(file, params):
     # print game['results']['platforms'][0]['name']
   return data
 
-
-def getPlatform(platformNode):
-  """ Platform nodes have to be parse differently
-  """
-  platList = []
-  for x in platformNode:
-    platList.append(x['name'])
-  return platList
-
-def getGenre(genreNode):
-  """
-  """
-  genreList = []
-  for x in genreNode:
-    # print y['name']
-    genreList.append(x['name'])
-  return genreList
-
-
-
 def getGameDetsById(gameId, *params):
   """ returns a dict with the details on a specific game
   gameId is the id of the game you want details on
@@ -138,96 +117,23 @@ def getGameDetsById(gameId, *params):
     game['image'] = game['image']['super_url']
   return game
 
-def parseFields(file, params):
-  """ parses the xml file for search query and returns a nested dict 
-  It uses the name of the game as the outter dict key. If no 'name' tag is found
-  it uses the games id as a key.
 
+def getPlatform(platformNode):
+  """ Platform nodes have to be parse differently
   """
+  platList = []
+  for x in platformNode:
+    platList.append(x['name'])
+  return platList
 
-  data = file.read()
-  root = ET.fromstring(data)
-  if checkXml(root) != 1:
-    return None # check if the xml is good
-  resNode = root.find('results') # get the node with the game data
-  
-  
-  mainDict = {}
-  innerDict = {}
-  grandKey = ''
-  #Loop over the game nodes 
-  for gameNode in resNode:
-    
-    #get the specified parameters and add them to the inner dict
-    for y in params:
-      if y == 'name': # for names = key
-        grandKey = gameNode.find(y).text
-        print grandKey
-
-      else: # for any non-name = value pair
-        if y == 'platform':
-          searchPlatform = specificGame + gameNode.find('id').text + '/' + api_key + '&field_list=platforms'
-          # print searchPlatform
-          file = urllib2.urlopen(searchPlatform)
-          data2 = file.read()
-          root2 = ET.fromstring(data2)
-          if checkXml(root2) != 1:
-            return None # check if the xml is good
-          resNode2 = root2.find('results') # get the node with the game data
-          resNodeDeep = resNode2.find('platforms')
-          allplatforms = ""
-          for moreNodes in resNodeDeep:
-            resNodeDeeper = resNodeDeep.find('platform')
-            allplatforms += moreNodes.find('name').text + ", "
-          innerDict[y] = allplatforms
-        elif y == 'image':
-          resNodeImage = gameNode.find('image')
-          print resNodeImage
-          innerDict[y] = resNodeImage.find('icon_url').text
-        
-        else:
-          # print gameNode.find(y).text
-          innerDict[gameNode.find(y).tag] = gameNode.find(y).text
-
-    #no name node was found
-    if  grandKey == '':
-      mainDict[innerDict['id']] = innerDict
-    else:
-
-      mainDict[grandKey] = innerDict
-    innerDict = {}  
-  return mainDict  
-
-def parseFieldsSpecific(file):
-  """ Parses the xml sheet for one 
-  returns a dict with each node's tag as a key.
-  If the xml sheet is bad or empty, it returns none
-
+def getGenre(genreNode):
   """
-  data = file.read()
-  root = ET.fromstring(data)
-  if checkXml(root) != 1: # check if the xml is good
-    return None
-  resNode = root.find('results')
-  gameDict = {}
-  for child in resNode:
-    gameDict[child.tag] = child.text
-  return gameDict  
-
-def checkXml(dataRoot):
-  """checks the meta data of the xml sheet
-  returns -1 if there was a problem with the query
-  returns 0 if there was no search results found
-  returns 1 if the xml sheet is fine
   """
-  if dataRoot.find('status_code').text != '1':
-    #error_message = dataRoot.find('error').text
-    return -1
-  elif dataRoot.find('number_of_page_results').text == '0':
-    return 0
-  else: 
-    return 1
-
+  genreList = []
+  for x in genreNode:
+    # print y['name']
+    genreList.append(x['name'])
+  return genreList
 def buildFilterStr(params):
   """converts the parmas passed in to the syntax of the GB database query
   """
