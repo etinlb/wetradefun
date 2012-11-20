@@ -64,9 +64,8 @@ def make_offer(request):
         transaction=Transaction(sender=userprofile,
                 sender_gianBombID=game1_id,
                 receiver=userprofile,
-                receiver_gianBombID=game2_id,
-                dateRequested=0,
-                dateTraded=0)
+                receiver_gianBombID=game2_id)
+        transaction.save()
         # for now receiver is the same as sender
         # should write a function to support this
         transaction.save()
