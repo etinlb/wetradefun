@@ -14,6 +14,11 @@ POST and JSON
 http://127.0.0.1:8000/trades/search_form/
 http://cy-database.appspot.com/trades/search_form/
 
+Save User
+http://127.0.0.1:8000/trades/save/[name]
+Load User
+http://127.0.0.1:8000/trades/load/[id]
+
 python manage.py shell
 from trades.models import Users, Userratings
 u1=Users(name="AAA")

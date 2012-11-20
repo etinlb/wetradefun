@@ -21,7 +21,7 @@ def index(request):
 
 def save(request, user_name):
     user=User.objects.create_user(user_name,"email","password")
-    user_profile = UserProfile(user = user, account='account', address='address', rating=1)
+    user_profile = UserProfile(user = user, address='address', rating=1)
     user_profile.save()
     return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
 
@@ -54,15 +54,23 @@ def get_request(request):
 def make_offer(request):
     if request.is_ajax():
         user_id=request.GET.get('user_id')
-        user_name=UserProfile.objects.get(id=user_id).user.username
+        #user_name=UserProfile.objects.get(id=user_id).user.username
+        userprofile=UserProfile.objects.get(id=user_id)
         gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
         game1_id=request.GET.get('game1_id')
         game1_name=gb.getGame(int(game1_id)).name
         game2_id=request.GET.get('game2_id')
         game2_name=gb.getGame(int(game2_id)).name
-        #transaction=Transaction(senderID=UserProfile.objects.get(id=user_id),senderGameID=game1_id,receiverGameID=game2_id)
-        #transaction.save()
-        message=user_name+" take his "+game1_name+" to trade for "+game2_name
+        transaction=Transaction(sender=userprofile,
+                sender_gianBombID=game1_id,
+                receiver=userprofile,
+                receiver_gianBombID=game2_id,
+                dateRequested=0,
+                dateTraded=0)
+        # for now receiver is the same as sender
+        # should write a function to support this
+        transaction.save()
+        message=userprofile.user.username+" take his "+game1_name+" to trade for "+game2_name
         #message=user_name+" take his "+type(game1_id).__name__+" to trade for "+game2_id
     else:
         message="Not AJAX"
@@ -80,7 +88,7 @@ def sign(request):
                 form.cleaned_data['username'], 
                 form.cleaned_data['email'], 
                 form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user, account='account', address='address', rating=1)
+            user_profile = UserProfile(user = user, address='address', rating=1)
             user_profile.save()
             return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
     else:
