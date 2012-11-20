@@ -3,9 +3,9 @@ import search as s
 print 'Testing search on just name'
 print s.getList('assassin', 'name') 
 print '\n'
-game = s.getList('halo', 'name', 'id') 
-print '\n'
-print s.getList('halo', 'name', 'id')
+print 'testing with halo and image'
+game = s.getList('halo', 'name', 'id', 'image') 
+print game
 print '\n'
 id = game['Halo Wars']['id']
 print game.keys()

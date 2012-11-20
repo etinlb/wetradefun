@@ -16,13 +16,13 @@
   <!-- Included CSS Files (Uncompressed) -->
   <!--
   <link rel="stylesheet" href="stylesheets/foundation.css">
-  -->
-  
-  <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="stylesheets/app.css">
+-->
 
-  <script src="javascripts/modernizr.foundation.js"></script>
+<!-- Included CSS Files (Compressed) -->
+<link rel="stylesheet" href="stylesheets/foundation.min.css">
+<link rel="stylesheet" href="stylesheets/app.css">
+
+<script src="javascripts/modernizr.foundation.js"></script>
 </head>
 <body>
 
@@ -46,7 +46,7 @@
       <ul class="right">
         <li class="divider"></li>
         <li class="has-dropdown">
-          <a href="#">Main Item 1</a>
+          <a href="#">User</a>
           <ul class="dropdown">
             <li><label>Section Name</label></li>
             <li class="has-dropdown">
@@ -79,54 +79,37 @@
 
   <!-- End Top Bar -->
 
-
   <!-- Main Page Content and Sidebar -->
 
   <div class="row">
 
-    <!-- Contact Details -->
-    <div class="twelve columns">
+    <div class="seven columns centered panel">
 
-      <dl class="contained tabs">
-        <dd class="active"><a href="#logIn">Log In</a></dd>
-        <dd><a href="#signUp">Sign Up</a></dd>
-      </dl>
+      <h3>Create an account</h3>
 
-      <ul class="tabs-content contained">
-        <li id="logInTab" class="active">
-          <div class="row collapse">
-            <div class="two columns"><label class="inline">Username</label></div>
-            <div class="ten columns"><input type="text" id="username" placeholder="username" />
-          </div>
-          <div class="row collapse">
-            <div class="two columns"><label class="inline">Password</label></div>
-            <div class="ten columns"><input type="password" id="password" placeholder="*****" />
-          </div>
+      <div class="row collapse">
+        <div class="three columns"><label class="inline">Username</label></div>
+        <div class="nine columns"><input type="text" id="username" placeholder="username" />
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="three columns"><label class="inline">Email</label></div>
+        <div class="nine columns"><input type="email" id="email" placeholder="email@domain.com" />
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="three columns"><label class="inline">Password</label></div>
+        <div class="nine columns"><input type="password" id="password" placeholder="*****" />
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="three columns"><label class="inline">Confirm Password</label></div>
+        <div class="nine columns"><input type="password" id="repeat_password" placeholder="*****" />
+        </div>
+      </div>
 
-          <button type="submit" class="radius button">Submit</button>
-        </li>
+      <button type="submit" class="radius button">Submit</button>
 
-        <li id="signUpTab">
-          <div class="row collapse">
-            <div class="two columns"><label class="inline">Username</label></div>
-            <div class="ten columns"><input type="text" id="username" placeholder="username" />
-          </div>
-          <div class="row collapse">
-            <div class="two columns"><label class="inline">Email</label></div>
-            <div class="ten columns"><input type="email" id="email" placeholder="email@domain.com" />
-          </div>
-          <div class="row collapse">
-            <div class="two columns"><label class="inline">Password</label></div>
-            <div class="ten columns"><input type="password" id="password" placeholder="*****" />
-          </div>
-          <div class="row collapse">
-            <div class="two columns"><label class="inline">Repeat Password</label></div>
-            <div class="ten columns"><input type="password" id="repeat_password" placeholder="*****" />
-          </div>
-
-          <button type="submit" class="radius button">Submit</button>
-        </li>
-      </ul>
 
     </div>
 
@@ -161,20 +144,6 @@
   </footer>
 
   <!-- End Footer -->
-
-
-
-  <!-- Map Modal -->
-
-  <div class="reveal-modal" id="mapModal">
-    <h4>Where We Are</h4>
-    <p><img src="http://placehold.it/800x600" /></p>
-
-    <!-- Any anchor with this class will close the modal. This also inherits certain styles, which can be overriden. -->
-    <a href="#" class="close-reveal-modal">&times;</a>
-  </div>
-
-  <!-- End Modal -->
 
   <!-- Included JS Files (Uncompressed) -->
   <!--
@@ -211,13 +180,21 @@
   
   <script src="javascripts/jquery.foundation.magellan.js"></script>
   
-  -->
-  
-  <!-- Included JS Files (Compressed) -->
-  <script src="javascripts/jquery.js"></script>
-  <script src="javascripts/foundation.min.js"></script>
-  
-  <!-- Initialize JS Plugins -->
-  <script src="javascripts/app.js"></script>
+-->
+
+<!-- Included JS Files (Compressed) -->
+<script src="javascripts/jquery.js"></script>
+<script src="javascripts/foundation.min.js"></script>
+
+<!-- Initialize JS Plugins -->
+<script src="javascripts/app.js"></script>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+  s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
 </body>
 </html>
