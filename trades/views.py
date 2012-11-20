@@ -1,18 +1,84 @@
-import datetime, random, sha
+from trades.models import *
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.utils import simplejson
+from django.shortcuts import get_object_or_404
+from django.http import Http404
+from django.template.loader import get_template
+from django.template import RequestContext
+from django.template import Context
+from trades import giantbomb
 
+import datetime, random, sha
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from django.contrib import messages
-
+from trades.models import UserProfile
 from trades.forms import RegistrationForm
 
-from trades.models import *
-import search as s
-from trades.forms import SearchForm
+def index(request):
+    return HttpResponse("Hello, world. You're at the trades index.")
 
-def sign_up(request):
+def save(request, user_name):
+    user=User.objects.create_user(user_name,"email","password")
+    user_profile = UserProfile(user = user, address='address', rating=1)
+    user_profile.save()
+    return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
+
+def load(request, user_id):
+    u=UserProfile.objects.get(id=user_id)
+    return HttpResponse("You load a user whose name is %s." % u.user.username)
+
+def search_form(request):
+    return render_to_response('search_form.html')
+    
+def post_request(request):
+    account=request.POST.get('account')
+    password=request.POST.get('password')
+    email=request.POST.get('email')
+    response_data={}
+    response_data['account'] = account
+    response_data['password'] = password
+    response_data['email'] = email
+    return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
+
+def get_request(request):
+    if request.is_ajax():
+        gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+        input=request.GET.get('q')
+        message=gb.search(input)
+    else:
+        message="Not AJAX"
+    return HttpResponse(message)
+
+def make_offer(request):
+    if request.is_ajax():
+        user_id=request.GET.get('user_id')
+        #user_name=UserProfile.objects.get(id=user_id).user.username
+        userprofile=UserProfile.objects.get(id=user_id)
+        gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+        game1_id=request.GET.get('game1_id')
+        game1_name=gb.getGame(int(game1_id)).name
+        game2_id=request.GET.get('game2_id')
+        game2_name=gb.getGame(int(game2_id)).name
+        transaction=Transaction(sender=userprofile,
+                sender_gianBombID=game1_id,
+                receiver=userprofile,
+                receiver_gianBombID=game2_id)
+        transaction.save()
+        # for now receiver is the same as sender
+        # should write a function to support this
+        transaction.save()
+        message=userprofile.user.username+" take his "+game1_name+" to trade for "+game2_name
+        #message=user_name+" take his "+type(game1_id).__name__+" to trade for "+game2_id
+    else:
+        message="Not AJAX"
+    return HttpResponse(message)
+
+def search_game(request):
+    return render_to_response('search_game.html')
+
+def sign(request):
     if request.method == 'POST': # If the form has been submitted...
         form = RegistrationForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
@@ -21,65 +87,12 @@ def sign_up(request):
                 form.cleaned_data['username'], 
                 form.cleaned_data['email'], 
                 form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user, account='account', address='address', rating=1)
+            user_profile = UserProfile(user = user, address='address', rating=1)
             user_profile.save()
-            messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
-            # Login the user
-            login(request, user)
-            # Send to home page
-
-        else:
-            if "__all__" in form._errors:
-                messages.add_message(request, messages.ERROR, form._errors['__all__'])
+            return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
     else:
         form = RegistrationForm() # An unbound form
 
     return render_to_response('users/sign.html', {
         'form': form,
-    },
-     context_instance=RequestContext(request))
-
-# def index(request):
-#     return HttpResponse("Hello, world. You're at the trades index.")
-
-def save(request, users_name):
-    u=UserProfile(name=users_name)
-    u.save()
-    return HttpResponse("You save a user. Please load his name by using id %s." % u.id)
-
-def load(request, users_id):
-    u=Users.objects.get(id=users_id)
-    return HttpResponse("You load a user whose name is %s." % u.name)
-
-def gameDetails(request, game_id):
-  game = s.getGameDetsById(game_id, 'name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
-
-  try:
-      num_of_listing = Currentlist.objects.get(gameID = game_id).count()
-  except Currentlist.DoesNotExist:
-      num_of_listing = 0
-
-  return render_to_response('GameDetails.html', {'game': game, 'listing': num_of_listing})
-
-
-def search(request, query):
-    print query #'genres',
-    results = s.getList(query, 'name', 'image', 'original_release_date', 
-                        'deck', 'platforms', 'id', 'genres' )
-    for x in results:
-        listingsNum[x] = Currentlist.objects.filter(gameId=x).count() 
-    print results
-    print listings
-    # so getting the number of listings is actually very slow in django unless
-    # you do a specific database query i.e. select count(*). I'm not sure you 
-    # results = 'j'
-    # if request.method == 'POST': #form
-    #     form = SearchForm(request.POST)
-    #     # test = request.POST['q']
-    #     if form.is_valid():
-    #         query = form.cleaned_data['query']
-    #         results = s.getList(query, 'name', 'image' )
-    #         # test = 'true'
-    # else:
-    #     form  = SearchForm()
-    return render_to_response('Search.html', {'t':results})  
+    })

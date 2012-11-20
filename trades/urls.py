@@ -3,10 +3,13 @@ from django.conf.urls.defaults import *
 handler500 = 'djangotoolbox.errorviews.server_error'
 
 urlpatterns = patterns('',
-    (r'^$', 'trades.views.sign'),
-    url(r'^/search/(?P<query>\w+)/$','trades.views.search' ),
-    ('^$', 'trades.views.sign_up'),
-    ('^users/sign_in$', 'trades.views.sign_up'),
-    ('^game$', 'trades.views.gamepage')
-
+    ('^$', 'trades.views.sign'),
+    (r'^trades/$', 'trades.views.index'),
+(r'^trades/save/(?P<user_name>\w+)/$', 'trades.views.save'),
+(r'^trades/load/(?P<user_id>\d+)/$', 'trades.views.load'),
+(r'^trades/search_form/$', 'trades.views.search_form'),
+(r'^trades/post_request/$', 'trades.views.post_request'),
+(r'^trades/search_game/$', 'trades.views.search_game'),
+(r'^trades/get_request/$', 'trades.views.get_request'),
+(r'^trades/make_offer/$', 'trades.views.make_offer'),
 )
