@@ -30,11 +30,11 @@ def search(request, query):
     results = s.getList(query, 'name', 'image', 'original_release_date', 
                         'deck', 'platforms', 'id', 'genres' )
     # TODO make it get the number of listings
-    # for x in results:
-    #   listingsNum[x] = Currentlist.objects.filter(gameID=x).count()
-
-    listingNum = 0
-    return render_to_response('search_page.html', {'results':results, \
-      'number_of_listing':listingNum })  
+    for x in results:
+      x['number_of_listing'] = Currentlist.objects.filter(gameID=x['id']).count()
+      if x['number_of_listing'] == None:
+        x['number_of_listing'] = 0
+     
+    return render_to_response('search_page.html', {'results':results})  
 
 # TODO Handle the game page and search page buttons
