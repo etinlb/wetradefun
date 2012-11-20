@@ -18,4 +18,7 @@ def account_management(request, userID)
   except Currentlist.DoesNotExist:
       user_profile = None
 
-  
+  current_list = Currentlist.objects.get(user = userID)
+  wish_list = Wishlist.objects.get(user = userID)
+  trans_hist = Transaction.objects.get(status = "completed", sender = userID)
+  trans_hist2 = Transaction.objects.get(status = "completed", receiver = userID)
