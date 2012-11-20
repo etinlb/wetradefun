@@ -51,23 +51,15 @@ def load(request, users_id):
     u=Users.objects.get(id=users_id)
     return HttpResponse("You load a user whose name is %s." % u.name)
 
-def gamepage(request):
-  gameDict = {'genres': 'awesome', 'name': 'Ratchet & Clank: Up Your Arsenal', \
-  'deck': 'Ratchet & Clank:  Up Your Arsenal is the third game in the Ratchet \
-  and Clank series. It is also the first to include online play.', \
-  'image': 'http://media.giantbomb.com/uploads/8/87209/1974402-box_racuya_super.png', \
-  'original_release_date': '2004-11-03', 'id': '4966', 'platforms': 'PS3'}
-  currentNumOfListing = '1000'
-  #note platfrom may be a list
-  return render_to_response('gamePage.html', {'game':gameDict, 'numberOfListing':currentNumOfListing})
+def gameDetails(request, game_id):
+  game = s.getGameDetsById(game_id, 'name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
 
-def gameDetail(request, game_id):
-  game = s.getGameDetsById(game_id, 'name', 'original_release_date', 'deck', 'image')
-  listing = Currentlists.objects.get(gamesID = game_id)
-  if listing == None:
-    listing = 'There are no listings for this game'
-  return render_to_response('detail.html', {'game':game, 'listing':listing, }) #render(details.html, {'game' : game})git
+  try:
+      num_of_listing = Currentlist.objects.get(gameID = game_id).count()
+  except Currentlist.DoesNotExist:
+      num_of_listing = 0
 
+  return render_to_response('GameDetails.html', {'game': game, 'listing': num_of_listing})
 
 
 def search(request, query):

@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>'{{ game.name }}' Game Details</title>
+		<script type = "text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	</head>
+  
+	<body>
+    
+		<h1>{{ game.name }}</h1>
+		<p>Released: {{game.original_release_date}}</p>
+		<p>Image: {{game.image}}</p>
+		<p>Deck: {{game.deck}}</p>
+		<p>Genres: {{game.genres}}</p>
+		<p>Platforms: {{game.platforms}}</p>
+		<p>GiantBomb Page: {{game.site_detail_url}}</p>
+		<p>Listings: {{listing}}</p>
+
+	</body>
+</html>

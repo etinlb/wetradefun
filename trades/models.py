@@ -17,8 +17,8 @@ class Game(models.Model):
   rating = models.IntegerField()
 
 class Wishlist(models.Model):
-  usersID = models.ForeignKey(UserProfile)
-  gamesID = models.ForeignKey(Game)
+  userID = models.ForeignKey(UserProfile)
+  gameID = models.ForeignKey(Game)
   datePosted = models.IntegerField()
 
 class Currentlist(models.Model):
@@ -39,8 +39,8 @@ class Transaction(models.Model):
 
 class Gamecomment(models.Model):
   content = models.CharField(max_length=64)
-  usersID = models.ForeignKey(UserProfile)
-  gamesID = models.ForeignKey(Game)
+  userID = models.ForeignKey(UserProfile)
+  gameID = models.ForeignKey(Game)
   datePosted = models.IntegerField()
 
 class Message (models.Model):
@@ -48,7 +48,7 @@ class Message (models.Model):
   datePosted = models.IntegerField()
   senderID = models.ForeignKey(UserProfile)
   receiverID = models.ForeignKey(UserProfile)
-  transactionsID = models.ForeignKey(Transaction)
+  transactionID = models.ForeignKey(Transaction)
 
 class Userrating (models.Model):
   rating = models.IntegerField()
@@ -57,5 +57,5 @@ class Userrating (models.Model):
 
 class Gamerating (models.Model):
   rating = models.IntegerField()
-  usersID = models.ForeignKey(UserProfile)
-  gamesID = models.ForeignKey(Game)
+  userID = models.ForeignKey(UserProfile)
+  gameID = models.ForeignKey(Game)
