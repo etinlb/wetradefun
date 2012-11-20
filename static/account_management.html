@@ -26,58 +26,10 @@
 </head>
 <body>
 
-  <!-- Top Bar -->
 
-  <nav class="top-bar">
-    <ul>
-      <!-- Title Area -->
-      <li class="name">
-        <h1>
-          <a href="#">
-            We Trade Fun
-          </a>
-        </h1>
-      </li>
-      <li class="toggle-topbar"><a href="#"></a></li>
-    </ul>
+{% extends 'base.html' %}
 
-    <section>
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">User</a>
-          <ul class="dropdown">
-            <li><label>Section Name</label></li>
-            <li class="has-dropdown">
-              <a href="#" class="">Has Dropdown, Level 1</a>
-              <ul class="dropdown">
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Level 2</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><label>Section Name</label></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><a href="#">See all &rarr;</a></li>
-          </ul>
-        </li>
-        <li class="divider"></li>
-        <li><a href="#">Main Item 2</a></li>
-      </ul>
-    </section>
-  </nav>
-
-  <!-- End Top Bar -->
+{}
 
   <!-- Main Page Content and Sidebar -->
 
@@ -98,14 +50,24 @@
           <thead>
             <tr>
               <th>My Listing</th>
-              <th>Date Posted</th>
+              <th>Information</th>
               <th>Current Offers</th>
             </tr> 
           </thead>
           <tbody>
             <tr>
-              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a></td>
-              <td>Febtober 2001</td>
+              <td>
+                <a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a>
+                 <a href="#" class="small alert button">Remove Listing</a>
+              </td>
+              <td>
+                <ul class="no-bullet">
+                  <li>{{game.name}}</li>
+                  <li>{{game.platform}}</li>
+                  <hr>
+                  <li>Posted :{{trade.get_date}}</li>
+                </ul>
+              </td>
               <td>
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
@@ -119,11 +81,8 @@
                             <a href="#" class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" class="small button">Decline Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Remove Listing</a>
-                          </li>                            
+                            <a href="#" class="small alert button">Decline Offer</a>
+                          </li>                          
                         </ul>
                       </li>
                       <li>
@@ -145,10 +104,7 @@
                             <a href="#" class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" class="small button">Decline Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Remove Listing</a>
+                            <a href="#" class="small alert button">Decline Offer</a>
                           </li>                             
                         </ul>
                       </li>
@@ -171,10 +127,7 @@
                             <a href="#" class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" class="small button">Decline Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Remove Listing</a>
+                            <a href="#" class="small alert button">Decline Offer</a>
                           </li>                             
                         </ul>
                       </li>
