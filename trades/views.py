@@ -28,7 +28,7 @@ def game_details(request, game_id):
 
 def search(request, query):
     results = s.getList(query, 'name', 'image', 'original_release_date', 
-                        'deck', 'platforms', 'id', 'genres' )
+                        'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
     # TODO make it get the number of listings
     for x in results:
       x['number_of_listing'] = Currentlist.objects.filter(gameID=x['id']).count()
