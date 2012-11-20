@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 	(r'^trades/post_request/$', 'trades.views.post_request'),
 	(r'^trades/search_game/$', 'trades.views.search_game'),
 	(r'^trades/get_request/$', 'trades.views.get_request'),
+	(r'^trades/make_offer/$', 'trades.views.make_offer'),
 )

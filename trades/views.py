@@ -19,14 +19,15 @@ from trades.forms import RegistrationForm
 def index(request):
     return HttpResponse("Hello, world. You're at the trades index.")
 
-def save(request, users_name):
-    u=User(name=users_name)
-    u.save()
-    return HttpResponse("You save a user. Please load his name by using id %s." % u.id)
+def save(request, user_name):
+    user=User.objects.create_user(user_name,"email","password")
+    user_profile = UserProfile(user = user, account='account', address='address', rating=1)
+    user_profile.save()
+    return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
 
-def load(request, users_id):
-    u=User.objects.get(id=users_id)
-    return HttpResponse("You load a user whose name is %s." % u.name)
+def load(request, user_id):
+    u=UserProfile.objects.get(id=user_id)
+    return HttpResponse("You load a user whose name is %s." % u.user.username)
 
 def search_form(request):
     return render_to_response('search_form.html')
@@ -43,11 +44,28 @@ def post_request(request):
 
 def get_request(request):
     if request.is_ajax():
-        gb = giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+        gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
         input=request.GET.get('q')
-        message = gb.search(input)
+        message=gb.search(input)
     else:
-        message = "Not AJAX"
+        message="Not AJAX"
+    return HttpResponse(message)
+
+def make_offer(request):
+    if request.is_ajax():
+        user_id=request.GET.get('user_id')
+        user_name=UserProfile.objects.get(id=user_id).user.username
+        gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+        game1_id=request.GET.get('game1_id')
+        game1_name=gb.getGame(int(game1_id)).name
+        game2_id=request.GET.get('game2_id')
+        game2_name=gb.getGame(int(game2_id)).name
+        #transaction=Transaction(senderID=UserProfile.objects.get(id=user_id),senderGameID=game1_id,receiverGameID=game2_id)
+        #transaction.save()
+        message=user_name+" take his "+game1_name+" to trade for "+game2_name
+        #message=user_name+" take his "+type(game1_id).__name__+" to trade for "+game2_id
+    else:
+        message="Not AJAX"
     return HttpResponse(message)
 
 def search_game(request):
@@ -64,7 +82,7 @@ def sign(request):
                 form.cleaned_data['password'],)
             user_profile = UserProfile(user = user, account='account', address='address', rating=1)
             user_profile.save()
-            return HttpResponse("You save a user. Please load his name by using id %s.")
+            return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
     else:
         form = RegistrationForm() # An unbound form
 

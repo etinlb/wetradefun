@@ -31,10 +31,10 @@ class Transaction(models.Model):
   status = models.CharField(max_length=64)
   dateRequested = models.IntegerField()
   dateTraded = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  senderGameID = models.ForeignKey(Game)
-  receiverID = models.ForeignKey(UserProfile)
-  receiverGameID = models.ForeignKey(Game)
+  senderID = models.ForeignKey(UserProfile,related_name='Transaction_senderID')
+  senderGameID = models.ForeignKey(Game,related_name='Transaction_senderGameID')
+  receiverID = models.ForeignKey(UserProfile,related_name='Transaction_receiverID')
+  receiverGameID = models.ForeignKey(Game,related_name='Transaction_receiverGameID')
 
 class Gamecomment(models.Model):
   content = models.CharField(max_length=64)
@@ -45,14 +45,14 @@ class Gamecomment(models.Model):
 class Message (models.Model):
   content = models.CharField(max_length=128)
   datePosted = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  receiverID = models.ForeignKey(UserProfile)
+  senderID = models.ForeignKey(UserProfile,related_name='Message_senderID')
+  receiverID = models.ForeignKey(UserProfile,related_name='Message_receiverID')
   transactionsID = models.ForeignKey(Transaction)
 
 class Userrating (models.Model):
   rating = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  receiverID = models.ForeignKey(UserProfile)
+  senderID = models.ForeignKey(UserProfile,related_name='Userrating_senderID')
+  receiverID = models.ForeignKey(UserProfile,related_name='Userrating_receiverID')
 
 class Gamerating (models.Model):
   rating = models.IntegerField()
