@@ -14,12 +14,12 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
   <title>{% block title %}{% endblock %} - We Trade Fun</title>
 
   <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="static/stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="static/stylesheets/app.css">
+  <link rel="stylesheet" href="/static/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/static/stylesheets/app.css">
   {% block css %}
   {% endblock %}
 
-  <script src="static/javascripts/modernizr.foundation.js"></script>
+  <script src="/static/javascripts/modernizr.foundation.js"></script>
   {% block preload_js %}
   {% endblock %}
 
@@ -60,12 +60,12 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
       <li class="has-dropdown">
         <a href="http://google.com">Account</a>
         <ul class="dropdown">
-          <li><a href="users_sign_up.html">Login</a></li>
-          <li><a href="users_sign_up.html">Create Account</a></li>
+
+          <li><a href="sign_in">Login</a></li>
+          <li><a href="sign_up">Create Account</a></li>
           <li class="divider"></li>
           <li><a href="manage_account.html">Manage Account</a></li>
           <li><a href="manage_account.html">Edit Account Details</a></li>
-
           <li><a href="manage_account.html">Manage Wishlist</a></li>
         </ul>
     </ul>

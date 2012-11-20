@@ -3,7 +3,6 @@ Module that currently holds all of the search functions
 """
 
 import urllib2 #open urls
-import xml.etree.ElementTree as ET #parse xml
 import json
 
 #api_key is needed for access to the GB database
@@ -134,6 +133,7 @@ def getGenre(genreNode):
     # print y['name']
     genreList.append(x['name'])
   return genreList
+  
 def buildFilterStr(params):
   """converts the parmas passed in to the syntax of the GB database query
   """
