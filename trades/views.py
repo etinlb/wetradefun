@@ -1,6 +1,4 @@
-from trades.models import User, Game
-from trades.models import Wishlist, Currentlist, Transaction
-from trades.models import Gamecomment, Message, Userrating, Gamerating
+from trades.models import *
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
