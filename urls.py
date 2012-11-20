@@ -4,7 +4,7 @@ handler500 = 'djangotoolbox.errorviews.server_error'
 
 urlpatterns = patterns('',
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
-    (r'^', include('trades.urls')),
+    url(r'^trades', include('trades.urls')),
     (r'^trades/$', 'trades.views.index'),
 	(r'^trades/save/(?P<users_name>\w+)/$', 'trades.views.save'),
 	(r'^trades/load/(?P<users_id>\d+)/$', 'trades.views.load'),
@@ -14,6 +14,8 @@ urlpatterns = patterns('',
 	(r'^trades/get_request/$', 'trades.views.get_request'),
     ('^$', 'django.views.generic.simple.direct_to_template',
      {'template': 'home.html'}),
-    ('^detail/(?P<game_id>\d+)','trades.views.gameDetail' ),
+    ('^gamedetails/(?P<game_id>\d+)','trades.views.gameDetails' ),
     (r'^trades/search/$', 'trades.views.search'),
+    (r'^trades/game/$', 'exampleview.gamepage'),
+    (r'^trades/account$', 'exampleview.account'),
 )
