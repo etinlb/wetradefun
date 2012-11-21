@@ -12,4 +12,6 @@ urlpatterns = patterns('',
 	(r'^trades/search_game/$', 'trades.views.search_game'),
 	(r'^trades/get_request/$', 'trades.views.get_request'),
 	(r'^trades/make_offer/$', 'trades.views.make_offer'),
+	(r'^trades/add_to_wish_list/$', 'trades.views.add_to_wish_list'),
+	(r'^trades/add_to_current_list/$', 'trades.views.add_to_current_list'),
 )
