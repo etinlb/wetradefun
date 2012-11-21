@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from trades.models import UserProfile
-from trades.forms import RegistrationForm
+from trades.forms import *
 
 def index(request):
     return HttpResponse("Hello, world. You're at the trades index.")
@@ -112,25 +112,30 @@ def search_game(request):
 
 def sign(request):
     if request.method == 'POST': # If the form has been submitted...
-        form = RegistrationForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            user = User.objects.create_user(
-                form.cleaned_data['username'], 
-                form.cleaned_data['email'], 
-                form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user, address='address', rating=1)
-            user_profile.save()
-            result="You save a user. Please load his name by using id %s." % user_profile.id
-            return render_to_response('users/sign.html', {
-                'form': form,
-                'result': result,
-                'userID': user_profile.id,
-            })
-            #return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
+        if 'registration_form_submit' in request.POST:
+            form = RegistrationForm(request.POST) # A form bound to the POST data
+            makeoffer_form = MakeOfferForm() # An unbound form
+            if form.is_valid(): # All validation rules pass
+                # Process the data in form.cleaned_data
+                user = User.objects.create_user(
+                    form.cleaned_data['username'], 
+                    form.cleaned_data['email'], 
+                    form.cleaned_data['password'],)
+                user_profile = UserProfile(user = user, address='address', rating=1)
+                user_profile.save()
+                result="You save a user. Please load his name by using id %s." % user_profile.id
+                return render_to_response('users/sign.html', {
+                    'form': form,
+                    'result': result,
+                    'userID': user_profile.id,
+                    'makeoffer_form': makeoffer_form,
+                })
+                #return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
     else:
         form = RegistrationForm() # An unbound form
+        makeoffer_form = MakeOfferForm() # An unbound form
 
     return render_to_response('users/sign.html', {
         'form': form,
+        'makeoffer_form': makeoffer_form,
     })

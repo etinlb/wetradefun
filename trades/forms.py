@@ -20,3 +20,11 @@ class RegistrationForm(forms.Form):
       # are required by default so we don't need to worry about validation
       pass
     return self.cleaned_data
+
+class MakeOfferForm(forms.Form):
+  """ 
+  Form for creating new login
+  """
+  makeoffer_user_id = forms.CharField()
+  makeoffer_game1_id = forms.CharField()
+  makeoffer_game2_id = forms.CharField()
