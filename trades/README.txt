@@ -1,3 +1,5 @@
+http://cy-database.appspot.com
+
 python manage.py runserver
 
 Sign Up and Load User
