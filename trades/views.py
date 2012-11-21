@@ -114,6 +114,7 @@ def sign(request):
         if 'registration_form_submit' in request.POST:
             registration_form = RegistrationForm(request.POST) # A form bound to the POST data
             makeoffer_form = MakeOfferForm() # An unbound form
+            makeofferajax_form = MakeOfferAjaxForm() # An unbound form
             if registration_form.is_valid(): # All validation rules pass
                 # Process the data in registration_form.cleaned_data
                 user = User.objects.create_user(
@@ -132,6 +133,7 @@ def sign(request):
         elif 'makeoffer_form_submit' in request.POST:
             registration_form = RegistrationForm() # An unbound form
             makeoffer_form = MakeOfferForm(request.POST) # A form bound to the POST data
+            makeofferajax_form = MakeOfferAjaxForm() # An unbound form
             if makeoffer_form.is_valid(): # All validation rules pass
                 # Process the data in makeoffer_form.cleaned_data
                 user_id=makeoffer_form.cleaned_data['makeoffer_user_id']
@@ -155,11 +157,17 @@ def sign(request):
                     'makeoffer_form': makeoffer_form,
                     'makeoffer_result': result,
                 })
+        else:
+            registration_form = RegistrationForm() # An unbound form
+            makeoffer_form = MakeOfferForm() # An unbound form
+            makeofferajax_form = MakeOfferAjaxForm() # An unbound form
     else:
         registration_form = RegistrationForm() # An unbound form
         makeoffer_form = MakeOfferForm() # An unbound form
+        makeofferajax_form = MakeOfferAjaxForm() # An unbound form
 
     return render_to_response('users/sign.html', {
         'registration_form': registration_form,
         'makeoffer_form': makeoffer_form,
+        'makeofferajax_form': makeofferajax_form,
     })

@@ -25,6 +25,14 @@ class MakeOfferForm(forms.Form):
   """ 
   Form for creating new login
   """
-  makeoffer_user_id = forms.CharField()
-  makeoffer_game1_id = forms.CharField()
-  makeoffer_game2_id = forms.CharField()
+  makeoffer_user_id = forms.IntegerField()
+  makeoffer_game1_id = forms.IntegerField()
+  makeoffer_game2_id = forms.IntegerField()
+
+class MakeOfferAjaxForm(forms.Form):
+  """ 
+  Form for creating new login
+  """
+  makeofferajax_user_id = forms.IntegerField()
+  makeofferajax_game1_id = forms.IntegerField()
+  makeofferajax_game2_id = forms.IntegerField()

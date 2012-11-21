@@ -46,39 +46,32 @@ function get_request_addtocurrentlist(){
 	);
 	return false;
 }
+function get_request_makeofferajax(){
+    $.get(
+		"/trades/make_offer/", 
+		{user_id :$("#id_makeofferajax_user_id").val(), 
+		game1_id :$("#id_makeofferajax_game1_id").val(), 
+		game2_id :$("#id_makeofferajax_game2_id").val()}, 
+		function(data){
+			$("#makeofferajaxResult").text(data);
+		}
+	);
+	return false;
+}
 </script>
 
 <div class="twelve columns">
 
   <dl class="contained tabs">
-    <dd><a href="#logIn">Log In</a></dd>
     <dd class="active"><a href="#signUp">Sign Up</a></dd>
 	<dd><a href="#searchGame">Search Game</a></dd>
 	<dd><a href="#addtowishlist">Add to Wish List</a></dd>
 	<dd><a href="#addtocurrentlist">Add to Current List</a></dd>
 	<dd><a href="#makeOffer">Make Offer</a></dd>
+	<dd><a href="#makeOfferAJAX">Make Offer (AJAX)</a></dd>
   </dl>
 
   <ul class="tabs-content contained">
-    <li id="logInTab">
-      <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Username</label>
-        </div>
-        <div class="ten columns">
-          <input type="text" id="username" placeholder="username" />
-        </div>
-      </div>
-      <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Password</label>
-        </div>
-        <div class="ten columns">
-          <input type="password" id="password" placeholder="*****" />
-        </div>
-      </div>
-      <button type="submit" class="radius button">Submit</button>
-    </li>
 
     <li id="signUpTab" class="active">
       <form action="" method="post">
@@ -225,6 +218,43 @@ function get_request_addtocurrentlist(){
 		{{makeoffer_result}}<br/>
 	<div id="makeofferResult"></div>
     </li>
+	
+	<li id="makeOfferAJAXTab">
+	<form onsubmit="return get_request_makeofferajax();" id="makeofferajax">
+	{{ makeofferajax_form.non_field_errors }}
+	  <div class="row collapse">
+	  {{ makeofferajax_form.makeofferajax_user_id.errors }}
+        <div class="two columns">
+          <label class="inline">My User ID</label>
+        </div>
+        <div class="ten columns">
+		 {{ makeofferajax_form.makeofferajax_user_id }}
+        </div>
+      </div>
+	  <div class="row collapse">
+	  {{ makeofferajax_form.makeofferajax_game1_id.errors }}
+        <div class="two columns">
+          <label class="inline">My Game ID</label>
+        </div>
+        <div class="ten columns">
+		{{ makeofferajax_form.makeofferajax_game1_id }}
+        </div>
+      </div>
+	  <div class="row collapse">
+	  {{ makeofferajax_form.makeofferajax_game2_id.errors }}
+        <div class="two columns">
+          <label class="inline">Target Game ID</label>
+        </div>
+        <div class="ten columns">
+        {{ makeofferajax_form.makeofferajax_game2_id }}
+        </div>
+      </div>
+      <button type="submit" name="makeofferajax_form_submit" class="radius button">Trade</button>
+	  </form><br/>
+	  <div id="makeofferajaxResult"></div>
+    </li>
+	
+	
   </ul>
 
 </div>
