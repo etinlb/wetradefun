@@ -11,28 +11,52 @@ var delay = (function(){
 		timer = setTimeout(callback, ms);
 	};
 })();
-function get_request(){
+function get_request_searchgame(){
     $.get(
 		"/trades/get_request/", 
-		{q :$("#input").val()}, 
+		{q :$("#searchgame_game_name").val()}, 
 		function(data){
-			$("#searchResult").text(data);
+			$("#searchgameResult").text(data);
 		}
 	);
 	return false;
 }
-function get_request2(){
+function get_request_makeoffer(){
     $.get(
 		"/trades/make_offer/", 
-		{user_id :$("#user_id").val(), game1_id :$("#game1_id").val(), game2_id :$("#game2_id").val()}, 
+		{user_id :$("#makeoffer_user_id").val(), 
+		game1_id :$("#makeoffer_game1_id").val(), 
+		game2_id :$("#makeoffer_game2_id").val()}, 
 		function(data){
-			$("#tradeResult").text(data);
+			$("#makeofferResult").text(data);
 		}
 	);
 	return false;
 }
-function keyup_method(){
-    delay(get_request, 300);
+function get_request_addtowishlist(){
+    $.get(
+		"/trades/add_to_wish_list/", 
+		{user_id :$("#addtowishlist_user_id").val(), 
+		game_id :$("#addtowishlist_game_id").val()}, 
+		function(data){
+			$("#addtowishlistResult").text(data);
+		}
+	);
+	return false;
+}
+function get_request_addtocurrentlist(){
+    $.get(
+		"/trades/add_to_current_list/", 
+		{user_id :$("#addtocurrentlist_user_id").val(), 
+		game_id :$("#addtocurrentlist_game_id").val()}, 
+		function(data){
+			$("#addtocurrentlistResult").text(data);
+		}
+	);
+	return false;
+}
+function searchgame_game_name_keyup(){
+    delay(get_request_searchgame, 300);
 }
 </script>
 
@@ -42,6 +66,8 @@ function keyup_method(){
     <dd><a href="#logIn">Log In</a></dd>
     <dd class="active"><a href="#signUp">Sign Up</a></dd>
 	<dd><a href="#searchGame">Search Game</a></dd>
+	<dd><a href="#addtowishlist">Add to Wish List</a></dd>
+	<dd><a href="#addtocurrentlist">Add to Current List</a></dd>
 	<dd><a href="#makeOffer">Make Offer</a></dd>
   </dl>
 
@@ -116,36 +142,28 @@ function keyup_method(){
     </li>
 
 	<li id="searchGameTab">
-	<form onsubmit="return get_request();" id="form">
+	<form onsubmit="return get_request_searchgame();" id="searchgame">
 	  <div class="row collapse">
         <div class="two columns">
           <label class="inline">Game Name</label>
         </div>
         <div class="ten columns">
-          <input type="text" id="input" placeholder="call of duty" onkeyup="keyup_method();"/>
+          <input type="text" id="searchgame_game_name" placeholder="call of duty" onkeyup="searchgame_game_name_keyup();"/>
         </div>
       </div>
       <button type="submit" class="radius button">Search</button>
 	  </form><br/>
-	<div id="searchResult"></div>
+	<div id="searchgameResult"></div>
     </li>
 	
-	<li id="makeOfferTab">
-	<form onsubmit="return get_request2();" id="form2">
+		<li id="addtowishlistTab">
+	<form onsubmit="return get_request_addtowishlist();" id="addtowishlist">
 	  <div class="row collapse">
         <div class="two columns">
           <label class="inline">My User ID</label>
         </div>
         <div class="ten columns">
-          <input type="text" id="user_id"/>
-        </div>
-      </div>
-	  <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">My Game ID</label>
-        </div>
-        <div class="ten columns">
-          <input type="text" id="game1_id"/>
+          <input type="text" id="addtowishlist_user_id"/>
         </div>
       </div>
 	  <div class="row collapse">
@@ -153,12 +171,66 @@ function keyup_method(){
           <label class="inline">Target Game ID</label>
         </div>
         <div class="ten columns">
-          <input type="text" id="game2_id"/>
+          <input type="text" id="addtowishlist_game_id"/>
+        </div>
+      </div>
+      <button type="submit" class="radius button">Add to Wish List</button>
+	  </form><br/>
+	<div id="addtowishlistResult"></div>
+    </li>
+	
+		<li id="addtocurrentlistTab">
+	<form onsubmit="return get_request_addtocurrentlist();" id="addtocurrentlist">
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">My User ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="addtocurrentlist_user_id"/>
+        </div>
+      </div>
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Target Game ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="addtocurrentlist_game_id"/>
+        </div>
+      </div>
+      <button type="submit" class="radius button">Add to Current List</button>
+	  </form><br/>
+	<div id="addtocurrentlistResult"></div>
+    </li>
+	
+	<li id="makeOfferTab">
+	<form onsubmit="return get_request_makeoffer();" id="makeoffer">
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">My User ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="makeoffer_user_id"/>
+        </div>
+      </div>
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">My Game ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="makeoffer_game1_id"/>
+        </div>
+      </div>
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Target Game ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="makeoffer_game2_id"/>
         </div>
       </div>
       <button type="submit" class="radius button">Trade</button>
 	  </form><br/>
-	<div id="tradeResult"></div>
+	<div id="makeofferResult"></div>
     </li>
   </ul>
 
