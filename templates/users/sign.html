@@ -46,18 +46,6 @@ function get_request_addtocurrentlist(){
 	);
 	return false;
 }
-function get_request_makeoffer(){
-    $.get(
-		"/trades/make_offer/", 
-		{user_id :$("#id_makeoffer_user_id").val(), 
-		game1_id :$("#id_makeoffer_game1_id").val(), 
-		game2_id :$("#id_makeoffer_game2_id").val()}, 
-		function(data){
-			$("#makeofferResult").text(data);
-		}
-	);
-	return false;
-}
 </script>
 
 <div class="twelve columns">
@@ -94,51 +82,51 @@ function get_request_makeoffer(){
 
     <li id="signUpTab" class="active">
       <form action="" method="post">
-        {{ form.non_field_errors }}
+        {{ registration_form.non_field_errors }}
         <div class="row collapse fieldWrapper">
-            {{ form.username.errors }}
+            {{ registration_form.username.errors }}
             <div class="two columns">
               <label for="id_username">Username</label>
             </div>
             <div class="ten columns">
-              {{ form.username }}
+              {{ registration_form.username }}
             </div>            
         </div>
 
         <div class="row collapse fieldWrapper">
-            {{ form.email.errors }}
+            {{ registration_form.email.errors }}
             <div class="two columns">
               <label for="id_email">Email</label>
             </div>
             <div class="ten columns">
-              {{ form.email }}
+              {{ registration_form.email }}
             </div>            
         </div>
 
         <div class="row collapse fieldWrapper">
-            {{ form.password.errors }}
+            {{ registration_form.password.errors }}
             <div class="two columns">
               <label for="id_password">Password</label>
             </div>
             <div class="ten columns">
-              {{ form.password }}
+              {{ registration_form.password }}
             </div>            
         </div>
 
         <div class="row collapse fieldWrapper">
-            {{ form.check_password.errors }}
+            {{ registration_form.check_password.errors }}
             <div class="two columns">
               <label for="id_check_password">Repeat Password</label>
             </div>
             <div class="ten columns">
-              {{ form.check_password }}
+              {{ registration_form.check_password }}
             </div>            
         </div>
 
         <button type="submit" name="registration_form_submit" class="radius button">Submit</button>
 		</form><br/>
-		{{result}}<br/>
-		<a href="trades/load/{{userID}}">Click me to load userID {{userID}}</a>
+		{{registration_result}}<br/>
+		<a href="trades/load/{{registration_userID}}">Click me to load userID {{registration_userID}}</a>
     </li>
 
 	<li id="searchGameTab">
@@ -203,7 +191,7 @@ function get_request_makeoffer(){
     </li>
 	
 	<li id="makeOfferTab">
-	<form onsubmit="return get_request_makeoffer();" id="makeoffer">
+	<form action="" method="post" id="makeoffer">
 	{{ makeoffer_form.non_field_errors }}
 	  <div class="row collapse">
 	  {{ makeoffer_form.makeoffer_user_id.errors }}
@@ -234,6 +222,7 @@ function get_request_makeoffer(){
       </div>
       <button type="submit" name="makeoffer_form_submit" class="radius button">Trade</button>
 	  </form><br/>
+		{{makeoffer_result}}<br/>
 	<div id="makeofferResult"></div>
     </li>
   </ul>

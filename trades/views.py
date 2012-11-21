@@ -100,7 +100,6 @@ def make_offer(request):
         transaction.save()
         # for now receiver is the same as sender
         # should write a function to support this
-        transaction.save()
         message=user_name+" take his "+game1_name+" to trade for "+game2_name
         #message=user_name+" take his "+type(game1_id).__name__+" to trade for "+game2_id
     else:
@@ -113,29 +112,54 @@ def search_game(request):
 def sign(request):
     if request.method == 'POST': # If the form has been submitted...
         if 'registration_form_submit' in request.POST:
-            form = RegistrationForm(request.POST) # A form bound to the POST data
+            registration_form = RegistrationForm(request.POST) # A form bound to the POST data
             makeoffer_form = MakeOfferForm() # An unbound form
-            if form.is_valid(): # All validation rules pass
-                # Process the data in form.cleaned_data
+            if registration_form.is_valid(): # All validation rules pass
+                # Process the data in registration_form.cleaned_data
                 user = User.objects.create_user(
-                    form.cleaned_data['username'], 
-                    form.cleaned_data['email'], 
-                    form.cleaned_data['password'],)
+                    registration_form.cleaned_data['username'], 
+                    registration_form.cleaned_data['email'], 
+                    registration_form.cleaned_data['password'],)
                 user_profile = UserProfile(user = user, address='address', rating=1)
                 user_profile.save()
                 result="You save a user. Please load his name by using id %s." % user_profile.id
                 return render_to_response('users/sign.html', {
-                    'form': form,
-                    'result': result,
-                    'userID': user_profile.id,
+                    'registration_form': registration_form,
                     'makeoffer_form': makeoffer_form,
+                    'registration_result': result,
+                    'registration_userID': user_profile.id,
                 })
-                #return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
+        elif 'makeoffer_form_submit' in request.POST:
+            registration_form = RegistrationForm() # An unbound form
+            makeoffer_form = MakeOfferForm(request.POST) # A form bound to the POST data
+            if makeoffer_form.is_valid(): # All validation rules pass
+                # Process the data in makeoffer_form.cleaned_data
+                user_id=makeoffer_form.cleaned_data['makeoffer_user_id']
+                userprofile=UserProfile.objects.get(id=user_id)
+                user_name=userprofile.user.username
+                gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+                game1_id=makeoffer_form.cleaned_data['makeoffer_game1_id']
+                game1_name=gb.getGame(int(game1_id)).name
+                game2_id=makeoffer_form.cleaned_data['makeoffer_game2_id']
+                game2_name=gb.getGame(int(game2_id)).name
+                transaction=Transaction(sender=userprofile,
+                        sender_gianBombID=game1_id,
+                        receiver=userprofile,
+                        receiver_gianBombID=game2_id)
+                transaction.save()
+                # for now receiver is the same as sender
+                # should write a function to support this
+                result=user_name+" take his "+game1_name+" to trade for "+game2_name
+                return render_to_response('users/sign.html', {
+                    'registration_form': registration_form,
+                    'makeoffer_form': makeoffer_form,
+                    'makeoffer_result': result,
+                })
     else:
-        form = RegistrationForm() # An unbound form
+        registration_form = RegistrationForm() # An unbound form
         makeoffer_form = MakeOfferForm() # An unbound form
 
     return render_to_response('users/sign.html', {
-        'form': form,
+        'registration_form': registration_form,
         'makeoffer_form': makeoffer_form,
     })
