@@ -2,16 +2,51 @@
 
 {% block content %}
 
+<script type = "text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>
+var delay = (function(){
+	var timer = 0;
+	return function(callback, ms){
+		clearTimeout (timer);
+		timer = setTimeout(callback, ms);
+	};
+})();
+function get_request(){
+    $.get(
+		"/trades/get_request/", 
+		{q :$("#input").val()}, 
+		function(data){
+			$("#searchResult").text(data);
+		}
+	);
+	return false;
+}
+function get_request2(){
+    $.get(
+		"/trades/make_offer/", 
+		{user_id :$("#user_id").val(), game1_id :$("#game1_id").val(), game2_id :$("#game2_id").val()}, 
+		function(data){
+			$("#tradeResult").text(data);
+		}
+	);
+	return false;
+}
+function keyup_method(){
+    delay(get_request, 300);
+}
+</script>
 
 <div class="twelve columns">
 
   <dl class="contained tabs">
-    <dd class="active"><a href="#logIn">Log In</a></dd>
-    <dd><a href="#signUp">Sign Up</a></dd>
+    <dd><a href="#logIn">Log In</a></dd>
+    <dd class="active"><a href="#signUp">Sign Up</a></dd>
+	<dd><a href="#searchGame">Search Game</a></dd>
+	<dd><a href="#makeOffer">Make Offer</a></dd>
   </dl>
 
   <ul class="tabs-content contained">
-    <li id="logInTab" class="active">
+    <li id="logInTab">
       <div class="row collapse">
         <div class="two columns">
           <label class="inline">Username</label>
@@ -31,7 +66,7 @@
       <button type="submit" class="radius button">Submit</button>
     </li>
 
-    <li id="signUpTab">
+    <li id="signUpTab" class="active">
       <form action="" method="post">
         {{ form.non_field_errors }}
         <div class="row collapse fieldWrapper">
@@ -75,7 +110,55 @@
         </div>
 
         <button type="submit" class="radius button">Submit</button>
-      </form>
+		</form><br/>
+		{{result}}<br/>
+		<a href="trades/load/{{userID}}">Click me to load userID {{userID}}</a>
+    </li>
+
+	<li id="searchGameTab">
+	<form onsubmit="return get_request();" id="form">
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Game Name</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="input" placeholder="call of duty" onkeyup="keyup_method();"/>
+        </div>
+      </div>
+      <button type="submit" class="radius button">Search</button>
+	  </form><br/>
+	<div id="searchResult"></div>
+    </li>
+	
+	<li id="makeOfferTab">
+	<form onsubmit="return get_request2();" id="form2">
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">My User ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="user_id"/>
+        </div>
+      </div>
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">My Game ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="game1_id"/>
+        </div>
+      </div>
+	  <div class="row collapse">
+        <div class="two columns">
+          <label class="inline">Target Game ID</label>
+        </div>
+        <div class="ten columns">
+          <input type="text" id="game2_id"/>
+        </div>
+      </div>
+      <button type="submit" class="radius button">Trade</button>
+	  </form><br/>
+	<div id="tradeResult"></div>
     </li>
   </ul>
 

@@ -89,7 +89,13 @@ def sign(request):
                 form.cleaned_data['password'],)
             user_profile = UserProfile(user = user, address='address', rating=1)
             user_profile.save()
-            return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
+            result="You save a user. Please load his name by using id %s." % user_profile.id
+            return render_to_response('users/sign.html', {
+                'form': form,
+                'result': result,
+                'userID': user_profile.id,
+            })
+            #return HttpResponse("You save a user. Please load his name by using id %s." % user_profile.id)
     else:
         form = RegistrationForm() # An unbound form
 

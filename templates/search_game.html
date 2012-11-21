@@ -19,6 +19,7 @@ function get_request(){
 			$("#div2").text(data);
 		}
 	);
+	return false;
 }
 function get_request2(){
     $.get(
@@ -28,13 +29,6 @@ function get_request2(){
 			$("#div2").text(data);
 		}
 	);
-}
-function submit_method(){
-    get_request();
-	return false;
-}
-function submit_method2(){
-    get_request2();
 	return false;
 }
 function keyup_method(){
@@ -51,11 +45,11 @@ Three ways to search a game name:<br/>
 2. Press enter<br/>
 3. Key in and wait<br/>
 </p>
-<form onsubmit="return submit_method();" id="form">
+<form onsubmit="return get_request();" id="form">
     Game Name: <input type="text" id="input" value="call of duty" onkeyup="keyup_method();">
     <input type="submit" value="Search">
 </form>
-<form onsubmit="return submit_method2();" id="form2">
+<form onsubmit="return get_request2();" id="form2">
     My User ID: <input type="text" id="user_id">
 	My Game ID: <input type="text" id="game1_id">
     Target Game ID: <input type="text" id="game2_id">
