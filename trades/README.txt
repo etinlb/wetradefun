@@ -12,6 +12,7 @@ Add to Wish List (AJAX)
 Add to Current List (AJAX)
 Make Offer
 Make Offer (AJAX)
+Edit Offer
 
 *Notes
 Ajax: update webpage without loading the whole page
