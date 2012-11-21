@@ -7,10 +7,11 @@ http://127.0.0.1:8000
 
 Features
 Sign Up and Load User Name
-Search Game
-Add to Wish List
-Add to Current List
+Search Game (AJAX)
+Add to Wish List (AJAX)
+Add to Current List (AJAX)
 Make Offer
+Make Offer (AJAX)
 
 Notes
 Ajax: update webpage without loading the whole page

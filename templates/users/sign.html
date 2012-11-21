@@ -119,7 +119,8 @@ function get_request_makeofferajax(){
         <button type="submit" name="registration_form_submit" class="radius button">Submit</button>
 		</form><br/>
 		{{registration_result}}<br/>
-		<a href="trades/load/{{registration_userID}}">Click me to load userID {{registration_userID}}</a>
+		<a href="trades/load/{{registration_userID}}" target="_blank">Click me to load userID {{registration_userID}}</a><br/>
+		<a href="_ah/admin/datastore?kind=trades_userprofile" target="_blank">Click me to see database</a>
     </li>
 
 	<li id="searchGameTab">
@@ -137,7 +138,7 @@ function get_request_makeofferajax(){
 	<div id="searchgameResult"></div>
     </li>
 	
-		<li id="addtowishlistTab">
+	<li id="addtowishlistTab">
 	<form onsubmit="return get_request_addtowishlist();" id="addtowishlist">
 	  <div class="row collapse">
         <div class="two columns">
@@ -157,10 +158,11 @@ function get_request_makeofferajax(){
       </div>
       <button type="submit" class="radius button">Add to Wish List</button>
 	  </form><br/>
-	<div id="addtowishlistResult"></div>
+	<div id="addtowishlistResult"></div><br/>
+		<a href="_ah/admin/datastore?kind=trades_wishlist" target="_blank">Click me to see database</a>
     </li>
 	
-		<li id="addtocurrentlistTab">
+	<li id="addtocurrentlistTab">
 	<form onsubmit="return get_request_addtocurrentlist();" id="addtocurrentlist">
 	  <div class="row collapse">
         <div class="two columns">
@@ -180,7 +182,8 @@ function get_request_makeofferajax(){
       </div>
       <button type="submit" class="radius button">Add to Current List</button>
 	  </form><br/>
-	<div id="addtocurrentlistResult"></div>
+	<div id="addtocurrentlistResult"></div><br/>
+		<a href="_ah/admin/datastore?kind=trades_currentlist" target="_blank">Click me to see database</a>
     </li>
 	
 	<li id="makeOfferTab">
@@ -216,7 +219,7 @@ function get_request_makeofferajax(){
       <button type="submit" name="makeoffer_form_submit" class="radius button">Trade</button>
 	  </form><br/>
 		{{makeoffer_result}}<br/>
-	<div id="makeofferResult"></div>
+		<a href="_ah/admin/datastore?kind=trades_transaction" target="_blank">Click me to see database</a>
     </li>
 	
 	<li id="makeOfferAJAXTab">
@@ -251,7 +254,8 @@ function get_request_makeofferajax(){
       </div>
       <button type="submit" name="makeofferajax_form_submit" class="radius button">Trade</button>
 	  </form><br/>
-	  <div id="makeofferajaxResult"></div>
+	  <div id="makeofferajaxResult"></div><br/>
+		<a href="_ah/admin/datastore?kind=trades_transaction" target="_blank">Click me to see database</a>
     </li>
 	
 	

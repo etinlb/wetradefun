@@ -93,15 +93,22 @@ def make_offer(request):
         game1_name=gb.getGame(int(game1_id)).name
         game2_id=request.GET.get('game2_id')
         game2_name=gb.getGame(int(game2_id)).name
-        transaction=Transaction(sender=userprofile,
-                sender_gianBombID=game1_id,
-                receiver=userprofile,
-                receiver_gianBombID=game2_id)
-        transaction.save()
-        # for now receiver is the same as sender
-        # should write a function to support this
-        message=user_name+" take his "+game1_name+" to trade for "+game2_name
-        #message=user_name+" take his "+type(game1_id).__name__+" to trade for "+game2_id
+        if game1_id!=game2_id and len(Currentlist.objects.filter(gianBombID=game2_id))!=0:
+            message=user_name+" want to take his "+game1_name+" to trade for "+game2_name+" owned by "
+            for currentlist in Currentlist.objects.filter(gianBombID=game2_id):
+                #if userprofile!=currentlist.user and game1_id!=game2_id:
+                if userprofile!=currentlist.user:
+                    message+=currentlist.user.user.username+", "
+                    transaction=Transaction(sender=userprofile,
+                            sender_gianBombID=game1_id,
+                            receiver=currentlist.user,
+                            receiver_gianBombID=game2_id)
+                    transaction.save()
+            message+="... "
+        elif game1_id==game2_id:
+            message="These two games are the same"
+        elif len(Currentlist.objects.filter(gianBombID=game2_id))==0:
+            message="No one has target game "+game2_name
     else:
         message="Not AJAX"
     return HttpResponse(message)
@@ -111,7 +118,7 @@ def search_game(request):
 
 def sign(request):
     if request.method == 'POST': # If the form has been submitted...
-        if 'registration_form_submit' in request.POST:
+        if 'registration_form_submit' in request.POST: # If registration_form is submitted
             registration_form = RegistrationForm(request.POST) # A form bound to the POST data
             makeoffer_form = MakeOfferForm() # An unbound form
             makeofferajax_form = MakeOfferAjaxForm() # An unbound form
@@ -127,10 +134,11 @@ def sign(request):
                 return render_to_response('users/sign.html', {
                     'registration_form': registration_form,
                     'makeoffer_form': makeoffer_form,
+                    'makeofferajax_form': makeofferajax_form,
                     'registration_result': result,
                     'registration_userID': user_profile.id,
                 })
-        elif 'makeoffer_form_submit' in request.POST:
+        elif 'makeoffer_form_submit' in request.POST: # If makeoffer_form is submitted
             registration_form = RegistrationForm() # An unbound form
             makeoffer_form = MakeOfferForm(request.POST) # A form bound to the POST data
             makeofferajax_form = MakeOfferAjaxForm() # An unbound form
@@ -144,24 +152,31 @@ def sign(request):
                 game1_name=gb.getGame(int(game1_id)).name
                 game2_id=makeoffer_form.cleaned_data['makeoffer_game2_id']
                 game2_name=gb.getGame(int(game2_id)).name
-                transaction=Transaction(sender=userprofile,
-                        sender_gianBombID=game1_id,
-                        receiver=userprofile,
-                        receiver_gianBombID=game2_id)
-                transaction.save()
-                # for now receiver is the same as sender
-                # should write a function to support this
-                result=user_name+" take his "+game1_name+" to trade for "+game2_name
+                if game1_id!=game2_id:
+                    result=user_name+" want to take his "+game1_name+" to trade for "+game2_name+" owned by "
+                    for currentlist in Currentlist.objects.filter(gianBombID=game2_id):
+                        #if userprofile!=currentlist.user and game1_id!=game2_id:
+                        if userprofile!=currentlist.user:
+                            result+=currentlist.user.user.username+", "
+                            transaction=Transaction(sender=userprofile,
+                                    sender_gianBombID=game1_id,
+                                    receiver=currentlist.user,
+                                    receiver_gianBombID=game2_id)
+                            transaction.save()
+                    result+="... "
+                else:
+                    result="These two games are the same"
                 return render_to_response('users/sign.html', {
                     'registration_form': registration_form,
                     'makeoffer_form': makeoffer_form,
+                    'makeofferajax_form': makeofferajax_form,
                     'makeoffer_result': result,
                 })
-        else:
+        else: # To avoid unbound error
             registration_form = RegistrationForm() # An unbound form
             makeoffer_form = MakeOfferForm() # An unbound form
             makeofferajax_form = MakeOfferAjaxForm() # An unbound form
-    else:
+    else: # First attempt to the webpage
         registration_form = RegistrationForm() # An unbound form
         makeoffer_form = MakeOfferForm() # An unbound form
         makeofferajax_form = MakeOfferAjaxForm() # An unbound form
