@@ -47,3 +47,6 @@ class MakeOfferAjaxForm(forms.Form):
   makeofferajax_user_id = forms.IntegerField()
   makeofferajax_game1_id = forms.IntegerField()
   makeofferajax_game2_id = forms.IntegerField()
+
+class EditOfferForm(forms.Form):
+  editoffer_game1_id = forms.IntegerField()

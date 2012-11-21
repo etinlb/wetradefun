@@ -29,6 +29,37 @@ def load(request, user_id):
     u=UserProfile.objects.get(id=user_id)
     return HttpResponse("You load a user whose name is %s." % u.user.username)
 
+def edit_offer(request, transaction_id):
+    #return HttpResponse("You load a transaction whose sender_gianBombID is %s." % transaction.sender_gianBombID)
+    transaction=Transaction.objects.get(id=transaction_id)
+    sender_name=transaction.sender.user.username
+    receiver_name=transaction.receiver.user.username
+    gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+    receiver_game_name=gb.getGame(int(transaction.receiver_gianBombID)).name
+    if request.method == 'POST': # If the form has been submitted...
+        if 'editoffer_form_submit' in request.POST: # If registration_form is submitted
+            editoffer_form = EditOfferForm(request.POST) # A form bound to the POST data
+            if editoffer_form.is_valid(): # All validation rules pass
+                transaction.sender_gianBombID = editoffer_form.cleaned_data['editoffer_game1_id']
+                transaction.save()
+                editoffer_result="success!"
+                return render_to_response('edit_offer.html', {
+                        'editoffer_form': editoffer_form,
+                        'sender_name': sender_name,
+                        'receiver_name': receiver_name,
+                        'receiver_game_name': receiver_game_name,
+                        'editoffer_result': editoffer_result,
+                    })
+    else:
+        data={'editoffer_game1_id':transaction.sender_gianBombID}
+        editoffer_form = EditOfferForm(data)
+    return render_to_response('edit_offer.html', {
+        'editoffer_form': editoffer_form,
+        'sender_name': sender_name,
+        'receiver_name': receiver_name,
+        'receiver_game_name': receiver_game_name,
+    })
+
 def search_form(request):
     return render_to_response('search_form.html')
 	
@@ -164,6 +195,13 @@ def sign(request):
                                     receiver_gianBombID=game2_id)
                             transaction.save()
                     result+="... "
+                    return render_to_response('users/sign.html', {
+                        'registration_form': registration_form,
+                        'makeoffer_form': makeoffer_form,
+                        'makeofferajax_form': makeofferajax_form,
+                        'makeoffer_result': result,
+			    		'editofferID': transaction.id,
+                })
                 else:
                     result="These two games are the same"
                 return render_to_response('users/sign.html', {

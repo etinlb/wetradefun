@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit Offer Form</title>
+</head>
+<body>
+<h2>Edit Offer Form</h2>
+<a href="/_ah/admin/datastore?kind=trades_transaction" target="_blank">Click me to see database</a><br/><br/>
+Receiver Name: {{receiver_name}}<br/>
+Receiver Game Name: {{receiver_game_name}}<br/><br/>
+My Name: {{sender_name}}<br/>
+	<form action="" method="post" id="editoffer">
+      My Game ID: {{ editoffer_form.editoffer_game1_id }}
+      <button type="submit" name="editoffer_form_submit" class="radius button">Edit</button>
+	</form><br/>
+	{{ editoffer_form.editoffer_game1_id.errors }}
+	{{editoffer_result}}
+		
+</body>
+</html>
+

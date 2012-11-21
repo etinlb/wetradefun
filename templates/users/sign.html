@@ -219,6 +219,8 @@ function get_request_makeofferajax(){
       <button type="submit" name="makeoffer_form_submit" class="radius button">Trade</button>
 	  </form><br/>
 		{{makeoffer_result}}<br/>
+		<a href="trades/edit_offer/{{editofferID}}" target="_blank">
+		Click me to edit last offer whose offerID is {{editofferID}}</a><br/>
 		<a href="_ah/admin/datastore?kind=trades_transaction" target="_blank">Click me to see database</a>
     </li>
 	
