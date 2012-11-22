@@ -3,8 +3,6 @@
 {% block title %}{{game.name}}{% endblock %}
 
 {% block content %}
-
-
     <div class="row">
       <div class="five columns">
           <div class="th">
@@ -39,12 +37,13 @@
 function get_request_addtowishlist(){
   $.get(
     "/trades/add_to_wish_list/", 
-    {user_id :$("#addtowishlist_user_id").val(), 
-    game_id :$("#addtowishlist_game_id").val()}, 
+    {
+      game_id: {{ game.id }}
+    }, 
     function(data){
-      $("#div2").text(data);
+      console.log(data);
     }
-    );
+  );
   return false;
 } 
 </script>

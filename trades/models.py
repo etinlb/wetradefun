@@ -8,12 +8,12 @@ class UserProfile(models.Model):
 
 class Wishlist(models.Model):
   user = models.ForeignKey(UserProfile)
-  gianBombID = models.IntegerField()
+  giantBombID = models.IntegerField()
   datePosted = models.DateTimeField(auto_now_add=True)
 
 class Currentlist(models.Model):
   user = models.ForeignKey(UserProfile)
-  gianBombID = models.IntegerField()
+  giantBombID = models.IntegerField()
   status = models.CharField(max_length=64)
   datePosted = models.DateTimeField(auto_now_add=True)
 
@@ -22,9 +22,9 @@ class Transaction(models.Model):
   dateRequested = models.DateTimeField(auto_now_add=True)
   dateTraded = models.CharField(max_length=64)
   sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
-  sender_gianBombID = models.IntegerField()
+  sender_giantBombID = models.IntegerField()
   receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')
-  receiver_gianBombID = models.IntegerField()
+  receiver_giantBombID = models.IntegerField()
 
 class Message (models.Model):
   content = models.CharField(max_length=128)
