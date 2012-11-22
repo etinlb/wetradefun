@@ -1,24 +1,18 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
-
-from trades.forms import RegistrationForm
+from user.forms import RegistrationForm
 
 from trades.models import *
-import search as s
 from user.forms import LoginForm, SearchForm
 
 from django.http import HttpResponse, HttpResponseRedirect
-
-import datetime, random, sha
-
-from django.contrib.auth.models import User
-from django.http import HttpResponse
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib import messages
 
+import search as s
 
 
 
