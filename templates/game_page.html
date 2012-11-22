@@ -15,7 +15,7 @@
       <div class="seven columns">
         <ul class="pricing-table">
           <li class="title"><h3>{{game.name}}</h3></li>
-          <li class="price">{{numberOfListing}} copies avaliable<a class="tiny button right" href="#">+ Wishlist</a></li>
+          <li class="price">{{numberOfListing}} copies avaliable<a class="tiny button right" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a></li>
           <li class="description">{{game.deck}}</li>          
           <li class="bullet-item">Platform(s): {{game.platforms}}</li>
           <li class="bullet-item">Genres: {{game.genres}}</li>
@@ -32,4 +32,20 @@
 
     </div>
 
+{% endblock %}
+
+{% block js %}
+<script>
+function get_request_addtowishlist(){
+  $.get(
+    "/trades/add_to_wish_list/", 
+    {user_id :$("#addtowishlist_user_id").val(), 
+    game_id :$("#addtowishlist_game_id").val()}, 
+    function(data){
+      $("#div2").text(data);
+    }
+    );
+  return false;
+} 
+</script>
 {% endblock %}

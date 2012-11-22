@@ -5,8 +5,11 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib import messages
 from user.forms import RegistrationForm
+from user.models import UserProfile
 from trades.models import *
 import search as s
+from trades import giantbomb
+
 
 def save(request, users_name):
     u=UserProfile(name=users_name)
@@ -38,3 +41,20 @@ def search(request, query):
     return render_to_response('search_page.html', {'results':results})  
 
 # TODO Handle the game page and search page buttons
+
+# AJAX calls
+def add_to_wish_list(request):
+  if request.is_ajax():
+      user_id=request.GET.get('user_id')
+      userprofile=UserProfile.objects.get(id=user_id)
+      user_name=userprofile.user.username
+      gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+      game_id=request.GET.get('game_id')
+      game_name=gb.getGame(int(game_id)).name
+      wishlist=Wishlist(user=userprofile,
+              gianBombID=game_id,)
+      wishlist.save()
+      message=user_name+" add "+game_name+" to his wish list"
+  else:
+      message="Not AJAX"
+  return HttpResponse(message)

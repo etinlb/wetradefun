@@ -1,10 +1,9 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
-from user.forms import RegistrationForm
+from user.forms import RegistrationForm, LoginForm
 
 from trades.models import *
-from user.forms import LoginForm, SearchForm
 
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -48,10 +47,10 @@ def sign_in(request):
      context_instance=RequestContext(request))
 
 def account_management(request, userID):
-	try:
-      user_profile = UserProfile.objects.get(id = userID)
+  try:
+    user_profile = UserProfile.objects.get(id = userID)
   except Currentlist.DoesNotExist:
-      user_profile = None
+    user_profile = None
 
   current_list = Currentlist.objects.get(user = userID)
   wish_list = Wishlist.objects.get(user = userID)
@@ -88,9 +87,3 @@ def sign_up(request):
 
 def account_management(request):
     return render_to_response('users/account_management.html')
-
-# TODO handle loging in, session handling and account management buttons    
-      return render_to_response('users/sign_in.html', {
-          'form': form,
-      },
-       context_instance=RequestContext(request))
