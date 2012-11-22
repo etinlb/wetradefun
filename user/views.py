@@ -1,11 +1,27 @@
-# Create your views here.
+import datetime, random, sha
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib import messages
+
 from trades.forms import RegistrationForm
+
 from trades.models import *
+import search as s
+from trades.forms import SearchForm
 
+def account_management(request, userID):
+	try:
+      user_profile = UserProfile.objects.get(id = userID)
+  except Currentlist.DoesNotExist:
+      user_profile = None
 
+  current_list = Currentlist.objects.get(user = userID)
+  wish_list = Wishlist.objects.get(user = userID)
+  trans_hist = Transaction.objects.get(status = "completed", sender = userID)
+  trans_hist2 = Transaction.objects.get(status = "completed", receiver = userID)
 
 def sign_up(request):
     if request.method == 'POST': # If the form has been submitted...
@@ -13,8 +29,8 @@ def sign_up(request):
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             user = User.objects.create_user(
-                form.cleaned_data['username'], 
-                form.cleaned_data['email'], 
+                form.cleaned_data['username'],
+                form.cleaned_data['email'],
                 form.cleaned_data['password'],)
             user_profile = UserProfile(user = user, account='account', address='address', rating=1)
             user_profile.save()
@@ -33,6 +49,7 @@ def sign_up(request):
         'form': form,
     },
      context_instance=RequestContext(request))
+
 #NOT FINISHED IN THE SLIGHTEST
 def sign_in(request):
     form = RegistrationForm() # An unbound form
@@ -45,5 +62,3 @@ def account_management(request):
     return render_to_response('users/account_management.html')
 
 # TODO handle loging in, session handling and account management buttons    
-
-
