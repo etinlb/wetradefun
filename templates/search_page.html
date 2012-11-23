@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Result{% endblock %}
+
+{% block content %}
+
+
+
+<table class="twelve">
+        <thead>
+          <tr>
+            <th>Cover</th>
+            <th>Name</th>
+            <th>Avaliable Platforms</th>
+            <th>Games Offered</th>
+            <th>Short Description</th>
+            <th>Genre(s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for game in results %}
+            <tr>
+              <td><a href="/trades/game/{{game.id}}" class='th'><img class="miniature-result" src="{{game.image}}"></a></td>
+              <td><a href="/trades/game/{{game.id}}">{{game.name}}</a></td>
+              <td>{%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</td>
+              <td>{{game.number_of_listing}}</td>
+              <td>{{game.deck}}</td>
+              <td>{%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+
+
+
+{% endblock %}
