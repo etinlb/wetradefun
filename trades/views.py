@@ -1,85 +1,67 @@
 import datetime, random, sha
-
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib import messages
-
-from trades.forms import RegistrationForm
-
+from user.forms import RegistrationForm
+from user.models import UserProfile
 from trades.models import *
 import search as s
-from trades.forms import SearchForm
 
-def sign_up(request):
-    if request.method == 'POST': # If the form has been submitted...
-        form = RegistrationForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            user = User.objects.create_user(
-                form.cleaned_data['username'], 
-                form.cleaned_data['email'], 
-                form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user, account='account', address='address', rating=1)
-            user_profile.save()
-            messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
-            # Login the user
-            login(request, user)
-            # Send to home page
+def game_details(request, game_id):
+  # Is the game in wishlist?
+  in_wishlist = False
+  if Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = game_id):
+    in_wishlist = True
 
-        else:
-            if "__all__" in form._errors:
-                messages.add_message(request, messages.ERROR, form._errors['__all__'])
-    else:
-        form = RegistrationForm() # An unbound form
-
-    return render_to_response('users/sign.html', {
-        'form': form,
-    },
-     context_instance=RequestContext(request))
-
-# def index(request):
-#     return HttpResponse("Hello, world. You're at the trades index.")
-
-def save(request, users_name):
-    u=UserProfile(name=users_name)
-    u.save()
-    return HttpResponse("You save a user. Please load his name by using id %s." % u.id)
-
-def load(request, users_id):
-    u=Users.objects.get(id=users_id)
-    return HttpResponse("You load a user whose name is %s." % u.name)
-
-def gameDetails(request, game_id):
-  game = s.getGameDetsById(game_id, 'name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
-
+  game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
-      num_of_listing = Currentlist.objects.get(gameID = game_id).count()
+      num_of_listing = Currentlist.objects.get(giantBombID = game_id).count()
   except Currentlist.DoesNotExist:
       num_of_listing = 0
-
-  return render_to_response('GameDetails.html', {'game': game, 'listing': num_of_listing})
+  return render_to_response('game_page.html', {'game': game, 'listing': num_of_listing, 'in_wishlist': in_wishlist,})
 
 
 def search(request, query):
-    print query #'genres',
     results = s.getList(query, 'name', 'image', 'original_release_date', 
                         'deck', 'platforms', 'id', 'genres' )
+    # TODO make it get the number of listings
     for x in results:
-        listingsNum[x] = Currentlist.objects.filter(gameId=x).count() 
-    print results
-    print listings
-    # so getting the number of listings is actually very slow in django unless
-    # you do a specific database query i.e. select count(*). I'm not sure you 
-    # results = 'j'
-    # if request.method == 'POST': #form
-    #     form = SearchForm(request.POST)
-    #     # test = request.POST['q']
-    #     if form.is_valid():
-    #         query = form.cleaned_data['query']
-    #         results = s.getList(query, 'name', 'image' )
-    #         # test = 'true'
-    # else:
-    #     form  = SearchForm()
-    return render_to_response('Search.html', {'t':results})  
+      x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id']).count()
+      if x['number_of_listing'] == None:
+        x['number_of_listing'] = 0
+     
+    return render_to_response('search_page.html', {'results':results})  
+
+# TODO Handle the game page and search page buttons
+
+# AJAX calls
+def add_to_wish_list(request):  
+  if request.is_ajax():
+    # Check that is not already in wishlist
+    if not Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')):    
+      user_id=request.GET.get('user_id')
+      userprofile = request.user.get_profile()
+      user_name=userprofile.user.username
+      game_id=request.GET.get('game_id')
+      wishlist=Wishlist(user=userprofile, giantBombID=game_id,)
+      wishlist.save()
+      message=user_name+" add "+game_id+" to his wish list"
+    else:
+      message="already in wishlist"
+  else:
+    message="Not AJAX" 
+  return HttpResponse(message)
+
+# AJAX calls
+def remove_from_wish_list(request):  
+  if request.is_ajax():
+    try:
+      Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')).delete()
+      message=user_name+" delete "+game_id+" from his wish list"
+    except Exception, e:
+      message="not in wishlist"
+  else:
+    message="Not AJAX" 
+  return HttpResponse(message)

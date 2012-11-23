@@ -84,6 +84,3 @@ def sign_up(request):
     },
      context_instance=RequestContext(request))
 
-
-def account_management(request):
-    return render_to_response('users/account_management.html')

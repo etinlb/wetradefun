@@ -3,59 +3,37 @@ from django.db import models
 
 class UserProfile(models.Model):
   user = models.ForeignKey(User, unique=True)
-  account = models.CharField(max_length=64)
-  # password = models.CharField(max_length=64)
-  # name = models.CharField(max_length=64)
-  # email = models.CharField(max_length=64)
   address = models.CharField(max_length=64)
-  rating = models.IntegerField()
-  # dateRegistered = models.IntegerField()
-
-class Game(models.Model):
-  name = models.CharField(max_length=64)
-  gianBombID = models.IntegerField()
   rating = models.IntegerField()
 
 class Wishlist(models.Model):
-  userID = models.ForeignKey(UserProfile)
-  gameID = models.ForeignKey(Game)
-  datePosted = models.IntegerField()
+  user = models.ForeignKey(UserProfile)
+  giantBombID = models.IntegerField()
+  datePosted = models.DateTimeField(auto_now_add=True)
 
 class Currentlist(models.Model):
+  user = models.ForeignKey(UserProfile)
+  giantBombID = models.IntegerField()
   status = models.CharField(max_length=64)
-  datePosted = models.IntegerField()
-  datePosted = models.IntegerField(default=-1)
-  userID = models.ForeignKey(UserProfile)
-  gameID = models.ForeignKey(Game)
+  datePosted = models.DateTimeField(auto_now_add=True)
 
 class Transaction(models.Model):
   status = models.CharField(max_length=64)
-  dateRequested = models.IntegerField()
-  dateTraded = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  senderGameID = models.ForeignKey(Game)
-  receiverID = models.ForeignKey(UserProfile)
-  receiverGameID = models.ForeignKey(Game)
-
-class Gamecomment(models.Model):
-  content = models.CharField(max_length=64)
-  userID = models.ForeignKey(UserProfile)
-  gameID = models.ForeignKey(Game)
-  datePosted = models.IntegerField()
+  dateRequested = models.DateTimeField(auto_now_add=True)
+  dateTraded = models.CharField(max_length=64)
+  sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
+  sender_giantBombID = models.IntegerField()
+  receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')
+  receiver_giantBombID = models.IntegerField()
 
 class Message (models.Model):
   content = models.CharField(max_length=128)
-  datePosted = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  receiverID = models.ForeignKey(UserProfile)
-  transactionID = models.ForeignKey(Transaction)
+  datePosted = models.DateTimeField(auto_now_add=True)
+  sender = models.ForeignKey(UserProfile,related_name='Message_sender')
+  receiver = models.ForeignKey(UserProfile,related_name='Message_receiver')
+  transactions = models.ForeignKey(Transaction)
 
 class Userrating (models.Model):
   rating = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  receiverID = models.ForeignKey(UserProfile)
-
-class Gamerating (models.Model):
-  rating = models.IntegerField()
-  userID = models.ForeignKey(UserProfile)
-  gameID = models.ForeignKey(Game)
+  sender = models.ForeignKey(UserProfile,related_name='Userrating_sender')
+  receiver = models.ForeignKey(UserProfile,related_name='Userrating_receiver')

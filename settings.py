@@ -13,6 +13,8 @@ AUTOLOAD_SITECONF = 'indexes'
 
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
 
+AUTH_PROFILE_MODULE = "trades.UserProfile"
+
 INSTALLED_APPS = (
 #    'django.contrib.admin',
     'django.contrib.contenttypes',
@@ -26,6 +28,7 @@ INSTALLED_APPS = (
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
     'trades',
+    'user',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -53,6 +56,14 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
 
 STATIC_URL = '/static/'
+
+# # URL for @login_required decorator to use
+# LOGIN_URL = '/login/'
+
+# # redirect authenticated users
+# LOGIN_REDIRECT_URL = '/profile/'
+
+
 
 # List of finder classes that know how to find static files in
 # various locations.

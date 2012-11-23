@@ -11,3 +11,6 @@ import search as s
 
 def searchresults(request):
     return HttpResponse("You're looking at the search results.")
+
+def homepage(request):
+	return render_to_response("base.html")

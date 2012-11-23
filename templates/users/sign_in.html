@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -198,3 +199,40 @@ var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
 </script>
 </body>
 </html>
+=======
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<div class="seven columns centered panel">
+  <form action="" method="post">
+    <h3>Log In</h3>
+
+    <div class="row collapse fieldWrapper">
+      {{ form.username.errors }}
+      <div class="three columns">
+        <label for="id_username">Username</label>
+      </div>
+      <div class="nine columns">
+        {{ form.username }}
+      </div>            
+    </div>
+    <div class="row collapse fieldWrapper">
+      {{ form.password.errors }}
+      <div class="three columns">
+        <label for="id_password">Password</label>
+      </div>
+      <div class="nine columns">
+        {{ form.password }}
+      </div>            
+    </div>
+    <button type="submit" class="radius button">Submit</button>
+  </form>
+</div>
+
+
+{% endblock %}
+
+>>>>>>> master
