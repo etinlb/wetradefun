@@ -65,3 +65,17 @@ def remove_from_wish_list(request):
   else:
     message="Not AJAX" 
   return HttpResponse(message)
+
+  def accept_offer(request):
+    if request.is_ajax():
+      if:
+        Transaction.objects.filter()
+      
+    else:
+      message="Not AJAX"
+    return HttpResponse(message)
+
+
+  def decline_offer(request):
+
+  def remove_listing(request):
