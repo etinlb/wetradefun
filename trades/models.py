@@ -13,7 +13,7 @@ class Wishlist(models.Model):
 
 class Currentlist(models.Model):
   user = models.ForeignKey(UserProfile)
-  gianBombID = models.IntegerField()
+  giantBombID = models.IntegerField()
   status = models.CharField(max_length=64)
   datePosted = models.DateTimeField(auto_now_add=True)
 

@@ -10,18 +10,40 @@ from trades.forms import RegistrationForm
 
 from trades.models import *
 import search as s
-from trades.forms import SearchForm
+# from trades.forms import SearchForm
 
-def account_management(request, userID):
-	try:
-      user_profile = UserProfile.objects.get(id = userID)
-  except Currentlist.DoesNotExist:
+def account_management(request, user_id):
+  try:
+    user_profile = UserProfile.objects.get(id = user_id)
+  except UserProfile.DoesNotExist:
       user_profile = None
 
-  current_list = Currentlist.objects.get(user = userID)
-  wish_list = Wishlist.objects.get(user = userID)
-  trans_hist = Transaction.objects.get(status = "completed", sender = userID)
-  trans_hist2 = Transaction.objects.get(status = "completed", receiver = userID)
+  try: 
+    current_listings = Currentlist.objects.get(user = user_id)
+  except Currentlist.DoesNotExist:
+    current_listings = None
+
+  try: 
+    wish_list = Wishlist.objects.get(user = user_id)
+  except Wishlist.DoesNotExist:
+    wish_list = None
+
+  # decide on the different statuses
+  try:
+    hist_sender = Transaction.objects.get(status = "completed", sender = user_id)
+  except Transaction.DoesNotExist:
+    hist_sender = None
+
+  try:
+    hist_receiver = Transaction.objects.get(status = "completed", receiver = user_id)
+  except Transaction.DoesNotExist:
+    hist_sender = None
+
+  hist = dict(hist_sender.items() + hist_receiver.items())
+
+  return render_to_response('users/account_management.html')
+
+
 
 def sign_up(request):
     if request.method == 'POST': # If the form has been submitted...
@@ -57,8 +79,5 @@ def sign_in(request):
         'form': form,
     },
      context_instance=RequestContext(request))
-
-def account_management(request):
-    return render_to_response('users/account_management.html')
 
 # TODO handle loging in, session handling and account management buttons    
