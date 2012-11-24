@@ -3,8 +3,6 @@
 {% block title %}{{game.name}}{% endblock %}
 
 {% block content %}
-
-
     <div class="row">
       <div class="five columns">
           <div class="th">
@@ -15,7 +13,13 @@
       <div class="seven columns">
         <ul class="pricing-table">
           <li class="title"><h3>{{game.name}}</h3></li>
-          <li class="price">{{numberOfListing}} copies avaliable<a class="tiny button right" href="#">+ Wishlist</a></li>
+          <li class="price">{{numberOfListing}} copies avaliable
+            {% if in_wishlist %}
+              <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
+            {% else %}
+              <a class="tiny button right" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>
+            {% endif %}
+          </li>
           <li class="description">{{game.deck}}</li>          
           <li class="bullet-item">Platform(s): {{game.platforms}}</li>
           <li class="bullet-item">Genres: {{game.genres}}</li>
@@ -32,4 +36,36 @@
 
     </div>
 
+{% endblock %}
+
+{% block js %}
+<script>
+function get_request_addtowishlist(){
+  $.get(
+    "/trades/add_to_wish_list/", 
+    {
+      game_id: {{ game.id }}
+    }, 
+    function(data){
+      console.log(data);
+      $('#wishlist').replaceWith('<a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>');
+    }
+  );
+  return false;
+} 
+
+function get_request_removefromwishlist(){
+  $.get(
+    "/trades/remove_from_wish_list/", 
+    {
+      game_id: {{ game.id }}
+    }, 
+    function(data){
+      console.log(data);
+      $('#wishlist').replaceWith('<a class="tiny button right" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>');
+    }
+  );
+  return false;
+} 
+</script>
 {% endblock %}

@@ -5,7 +5,7 @@ handler500 = 'djangotoolbox.errorviews.server_error'
 urlpatterns = patterns('',
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
     url(r'^trades/', include('trades.urls')),
-    url(r'^user/', include('user.urls')),
+    url(r'^users/', include('user.urls')),
  # (r'^trades/$', 'trades.views.index'),
 # (r'^trades/save/(?P<users_name>\w+)/$', 'trades.views.save'),
 # (r'^trades/load/(?P<users_id>\d+)/$', 'trades.views.load'),

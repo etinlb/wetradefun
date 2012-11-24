@@ -6,7 +6,7 @@
 
 <div class="seven columns centered panel">
   <form action="" method="post">
-    <h3>Create an account</h3>
+    <h3>Log In</h3>
 
     <div class="row collapse fieldWrapper">
       {{ form.username.errors }}
@@ -18,15 +18,6 @@
       </div>            
     </div>
     <div class="row collapse fieldWrapper">
-      {{ form.email.errors }}
-      <div class="three columns">
-        <label for="id_email">Email</label>
-      </div>
-      <div class="nine columns">
-        {{ form.email }}
-      </div>            
-    </div>
-    <div class="row collapse fieldWrapper">
       {{ form.password.errors }}
       <div class="three columns">
         <label for="id_password">Password</label>
@@ -35,20 +26,10 @@
         {{ form.password }}
       </div>            
     </div>
-
-    <div class="row collapse fieldWrapper">
-      {{ form.check_password.errors }}
-      <div class="three columns">
-        <label for="id_check_password">Repeat Password</label>
-      </div>
-      <div class="nine columns">
-        {{ form.check_password }}
-      </div>            
-    </div>
-
     <button type="submit" class="radius button">Submit</button>
   </form>
 </div>
 
 
 {% endblock %}
+
