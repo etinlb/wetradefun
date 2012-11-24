@@ -20,12 +20,12 @@
         <tbody>
           {% for game in results %}
             <tr>
-              <td><a href="#" class='th'><img class="miniature-result" src="{{game.image}}"></a></td>
-              <td><a href="#">{{game.name}}</a></td>
-              <td>{%for x in game.platforms%} {{x}} {%endfor%}</td>
+              <td><a href="/trades/game/{{game.id}}" class='th'><img class="miniature-result" src="{{game.image}}"></a></td>
+              <td><a href="/trades/game/{{game.id}}">{{game.name}}</a></td>
+              <td>{%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</td>
               <td>{{game.number_of_listing}}</td>
               <td>{{game.deck}}</td>
-              <td>{{game.genres}}</td>
+              <td>{%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</td>
             </tr>
           {% endfor %}
         </tbody>

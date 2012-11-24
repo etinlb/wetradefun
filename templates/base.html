@@ -60,6 +60,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
       <li class="has-dropdown">
         <a href="http://google.com">Account</a>
         <ul class="dropdown">
+
           <li><a href="sign_in">Login</a></li>
           <li><a href="sign_up">Create Account</a></li>
           <li class="divider"></li>
@@ -79,11 +80,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
       {% if info %}<div class="info">{{ info }}</div>{% endif %}
       {% if messages %}
       {% for message in messages %}
-        
-        <div class="alert-box {% if message.level == 40 %}alert{% endif %}">
-          {{ message }}
-          <a href="" class="close">&times;</a>
-        </div>
+      <div class="info">{{ message }}</div>
       {% endfor %}
       {% endif %}
       {% endblock %}
@@ -192,11 +189,11 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
 -->
 
 <!-- Included JS Files (Compressed) -->
-<script src="static/javascripts/jquery.js"></script>
-<script src="static/javascripts/foundation.min.js"></script>
+<script src="/static/javascripts/jquery.js"></script>
+<script src="/static/javascripts/foundation.min.js"></script>
 
 <!-- Initialize JS Plugins -->
-<script src="static/javascripts/app.js"></script>
+<script src="/static/javascripts/app.js"></script>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
