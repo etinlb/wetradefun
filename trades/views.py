@@ -46,11 +46,11 @@ def add_to_wish_list(request):
     if not Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')):    
       user_id=request.GET.get('user_id')
       userprofile = request.user.get_profile()
-      user_name=userprofile.user.username
+      user_name= userprofile.user.username
       game_id=request.GET.get('game_id')
       wishlist=Wishlist(user=userprofile, giantBombID=game_id,)
       wishlist.save()
-      message=user_name+" add "+game_id+" to his wish list"
+      message=user_name+" added "+game_id+" to their wish list"
     else:
       message="already in wishlist"
   else:
@@ -62,7 +62,7 @@ def remove_from_wish_list(request):
   if request.is_ajax():
     try:
       Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')).delete()
-      message=user_name+" delete "+game_id+" from his wish list"
+      message=user_name+" deleted "+game_id+" from their wish list"
     except Exception, e:
       message="not in wishlist"
   else:
@@ -70,15 +70,41 @@ def remove_from_wish_list(request):
   return HttpResponse(message)
 
   def accept_offer(request):
+    #TODO verify if this is correct
     if request.is_ajax():
-      if:
-        Transaction.objects.filter()
-      
+      transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+      if transaction.status = offered
+        transaction.status = accepted
+        message = "Please wait for " + reciever + " to make the final trade confirmation"
+      else
+        message="that trade is no longer available or has already been accepted"
     else:
       message="Not AJAX"
     return HttpResponse(message)
 
 
   def decline_offer(request):
+    if request.is_ajax():
+      transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+      if transaction.status = offered:
+        transaction.status = declined
+        message = "this listing is now closed"
+    else:
+      message="that trade is no longer available or has already been accepted"
+    else:
+      message="Not AJAX"
+    return HttpResponse(message)
 
   def remove_listing(request):
+    if request.is_ajax():
+      listing = CurrentList.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get("game_id"))
+      if listing.status = open:
+        listing.status = closed
+        message = "You have cancelled your listing"
+      else:
+        message="You have already cancelled this listing or the trade has been finalized."
+    else:
+      message="Not AJAX"
+    return HttpResponse(message)
+
+
