@@ -29,9 +29,11 @@ def game_details(request, game_id):
 def search(request, query):
     results = s.getList(query, 'name', 'image', 'original_release_date', 
                         'deck', 'platforms', 'id', 'genres' )
+    if results == None:
+      render_to_response('no_game_found.html')
     # TODO make it get the number of listings
     for x in results:
-      x['number_of_listing'] = Currentlist.objects.filter(gameID=x['id']).count()
+      x['number_of_listing'] = Currentlist.objects.filter(gianBombID=x['id']).count()
       if x['number_of_listing'] == None:
         x['number_of_listing'] = 0
      
