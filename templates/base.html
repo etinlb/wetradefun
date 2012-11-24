@@ -40,40 +40,36 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
       </li>
     </ul>
 
-    <section>
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">{{ request.user.get_profile.user.username }}</a>
-          <ul class="dropdown">
-            <li><label>Section Name</label></li>
-            <li class="has-dropdown">
-              <a href="#" class="">Has Dropdown, Level 1</a>
-              <ul class="dropdown">
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Level 2</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><label>Section Name</label></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><a href="#">See all &rarr;</a></li>
-          </ul>
-        </li>
-        <li class="divider"></li>
-        <li><a href="#">Main Item 2</a></li>
-      </ul>
-    </section>
+
+    <ul>
+      <li>
+        <a>Recycling Old Games Since 2012</a>
+      </li>
+
+      <li class="search">
+        <form class="search">
+         <input type="text" placeholder="Search for a game...">
+        </form>
+      </li>
+    </ul>
+
+
+    <ul class = "right">
+      <li class="divider"></li>
+
+      <li class="has-dropdown">
+        <a href="http://google.com">Account</a>
+        <ul class="dropdown">
+
+          <li><a href="sign_in">Login</a></li>
+          <li><a href="sign_up">Create Account</a></li>
+          <li class="divider"></li>
+          <li><a href="manage_account.html">Manage Account</a></li>
+          <li><a href="manage_account.html">Edit Account Details</a></li>
+          <li><a href="manage_account.html">Manage Wishlist</a></li>
+        </ul>
+    </ul>
+
   </nav>
   <!-- End Top Bar -->
 

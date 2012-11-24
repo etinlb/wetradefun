@@ -4,8 +4,8 @@ from django.db import models
 
 # Create your models here.
 class UserProfile(models.Model):
-  user = models.ForeignKey(User, unique=True)
-  account = models.CharField(max_length=64)
+  user = models.ForeignKey(User, unique=True, null=True)
+  #account = models.CharField(max_length=64)
   # password = models.CharField(max_length=64)
   # name = models.CharField(max_length=64)
   # email = models.CharField(max_length=64)
