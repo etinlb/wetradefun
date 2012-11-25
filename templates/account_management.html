@@ -27,9 +27,10 @@
           </thead>
           <tbody>
             <tr>
+              {for listing in currentList[:]}
               <td>
                 <a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a>
-                 <a href="#" class="small alert button">Remove Listing</a>
+                 <a href="#" onclick="remove_listing" class="small alert button">Remove Listing</a>
               </td>
               <td>
                 <ul class="no-bullet">
@@ -43,7 +44,7 @@
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
-                      {for o in transactions[:]}
+                      {for offer in currentList[:]}
                       <li>
                         <a href={game.imagelink} Halo 3</a>
                       </li>
@@ -60,6 +61,7 @@
                       <li>
                         <p>{message}</p>
                       </li>
+                      {% endfor %}
                     </ul>
                   </li>
                   {% if multiple offers %}
@@ -68,6 +70,7 @@
                 </ul>
               </td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
       </li>
@@ -82,6 +85,7 @@
             </tr>              
           </thead>
           <tbody>
+            {% for offer in listing %}
             <tr>
               <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
               <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
@@ -95,16 +99,17 @@
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
-                        <a href="#" class="small button">Confirm Trade</a>
+                        <a href="#" onclick="confirm_offer()" class="small button">Confirm Trade</a>
                       </li>
                       <li>
-                        <a href="#" class="small button">Cancel Trade</a>
+                        <a href="#" onclock="cancel_offer()" class="small button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
                 </ul>
               </td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
       </li>
@@ -119,6 +124,7 @@
             </tr>
           </thead>
           <tbody>
+            {% for past_trades in history %}
             <tr>
               <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
               <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
@@ -126,27 +132,27 @@
               <td>
                 <ul class="no-bullet">
                   <li>
-                      ellisbigelow@gmail.com
+                      {{user.userprofile?}}
                     </li>
                     <li class="button-bar">
                       <ul class="button-group">
                         <li class="small dropdown button">
                           Rate User
                           <ul>
-                            <li><a href="#">5: Excellent</a></li>
-                            <li><a href="#">4: Good</a></li>
-                            <li><a href="#">3: Acceptable</a></li>
-                            <li><a href="#">2: Would Not Trade Again</a></li>
-                            <li><a href="#">1: Criminal</a></li>
+                            <li><a href="#" onclick="rate_user(5)">5: Excellent</a></li>
+                            <li><a href="#" onclick="rate_user(4)">4: Good</a></li>
+                            <li><a href="#" onclick="rate_user(3)">3: Acceptable</a></li>
+                            <li><a href="#" onclick="rate_user(2)">2: Would Not Trade Again</a></li>
+                            <li><a href="#" onclick="rate_user(1)">1: Criminal</a></li>
                           </ul>
                         </li>
-                        <li><a href="#" class="small button">Report User</a></li>
+                        <li><a href="#" class="small button" onclick ="report_user()">Report User</a></li>
                       </ul>
                     </li>
                 </ul>
-
               </td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
       </li>
@@ -160,6 +166,7 @@
             </tr>
           </thead>
           <tbody>
+            {% for items in wishlist %}
             <tr>
               <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
               <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
@@ -169,15 +176,7 @@
                 </div>
               </td>
             </tr>
-            <tr>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
-              <td>
-                <div class="small button">
-                  Remove
-                </div>
-              </td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
         <form class="search four columns">
