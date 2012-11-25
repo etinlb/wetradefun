@@ -1,33 +1,8 @@
-<!DOCTYPE html>
-
-<html class="no-js" lang="en">
-<head>
-  <meta charset="utf-8" />
-
-  <!-- Set the viewport width to device width for mobile -->
-  <meta name="viewport" content="width=device-width" />
-
-  <title>Welcome to Foundation | Blog</title>
-
-  <!-- Included CSS Files (Uncompressed) -->
-  <!--
-  <link rel="stylesheet" href="stylesheets/foundation.css">
--->
-
-<!-- Included CSS Files (Compressed) -->
-<link rel="stylesheet" href="../static/stylesheets/foundation.min.css">
-<link rel="stylesheet" href="../static/stylesheets/app.css">
-
-<script src="javascripts/modernizr.foundation.js"></script>
-</head>
-<body>
-
-
 {% extends 'base.html' %}
 
-{}
+{% block title %}{{user.name}}{% endblock %}
 
-  <!-- Main Page Content and Sidebar -->
+{% block content %}
 
 <div class="row">
   <div class="twelve columns">
@@ -68,71 +43,28 @@
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
+                      {for o in transactions[:]}
                       <li>
-                        <a href="http://www.giantbomb.com/halo-4/61-35533/">Halo 3</a>
+                        <a href={game.imagelink} Halo 3</a>
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
-                            <a href="#" class="small button">Accept Offer</a>
+                            <a href="#" onclick="accept_offer()"  class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" class="small alert button">Decline Offer</a>
+                            <a href="#" onclick="decline_offer()" class="small alert button">Decline Offer</a>
                           </li>                          
                         </ul>
                       </li>
                       <li>
-                        <p>YO THIS IS PERFECT QUALITY</p>
+                        <p>{message}</p>
                       </li>
                     </ul>
                   </li>
-
+                  {% if multiple offers %}
                   <hr>
-
-                  <li>
-                    <ul class="no-bullet">
-                      <li>
-                        <a href="http://media.giantbomb.com">Halo 2</a>
-                      </li>
-                      <li class="button-bar">
-                        <ul class="button-group">
-                          <li>
-                            <a href="#" class="small button">Accept Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small alert button">Decline Offer</a>
-                          </li>                             
-                        </ul>
-                      </li>
-                      <li>
-                        <p>Shit quality but ill throw in a nickle</p>
-                      </li>
-                    </ul>                      
-                  </li>
-
-                  <hr>
-
-                  <li>
-                    <ul class="no-bullet">
-                      <li>
-                        <a href="http://media.giantbomb.com">Halo 2</a>
-                      </li>
-                      <li class="button-bar">
-                        <ul class="button-group">
-                          <li>
-                            <a href="#" class="small button">Accept Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small alert button">Decline Offer</a>
-                          </li>                             
-                        </ul>
-                      </li>
-                      <li>
-                        <p>Third Offer</p>
-                      </li>
-                    </ul>                      
-                  </li>
-
+                  {% endif %}
                 </ul>
               </td>
             </tr>
@@ -259,65 +191,7 @@
   <!-- End Main Content and Sidebar -->
 
 
-  <!-- Footer -->
-
-  <footer class="row">
-    <div class="twelve columns">
-      <hr />
-      <div class="row">
-        <div class="six columns">
-          <p>&copy; Copyright no one at all. Go to town.</p>
-        </div>
-        <div class="six columns">
-          <ul class="link-list right">
-            <li><a href="#">Link 1</a></li>
-            <li><a href="#">Link 2</a></li>
-            <li><a href="#">Link 3</a></li>
-            <li><a href="#">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- End Footer -->
-
-  <!-- Included JS Files (Uncompressed) -->
-  <!--
-  
-  <script src="javascripts/jquery.js"></script>
-  
-  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-  
-  <script src="javascripts/jquery.foundation.forms.js"></script>
-  
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
-  
-  <script src="javascripts/jquery.foundation.orbit.js"></script>
-  
-  <script src="javascripts/jquery.foundation.navigation.js"></script>
-  
-  <script src="javascripts/jquery.foundation.buttons.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tabs.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tooltips.js"></script>
-  
-  <script src="javascripts/jquery.foundation.accordion.js"></script>
-  
-  <script src="javascripts/jquery.placeholder.js"></script>
-  
-  <script src="javascripts/jquery.foundation.alerts.js"></script>
-  
-  <script src="javascripts/jquery.foundation.topbar.js"></script>
-  
-  <script src="javascripts/jquery.foundation.joyride.js"></script>
-  
-  <script src="javascripts/jquery.foundation.clearing.js"></script>
-  
-  <script src="javascripts/jquery.foundation.magellan.js"></script>
-  
--->
+ 
 
 <!-- Included JS Files (Compressed) -->
 <script src="javascripts/jquery.js"></script>
