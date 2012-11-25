@@ -21,11 +21,23 @@ class Wishlist(models.Model):
 class Message (models.Model):
   content = models.CharField(max_length=128)
   datePosted = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  receiverID = models.ForeignKey(UserProfile)
-  transactionID = models.ForeignKey('trades.models', verbose_name=u'Transaction')
+  sender = models.ForeignKey(UserProfile,related_name='Message_sender')
+  receiver = models.ForeignKey(UserProfile,related_name='Message_receiver')
+  transaction = models.ForeignKey('trades.Transaction')#, verbose_name=u'Transaction')
+
+# class Userrating (models.Model):
+#   rating = models.IntegerField()
+#   senderID = models.ForeignKey(UserProfile)
+#   receiverID = models.ForeignKey(UserProfile)
+
+# class Message (models.Model):
+#   content = models.CharField(max_length=128)
+#   datePosted = models.DateTimeField(auto_now_add=True)
+#   sender = models.ForeignKey(UserProfile,)
+#   receiver = models.ForeignKey(UserProfile,related_name='Message_receiver')
+#   transactions = models.ForeignKey(Transaction)
 
 class Userrating (models.Model):
   rating = models.IntegerField()
-  senderID = models.ForeignKey(UserProfile)
-  receiverID = models.ForeignKey(UserProfile)
+  sender = models.ForeignKey(UserProfile,related_name='Userrating_sender')
+  receiver = models.ForeignKey(UserProfile,related_name='Userrating_receiver')
