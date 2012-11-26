@@ -27,26 +27,26 @@
           </thead>
           <tbody>
             <tr>
-              {for listing in currentList[:]}
+              {% for listing in currentList %}
               <td>
-                <a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a>
-                 <a href="#" onclick="remove_listing" class="small alert button">Remove Listing</a>
+                <a href="#"><img src={{game.imageurl}} /><br /></a>
+                 <a href="#" onclick="remove_listing()" class="small alert button">Remove Listing</a>
               </td>
               <td>
                 <ul class="no-bullet">
                   <li>{{game.name}}</li>
                   <li>{{game.platform}}</li>
                   <hr>
-                  <li>Posted :{{trade.get_date}}</li>
+                  <li>Posted :{{transaction.date}}</li>
                 </ul>
               </td>
               <td>
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
-                      {for offer in currentList[:]}
+                      {for offer in currentList}
                       <li>
-                        <a href={game.imagelink} Halo 3</a>
+                        <a href={{game.imagelink} Halo 3</a>
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
@@ -59,7 +59,7 @@
                         </ul>
                       </li>
                       <li>
-                        <p>{message}</p>
+                        <p>{{transaction.message}}</p>
                       </li>
                       {% endfor %}
                     </ul>
@@ -87,14 +87,14 @@
           <tbody>
             {% for offer in listing %}
             <tr>
-              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td>Nov 12 2012</td>
+              <td><a href="#"><img src={{% transaction.receiver_giantBombID.image %}}/></a></td>
+              <td><a href= "#"><img src={{% transaction.sender_giantBombID.image %}} /></a></td>
+              <td>{{% transaction.date %}}</td>
 
               <td>
                 <ul class="no-bullet">
                   <li>
-                    Accepted
+                    {{% transaction.status %}}
                   </li>
                   <li class="button-bar">
                     <ul class="button-group">
@@ -126,13 +126,13 @@
           <tbody>
             {% for past_trades in history %}
             <tr>
-              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td>Nov 12 2012</td>
+              <td><a href="#"><img src={{% transaction.receiver_giantBombID.image %}} /></a></td>
+              <td><a href= "#"><img src={{% transaction.sender_giantBombID.image %}} /></a></td>
+              <td>{{% transaction.date %}}</td>
               <td>
                 <ul class="no-bullet">
                   <li>
-                      {{user.userprofile?}}
+                      {{user.email}}
                     </li>
                     <li class="button-bar">
                       <ul class="button-group">
@@ -168,11 +168,11 @@
           <tbody>
             {% for items in wishlist %}
             <tr>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
+              <td><a href= "#"><img src={{% wishlist.giantBombID.image %}} /></a></td>
+              <td><p>{{% game.get_description %}}</td>
               <td>
                 <div class="small button">
-                  Remove
+                  <a href="#" class="small button" onclick ="remove_from_wishlist()">Remove Item</a>
                 </div>
               </td>
             </tr>

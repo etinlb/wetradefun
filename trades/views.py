@@ -98,7 +98,7 @@ def remove_from_wish_list(request):
   def remove_listing(request):
     if request.is_ajax():
       listing = CurrentList.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get("game_id"))
-      if listing.status = open:
+      if listing.status = opened: #open is a keyword
         listing.status = closed
         message = "You have cancelled your listing"
       else:
