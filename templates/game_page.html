@@ -38,7 +38,7 @@
 
     <div id="new_listing_confirmation" class="reveal-modal medium">
       <h2>Are you sure you want to publish a listing for "{{game.name}}"</h2>
-      <a class="success button" href="#" onclick="get_request_publishListing">Yes</a>
+      <a class="success button" href="#" onclick="get_request_publishListing()">Yes</a>
       <a class="alert button" href="#" onclick="$('#new_listing_confirmation').trigger('reveal:close')">No</a>
       <a class="close-reveal-modal">&#215;</a>
     </div>
@@ -51,7 +51,7 @@
         <label>Game ID</label>
         <input id="myGame" type="text" placeholder="ID" />
       </form>
-      <a class="success button" href="#" onclick="get_request_makeOffer">Accept</a>
+      <a class="success button" href="#" onclick="get_request_makeOffer()">Accept</a>
       <a class="alert button" href="#" onclick="$('#new_offer_confirmation').trigger('reveal:close')">Cancel</a>
       <a class="close-reveal-modal">&#215;</a>
     </div>
@@ -106,9 +106,9 @@ function get_request_publishListing(){
 
 function get_request_makeOffer(){
   $.get(
-    "/trades/list_game/", 
+    "/trades/make_offer/", 
     {
-    game1_id : $('#myGame'),
+    game1_id : $('#myGame').val(),
     game2_id : {{ game.id }}
     }, 
     function(data){

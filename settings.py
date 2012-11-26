@@ -13,7 +13,7 @@ AUTOLOAD_SITECONF = 'indexes'
 
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
 
-AUTH_PROFILE_MODULE = "trades.UserProfile"
+AUTH_PROFILE_MODULE = "user.UserProfile"
 
 INSTALLED_APPS = (
 #    'django.contrib.admin',

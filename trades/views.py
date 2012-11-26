@@ -75,18 +75,18 @@ def make_offer(request):
     user_name=userprofile.user.username
     game1_id=request.GET.get('game1_id')
     game2_id=request.GET.get('game2_id')
-    if game1_id!=game2_id and len(Currentlist.objects.filter(gianBombID=game2_id))!=0:
-      for currentlist in Currentlist.objects.filter(gianBombID=game2_id):
+    if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
+      for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
         if userprofile!=currentlist.user:
           transaction=Transaction(sender=userprofile,
-                  sender_gianBombID=game1_id,
+                  sender_giantBombID=game1_id,
                   receiver=currentlist.user,
-                  receiver_gianBombID=game2_id)
+                  receiver_giantBombID=game2_id)
           transaction.save()
           message="Transaction saved"
     elif game1_id==game2_id:
       message="These two games are the same"
-    elif len(Currentlist.objects.filter(gianBombID=game2_id))==0:
+    elif len(Currentlist.objects.filter(giantBombID=game2_id))==0:
       message="No one has that game"
   else:
     message="Not AJAX"
@@ -97,7 +97,7 @@ def add_to_current_list(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game_id=request.GET.get('game_id')
-    currentlist=Currentlist(user=userprofile, gianBombID=game_id,)
+    currentlist=Currentlist(user=userprofile, giantBombID=game_id,)
     currentlist.save()
     message=user_name+" add "+game_id+" to his current list"
   else:
