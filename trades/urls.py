@@ -7,4 +7,6 @@ urlpatterns = patterns('',
     url(r'^game/(?P<game_id>\d+)/$', 'trades.views.game_details'),
     url(r'^add_to_wish_list/$', 'trades.views.add_to_wish_list'),
     url(r'^remove_from_wish_list/$', 'trades.views.remove_from_wish_list'),
+    url(r'^make_offer/$', 'trades.views.make_offer'),
+    url(r'^list_game/$', 'trades.views.add_to_current_list'),
 )

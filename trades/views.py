@@ -12,12 +12,13 @@ import search as s
 def game_details(request, game_id):
   # Is the game in wishlist?
   in_wishlist = False
-  if Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = game_id):
-    in_wishlist = True
+  if request.user.is_authenticated():
+    if Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = game_id):
+      in_wishlist = True
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
-      num_of_listing = Currentlist.objects.get(giantBombID = game_id).count()
+      num_of_listing = Currentlist.objects.filter(giantBombID = game_id).count()
   except Currentlist.DoesNotExist:
       num_of_listing = 0
   return render_to_response('game_page.html', {'game': game, 'listing': num_of_listing, 'in_wishlist': in_wishlist,})
@@ -57,7 +58,6 @@ def add_to_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
-# AJAX calls
 def remove_from_wish_list(request):  
   if request.is_ajax():
     try:
@@ -69,6 +69,7 @@ def remove_from_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
+<<<<<<< HEAD
   def accept_offer(request):
     #TODO verify if this is correct
     if request.is_ajax():
@@ -107,4 +108,39 @@ def remove_from_wish_list(request):
       message="Not AJAX"
     return HttpResponse(message)
 
+
+def make_offer(request):
+  if request.is_ajax():
+    userprofile = request.user.get_profile()
+    user_name=userprofile.user.username
+    game1_id=request.GET.get('game1_id')
+    game2_id=request.GET.get('game2_id')
+    if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
+      for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
+        if userprofile!=currentlist.user:
+          transaction=Transaction(sender=userprofile,
+                  sender_giantBombID=game1_id,
+                  receiver=currentlist.user,
+                  receiver_giantBombID=game2_id)
+          transaction.save()
+          message="Transaction saved"
+    elif game1_id==game2_id:
+      message="These two games are the same"
+    elif len(Currentlist.objects.filter(giantBombID=game2_id))==0:
+      message="No one has that game"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
+
+def add_to_current_list(request):
+  if request.is_ajax():
+    userprofile = request.user.get_profile()
+    user_name=userprofile.user.username
+    game_id=request.GET.get('game_id')
+    currentlist=Currentlist(user=userprofile, giantBombID=game_id,)
+    currentlist.save()
+    message=user_name+" add "+game_id+" to his current list"
+  else:
+      message="Not AJAX"
+  return HttpResponse(message)
 

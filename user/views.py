@@ -66,11 +66,11 @@ def sign_up(request):
                 form.cleaned_data['username'],
                 form.cleaned_data['email'],
                 form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user, account='account', address='address', rating=1)
+            user_profile = UserProfile(user = user, address='address', rating=1)
             user_profile.save()
             messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
             # Login the user
-            login(request, user)
+            # login(request, user)
             # Send to home page
 
         else:
