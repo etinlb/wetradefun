@@ -46,15 +46,16 @@ def sign_in(request):
      context_instance=RequestContext(request))
 
 def account_management(request, user_id):
-  user_profile = UserProfile.objects.filter(user = user_id)
-  current_listings = Currentlist.objects.filter(user = user_id).order_by('-datePosted')
-  wish_list = Wishlist.objects.filter(user = user_id)
-  hist_sender = Transaction.objects.filter(status = 'confirmed', sender = user_id).order_by('-dateTraded')
-  hist_receiver = Transaction.objects.filter(status = 'confirmed', receiver = user_id).order_by('-dateTraded')
+  user_profile = list(UserProfile.objects.filter(user = user_id))
+  current_listings = list(Currentlist.objects.filter(user = user_id).order_by('-datePosted'))
+  wish_list = list(Wishlist.objects.filter(user = user_id))
 
-  hist = hist_sender | hist_receiver
+  hist = list(Transaction.objects.filter(status = 'confirmed', sender = user_id).order_by('-dateTraded'))
 
-  return render_to_response('users/account_management.html', {
+  hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', receiver = user_id).order_by('-dateTraded'))
+  hist.extend(hist_as_receiver)
+
+  return render(request, 'users/account_management.html', {
     'user_profile': user_profile,
     'current_listings': current_listings,
     'wish_list': wish_list,
