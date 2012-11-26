@@ -69,7 +69,7 @@ def remove_from_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
-<<<<<<< HEAD
+
   def accept_offer(request):
     #TODO verify if this is correct
     if request.is_ajax():
