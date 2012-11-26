@@ -1,10 +1,23 @@
 python manage.py runserver
+
+Sign Up
+http://127.0.0.1:8000/#signUp
+Search Game
+http://127.0.0.1:8000/trades/search_game/
+Make Offer
+http://127.0.0.1:8000/trades/search_game/
+
 Ajax, JQuery, and GET
 http://127.0.0.1:8000/trades/search_game/
 http://cy-database.appspot.com/trades/search_game/
 POST and JSON
 http://127.0.0.1:8000/trades/search_form/
 http://cy-database.appspot.com/trades/search_form/
+
+Save User
+http://127.0.0.1:8000/trades/save/[name]
+Load User
+http://127.0.0.1:8000/trades/load/[id]
 
 python manage.py shell
 from trades.models import Users, Userratings

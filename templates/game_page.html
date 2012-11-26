@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}{{game.name}}{% endblock %}
+
+{% block content %}
+    <div class="row">
+      <div class="five columns">
+          <div class="th">
+            <img src="{{game.image}}"></a>
+          </div>
+      </div>
+      
+      <div class="seven columns">
+        <ul class="pricing-table">
+          <li class="title"><h3>{{game.name}}</h3></li>
+          <li class="price">{{listing}} copies avaliable
+            {% if in_wishlist %}
+              <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
+            {% else %}
+              <a class="tiny button right" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>
+            {% endif %}
+          </li>
+          <li class="description">{{game.deck}}</li>          
+          <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
+          <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
+          <li class="bullet-item"><a class="secondary button" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
+          <li class="cta-button"> 
+            <a href="#" class="radius button" data-reveal-id="new_listing_confirmation">Publish a listing</a>
+            <a href="#" class="radius button" data-reveal-id="new_offer_confirmation">Make an offer</a>
+            </ul>
+          </li>
+        </ul>
+
+
+      </div>
+
+    </div>
+
+    <div id="new_listing_confirmation" class="reveal-modal medium">
+      <h2>Are you sure you want to publish a listing for "{{game.name}}"</h2>
+      <a class="success button" href="#" onclick="get_request_publishListing()">Yes</a>
+      <a class="alert button" href="#" onclick="$('#new_listing_confirmation').trigger('reveal:close')">No</a>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+
+    <div id="new_offer_confirmation" class="reveal-modal medium">
+      <h2>Which game would you like to offer?</h2>
+
+      <form>
+        <label>Game ID</label>
+        <input id="myGame" type="text" placeholder="ID" />
+      </form>
+      <a class="success button" href="#" onclick="get_request_makeOffer()">Accept</a>
+      <a class="alert button" href="#" onclick="$('#new_offer_confirmation').trigger('reveal:close')">Cancel</a>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+function get_request_addtowishlist(){
+  $.get(
+    "/trades/add_to_wish_list/", 
+    {
+      game_id: {{ game.id }}
+    }, 
+    function(data){
+      console.log(data);
+      $('#wishlist').replaceWith('<a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>');
+    }
+  );
+  return false;
+} 
+
+function get_request_removefromwishlist(){
+  $.get(
+    "/trades/remove_from_wish_list/", 
+    {
+      game_id: {{ game.id }}
+    }, 
+    function(data){
+      console.log(data);
+      $('#wishlist').replaceWith('<a class="tiny button right" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>');
+    }
+  );
+  return false;
+} 
+
+function get_request_publishListing(){
+  $.get(
+    "/trades/list_game/", 
+    {
+    game_id :{{game.id}}
+    }, 
+    function(data){
+      console.log(data);
+      $('#new_listing_confirmation').trigger('reveal:close');
+    }
+  );
+  return false;
+
+
+} 
+
+function get_request_makeOffer(){
+  $.get(
+    "/trades/make_offer/", 
+    {
+    game1_id : $('#myGame').val(),
+    game2_id : {{ game.id }}
+    }, 
+    function(data){
+      console.log(data);
+      $('#new_offer_confirmation').trigger('reveal:close');
+    }
+  );
+  return false;
+
+
+}
+</script>
+{% endblock %}
