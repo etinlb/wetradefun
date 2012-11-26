@@ -69,15 +69,15 @@ def remove_from_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
-<<<<<<< HEAD
   def accept_offer(request):
     #TODO verify if this is correct
     if request.is_ajax():
       transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-      if transaction.status = offered
-        transaction.status = accepted
+      if transaction.status == "offered":
+        transaction.status = "accepted"
         message = "Please wait for " + reciever + " to make the final trade confirmation"
-      else
+        transaction.save()
+      else:
         message="that trade is no longer available or has already been accepted"
     else:
       message="Not AJAX"
@@ -87,11 +87,12 @@ def remove_from_wish_list(request):
   def decline_offer(request):
     if request.is_ajax():
       transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-      if transaction.status = offered:
-        transaction.status = declined
+      if transaction.status == "offered":
+        transaction.status = "declined"
         message = "this listing is now closed"
-    else:
-      message="that trade is no longer available or has already been accepted"
+        transaction.save()
+      else:
+        message="that trade is no longer available or has already been accepted"
     else:
       message="Not AJAX"
     return HttpResponse(message)
@@ -99,9 +100,10 @@ def remove_from_wish_list(request):
   def remove_listing(request):
     if request.is_ajax():
       listing = CurrentList.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get("game_id"))
-      if listing.status = opened: #open is a keyword
-        listing.status = closed
+      if listing.status == "opened": #open is a keyword
+        listing.status = "closed"
         message = "You have cancelled your listing"
+        listing.save()
       else:
         message="You have already cancelled this listing or the trade has been finalized."
     else:
