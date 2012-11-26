@@ -56,11 +56,11 @@ class Test1(unittest.TestCase):
 
     #allen, bob, and cathy all make offers for gameID=11 which are listed by edward, fred, and graves. doris is noob and doesnt do anything.
         self.transaction1 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.allenProfile, sender_giantBombID=1, receiver=self.edwardProfile, receiver_giantBombID=11)
-        self.transaction2 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.allenProfile, sender_giantBombID=1, receiver=self.fredProfile, receiver_giantBombID=11)
-        self.transaction3 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.allenProfile, sender_giantBombID=1, receiver=self.gravesProfile, receiver_giantBombID=11)
+        self.transaction2 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 11, 11), dateTraded="N/A", sender=self.allenProfile, sender_giantBombID=1, receiver=self.fredProfile, receiver_giantBombID=11)
+        self.transaction3 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 12, 12), dateTraded="N/A", sender=self.allenProfile, sender_giantBombID=1, receiver=self.gravesProfile, receiver_giantBombID=11)
         self.transaction4 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.bobProfile, sender_giantBombID=2, receiver=self.edwardProfile, receiver_giantBombID=11)
-        self.transaction5 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.bobProfile, sender_giantBombID=2, receiver=self.fredProfile, receiver_giantBombID=11)
-        self.transaction6 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.bobProfile, sender_giantBombID=2, receiver=self.gravesProfile, receiver_giantBombID=11)
+        self.transaction5 = Transaction.objects.create(status="pending", dateRequested=datetime(2011, 10, 10), dateTraded="N/A", sender=self.bobProfile, sender_giantBombID=2, receiver=self.fredProfile, receiver_giantBombID=11)
+        self.transaction6 = Transaction.objects.create(status="pending", dateRequested=datetime(2012, 10, 10), dateTraded="N/A", sender=self.bobProfile, sender_giantBombID=2, receiver=self.gravesProfile, receiver_giantBombID=11)
         self.transaction7 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.cathyProfile, sender_giantBombID=3, receiver=self.edwardProfile, receiver_giantBombID=11)
         self.transaction8 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.cathyProfile, sender_giantBombID=3, receiver=self.fredProfile, receiver_giantBombID=11)
         self.transaction9 = Transaction.objects.create(status="pending", dateRequested=datetime(2010, 10, 10), dateTraded="N/A", sender=self.cathyProfile, sender_giantBombID=3, receiver=self.gravesProfile, receiver_giantBombID=11)
@@ -101,6 +101,13 @@ class Test1(unittest.TestCase):
 
         self.wishlist15 = Wishlist.objects.create(user=self.edwardProfile, giantBombID=101, datePosted=datetime(2010, 10, 10))
 
+        
+    def test_join_lists(self):
+        q = list(Transaction.objects.filter(sender=self.allenProfile).order_by('dateRequested'))
+        r = list(Transaction.objects.filter(sender=self.bobProfile).order_by('dateRequested'))
+        q.extend(r)
+        self.assertEquals(q[3].sender.user, 1)
+
         #def test1(self):
         #   q = Wishlist.objects.all().annotate(Avg('giantBombID'))
         #   self.assertEquals(q[0], 3)
@@ -121,5 +128,3 @@ class Test1(unittest.TestCase):
         #self.assertEquals(q[0].maxnumber, 4)
 
         #self.assertEquals(mostfrequent, 4)
-
-        newTransaction = self.transaction1 | self.transaction2
