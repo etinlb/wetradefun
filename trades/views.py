@@ -12,8 +12,9 @@ import search as s
 def game_details(request, game_id):
   # Is the game in wishlist?
   in_wishlist = False
-  if Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = game_id):
-    in_wishlist = True
+  if request.user.is_authenticated():
+    if Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = game_id):
+      in_wishlist = True
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
