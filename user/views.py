@@ -75,7 +75,6 @@ def sign_up(request):
             if user is not None:
               # Login the user
               login(request, user)
-            # Send to home page
 
         else:
             if "__all__" in form._errors:
