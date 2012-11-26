@@ -13,10 +13,10 @@ class UserProfile(models.Model):
   rating = models.IntegerField()
   # dateRegistered = models.IntegerField()
 
-class Wishlist(models.Model):
-  userID = models.ForeignKey(UserProfile)
-  #gameID = models.ForeignKey(Game)
-  datePosted = models.IntegerField()
+# class Wishlist(models.Model):
+#   userID = models.ForeignKey(UserProfile)
+#   gameID = models.ForeignKey(Game)
+#   datePosted = models.IntegerField()
 
 class Message (models.Model):
   content = models.CharField(max_length=128)

@@ -21,7 +21,7 @@ class Currentlist(models.Model):
 class Transaction(models.Model):
   status = models.CharField(max_length=64)
   dateRequested = models.DateTimeField(auto_now_add=True)
-  dateTraded = models.DateTimeField(max_length=64)
+  dateTraded = models.CharField(max_length=64)
   sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
   sender_giantBombID = models.IntegerField()
   receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')

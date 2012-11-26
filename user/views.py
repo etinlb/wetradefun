@@ -46,37 +46,20 @@ def sign_in(request):
      context_instance=RequestContext(request))
 
 def account_management(request, user_id):
-  try:
-    user_profile = UserProfile.objects.get(user = user_id)
-  except Currentlist.DoesNotExist:
-    user_profile = None
+  user_profile = UserProfile.objects.filter(user = user_id)
+  current_listings = Currentlist.objects.filter(user = user_id).order_by('-datePosted')
+  wish_list = Wishlist.objects.filter(user = user_id)
+  hist_sender = Transaction.objects.filter(status = 'confirmed', sender = user_id).order_by('-dateTraded')
+  hist_receiver = Transaction.objects.filter(status = 'confirmed', receiver = user_id).order_by('-dateTraded')
 
-  try: 
-    current_listings = Currentlist.objects.get(user = user_id).order_by("dateRequested")
-  except Currentlist.DoesNotExist:
-    current_listings = None
+  hist = hist_sender | hist_receiver
 
-  try: 
-    wish_list = Wishlist.objects.get(user = user_id)
-  except Wishlist.DoesNotExist:
-    wish_list = None
-
-  try:
-    hist_sender = Transaction.objects.get(status = "confirmed", sender = user_id)
-  except Transaction.DoesNotExist:
-    hist_sender = None
-
-  try:
-    hist_receiver = Transaction.objects.get(status = "confirmed", receiver = user_id)
-  except Transaction.DoesNotExist:
-    hist_receiver = None
-
-  hist = dict(hist_sender.items() + hist_receiver.items())
-  
-
-  return render_to_response('users/account_management.html')
-
-
+  return render_to_response('users/account_management.html', {
+    'user_profile': user_profile,
+    'current_listings': current_listings,
+    'wish_list': wish_list,
+    'history': hist,
+    })
 
 def sign_up(request):
     if request.method == 'POST': # If the form has been submitted...
