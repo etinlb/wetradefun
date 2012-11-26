@@ -35,6 +35,10 @@ class RegistrationForm(forms.Form):
     try:
       if self.cleaned_data['password'] != self.cleaned_data['check_password']:
         raise forms.ValidationError("Passwords entered do not match")
+      if self.cleaned_data['username'] and User.objects.filter(username=self.cleaned_data['username']).count():
+        raise forms.ValidationError("That username already exists.")
+      if self.cleaned_data['email'] and User.objects.filter(email=self.cleaned_data['email']).count():
+        raise forms.ValidationError("That email address already exists.")
     except KeyError:
       # didn't find what we expected in data - fields are blank on front end.  Fields
       # are required by default so we don't need to worry about validation

@@ -23,8 +23,14 @@ class Transaction(models.Model):
   dateRequested = models.DateTimeField(auto_now_add=True)
   dateTraded = models.CharField(max_length=64)
   sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
-  sender_giantBombID = models.IntegerField()
+  sender_game = models.ForeignKey('Game',  related_name='Transaction_sender_game')
   receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')
-  receiver_giantBombID = models.IntegerField()
+  receiver_game = models.ForeignKey('Game', related_name='Transaction_receiver_game')
+
+class Game(models.Model):
+  platform = models.CharField(max_length=64)
+  image_url = models.CharField()
+  name = models.CharField()
+  giant_bomb_id = models.IntegerField()
 
 
