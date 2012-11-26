@@ -18,7 +18,7 @@ def game_details(request, game_id):
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
-      num_of_listing = Currentlist.objects.get(giantBombID = game_id).count()
+      num_of_listing = Currentlist.objects.filter(giantBombID = game_id).count()
   except Currentlist.DoesNotExist:
       num_of_listing = 0
   return render_to_response('game_page.html', {'game': game, 'listing': num_of_listing, 'in_wishlist': in_wishlist,})

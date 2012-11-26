@@ -13,7 +13,7 @@
       <div class="seven columns">
         <ul class="pricing-table">
           <li class="title"><h3>{{game.name}}</h3></li>
-          <li class="price">{{numberOfListing}} copies avaliable
+          <li class="price">{{listing}} copies avaliable
             {% if in_wishlist %}
               <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
             {% else %}
@@ -21,8 +21,8 @@
             {% endif %}
           </li>
           <li class="description">{{game.deck}}</li>          
-          <li class="bullet-item">Platform(s): {{game.platforms}}</li>
-          <li class="bullet-item">Genres: {{game.genres}}</li>
+          <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
+          <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
           <li class="bullet-item"><a class="secondary button" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
           <li class="cta-button"> 
             <a href="#" class="radius button" data-reveal-id="new_listing_confirmation">Publish a listing</a>
