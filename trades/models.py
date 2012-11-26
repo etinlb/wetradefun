@@ -19,7 +19,6 @@ class Currentlist(models.Model):
   datePosted = models.DateTimeField(auto_now_add=True)
 
 class Transaction(models.Model):
-  transaction_id = models.ForeignKey(transaction, unique=True)
   status = models.CharField(max_length=64)
   dateRequested = models.DateTimeField(auto_now_add=True)
   dateTraded = models.CharField(max_length=64)
