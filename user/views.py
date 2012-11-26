@@ -45,14 +45,14 @@ def sign_in(request):
     },
      context_instance=RequestContext(request))
 
-def account_management(request, userID):
+def account_management(request, user_id):
   try:
-    user_profile = UserProfile.objects.get(id = userID)
+    user_profile = UserProfile.objects.get(user = user_id)
   except Currentlist.DoesNotExist:
     user_profile = None
 
   try: 
-    current_listings = Currentlist.objects.get(user = user_id)
+    current_listings = Currentlist.objects.get(user = user_id).order_by("dateRequested")
   except Currentlist.DoesNotExist:
     current_listings = None
 
@@ -61,18 +61,18 @@ def account_management(request, userID):
   except Wishlist.DoesNotExist:
     wish_list = None
 
-  # decide on the different statuses
   try:
-    hist_sender = Transaction.objects.get(status = "completed", sender = user_id)
+    hist_sender = Transaction.objects.get(status = "confirmed", sender = user_id)
   except Transaction.DoesNotExist:
     hist_sender = None
 
   try:
-    hist_receiver = Transaction.objects.get(status = "completed", receiver = user_id)
+    hist_receiver = Transaction.objects.get(status = "confirmed", receiver = user_id)
   except Transaction.DoesNotExist:
-    hist_sender = None
+    hist_receiver = None
 
   hist = dict(hist_sender.items() + hist_receiver.items())
+  
 
   return render_to_response('users/account_management.html')
 
