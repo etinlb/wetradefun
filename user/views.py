@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from user.forms import RegistrationForm, LoginForm
 
@@ -7,13 +7,15 @@ from trades.models import *
 
 from django.http import HttpResponse, HttpResponseRedirect
 
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
 from django.contrib import messages
 
 import search as s
 
-
+def sign_out(request):
+  logout(request)
+  return render(request, 'base.html')
 
 def sign_in(request):
     # If it's 
@@ -66,12 +68,13 @@ def sign_up(request):
                 form.cleaned_data['username'],
                 form.cleaned_data['email'],
                 form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user, address='address', rating=1)
+            user_profile = UserProfile(user = user)
             user_profile.save()
             messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
-            # Login the user
-            # login(request, user)
-            # Send to home page
+            user = authenticate(username=form.cleaned_data['username'], password = form.cleaned_data['password'])
+            if user is not None:
+              # Login the user
+              login(request, user)
 
         else:
             if "__all__" in form._errors:
@@ -86,4 +89,4 @@ def sign_up(request):
 
 
 def account_management(request):
-    return render_to_response('users/account_management.html')
+    return render(request,'users/account_management.html')

@@ -9,8 +9,8 @@ class UserProfile(models.Model):
   # password = models.CharField(max_length=64)
   # name = models.CharField(max_length=64)
   # email = models.CharField(max_length=64)
-  address = models.CharField(max_length=64)
-  rating = models.IntegerField()
+  address = models.CharField(max_length=64, null=True)
+  rating = models.IntegerField(null=True)
   # dateRegistered = models.IntegerField()
 
 class Wishlist(models.Model):

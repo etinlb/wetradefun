@@ -4,7 +4,8 @@ Module that currently holds all of the search functions
 
 import urllib2 #open urls
 import json
-
+import socket
+socket.setdefaulttimeout(30)
 #api_key is needed for access to the GB database
 api_key = '?api_key=308d89c435a454c3943316fb25c73ceba1f8bf72'
 searchStart = 'http://api.giantbomb.com/search/' + api_key 
@@ -104,7 +105,7 @@ def getGameDetsById(gameId, *params):
   """
   filters = buildFilterStr(params)
   searchString = specificGame + gameId +'/' + api_key + filters + '&format=json'
-  file = urllib2.urlopen(searchString)
+  file = urllib2.urlopen(searchString, timeout = 30)
   #game = parseFieldsSpecific(file)
   game = json.load(file)
   game = game['results']
