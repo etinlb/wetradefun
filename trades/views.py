@@ -74,10 +74,10 @@ def remove_from_wish_list(request):
     #TODO verify if this is correct
     if request.is_ajax():
       transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-      if transaction.status = offered
+      if transaction.status = offered:
         transaction.status = accepted
         message = "Please wait for " + reciever + " to make the final trade confirmation"
-      else
+      else:
         message="that trade is no longer available or has already been accepted"
     else:
       message="Not AJAX"
