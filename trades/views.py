@@ -1,12 +1,13 @@
 import datetime, random, sha
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
 from django.contrib import messages
 from user.forms import RegistrationForm
 from user.models import UserProfile
 from trades.models import *
+import re
 import search as s
 
 def game_details(request, game_id):
@@ -21,22 +22,28 @@ def game_details(request, game_id):
       num_of_listing = Currentlist.objects.filter(giantBombID = game_id).count()
   except Currentlist.DoesNotExist:
       num_of_listing = 0
-  return render_to_response('game_page.html', {'game': game, 'listing': num_of_listing, 'in_wishlist': in_wishlist,})
+  return render(request,'game_page.html', {'game': game, 'listing': num_of_listing, 'in_wishlist': in_wishlist,})
 
 
-def search(request, query):
-    results = s.getList(query, 'name', 'image', 'original_release_date', 
-                        'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
-    if results == None:
-      render_to_response('no_game_found.html')
-    # TODO make it get the number of listings
-    for x in results:
-      x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id']).count()
+def search(request):
+  if request.GET:
+    query = request.GET['term']
 
-      if x['number_of_listing'] == None:
-        x['number_of_listing'] = 0
-     
-    return render_to_response('search_page.html', {'results':results})  
+  # Replace all runs of whitespace with a single dash
+  query = re.sub(r"\s+", '+', query)
+
+  results = s.getList(query, 'name', 'image', 'original_release_date', 
+                      'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
+  if results == None:
+    render_to_response('no_game_found.html')
+  # TODO make it get the number of listings
+  for x in results:
+    x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id']).count()
+
+    if x['number_of_listing'] == None:
+      x['number_of_listing'] = 0
+   
+  return render(request,'search_page.html', {'results':results})  
 
 # TODO Handle the game page and search page buttons
 
