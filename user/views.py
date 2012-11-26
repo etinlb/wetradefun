@@ -71,7 +71,6 @@ def sign_up(request):
             user_profile = UserProfile(user = user)
             user_profile.save()
             messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
-            #not sure if this is the proper way to log in after creating
             user = authenticate(username=form.cleaned_data['username'], password = form.cleaned_data['password'])
             if user is not None:
               # Login the user
