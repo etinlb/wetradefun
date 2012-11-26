@@ -57,7 +57,6 @@ def add_to_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
-# AJAX calls
 def remove_from_wish_list(request):  
   if request.is_ajax():
     try:
@@ -67,4 +66,39 @@ def remove_from_wish_list(request):
       message="not in wishlist"
   else:
     message="Not AJAX" 
+  return HttpResponse(message)
+
+def make_offer(request):
+  if request.is_ajax():
+    userprofile = request.user.get_profile()
+    user_name=userprofile.user.username
+    game1_id=request.GET.get('game1_id')
+    game2_id=request.GET.get('game2_id')
+    if game1_id!=game2_id and len(Currentlist.objects.filter(gianBombID=game2_id))!=0:
+      for currentlist in Currentlist.objects.filter(gianBombID=game2_id):
+        if userprofile!=currentlist.user:
+          transaction=Transaction(sender=userprofile,
+                  sender_gianBombID=game1_id,
+                  receiver=currentlist.user,
+                  receiver_gianBombID=game2_id)
+          transaction.save()
+          message="Transaction saved"
+    elif game1_id==game2_id:
+      message="These two games are the same"
+    elif len(Currentlist.objects.filter(gianBombID=game2_id))==0:
+      message="No one has that game"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
+
+def add_to_current_list(request):
+  if request.is_ajax():
+    userprofile = request.user.get_profile()
+    user_name=userprofile.user.username
+    game_id=request.GET.get('game_id')
+    currentlist=Currentlist(user=userprofile, gianBombID=game_id,)
+    currentlist.save()
+    message=user_name+" add "+game_id+" to his current list"
+  else:
+      message="Not AJAX"
   return HttpResponse(message)
