@@ -66,7 +66,7 @@ def account_management(request):
   hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', receiver = request.user.get_profile()).order_by('-dateTraded'))
   hist.extend(hist_as_receiver)
 
-  return render(request, 'users/account_management_test.html', {
+  return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
     'wish_list': wish_list,
     'history': hist,
