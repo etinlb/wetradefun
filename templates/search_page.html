@@ -28,6 +28,9 @@
               <td>{%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</td>
             </tr>
           {% endfor %}
+          {% if len(results) < 1 %}
+          <p>That game does not exist. Try searching with different search terms.</p>
+          {% endif %}
         </tbody>
       </table>
 
