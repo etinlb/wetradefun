@@ -10,7 +10,22 @@
    Shared Styles
 ----------------------------------------- */
 body { 
-    background-image: url(../images/az_subtle.png);
+  background-image: url(../images/az_subtle.png);
+}
+
+html,
+body {
+   height:100%;
+}
+#container {
+   min-height:100%;
+   position:relative;
+}
+#footer {
+   position:absolute;
+   margin: auto;
+   bottom:0;
+   width:100%;
 }
 
 .search {
