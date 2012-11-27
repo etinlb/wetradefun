@@ -1,5 +1,5 @@
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE html 
+ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
@@ -38,41 +38,44 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
             </a>
           </h1>
         </li>
+        <li class="toggle-topbar"><a href="#"></a></li>
       </ul>
     
-      <ul>
-        <li>
-          <a>Recycling Old Games Since 2012</a>
-        </li>
-    
-        <li class="search">
-          <form class="search" action="/trades/search" method="GET">
-           <input type="text" placeholder="Search for a game..." name="term">
-          </form>
-        </li>
-      </ul>
-    
-    
-      <ul class = "right">
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          {%if user.is_authenticated%}
-          <a href="/users/account_management.html">{{user.username}}</a>
-          <ul class="dropdown">
-            <li><a href="/users/account_management.html">Manage Account</a></li>
-            <li><a href="/users/account_management.html">Edit Account Details</a></li>
-            <li><a href="/users/account_management.html">Manage Wishlist</a></li>
-            <li class="divider"></li>
-            <li><a href="/users/sign_out">Logout</a></li>
-          {%else%}
-          <a href="/users/account_management.html">Account</a>
-          <ul class="dropdown">
-            <li><a href="/users/sign_in">Login</a></li>
-            <li><a href="/users/sign_up">Create Account</a></li>
-          {%endif%}
-              
-          </ul>
-      </ul>
+      <section>
+        <ul class="left">
+          <li>
+            <a>Recycling Old Games Since 2012</a>
+          </li>
+            
+          <li class="search">
+            <form class="search" action="/trades/search" method="GET">
+             <input type="text" placeholder="Search for a game..." name="term">
+            </form>
+          </li>
+        </ul>
+            
+            
+        <ul class = "right">
+          <li class="divider"></li>
+          <li class="has-dropdown">
+            {%if user.is_authenticated%}
+            <a href="/users/manage_account.html">{{user.username}}</a>
+            <ul class="dropdown">
+              <li><a href="/users/manage_account.html">Manage Account</a></li>
+              <li><a href="/users/manage_account.html">Edit Account Details</a></li>
+              <li><a href="/users/manage_account.html">Manage Wishlist</a></li>
+              <li class="divider"></li>
+              <li><a href="/users/sign_out">Logout</a></li>
+            {%else%}
+            <a href="/users/manage_account.html">Account</a>
+            <ul class="dropdown">
+              <li><a href="/users/sign_in">Login</a></li>
+              <li><a href="/users/sign_up">Create Account</a></li>
+            {%endif%}
+                
+            </ul>
+        </ul>
+      </section>
     
     </nav>
     <!-- End Top Bar -->
@@ -97,45 +100,63 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
     </div>
     <div class="push"></div>
     <!-- Footer -->
-<hr>   
-<footer class="row">
-  <div id="copyright">
-    <div class="row">
-      <div class="four columns">
-        <p>We Trade Fun © 2012 WTF, inc.</p>
-      </div>
-      <div class="eight columns">
-        <ul class="inline-list right">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Documentation</a></li>
-          <li><a href="#">About</a></li>
-        </ul>
+    
+    <div id="footer">
+      <hr />
+      <div class="row">
+        <div class="four columns">
+          <p>We Trade Fun © 2012 WTF, inc.</p>
+        </div>
+        <div class="eight columns">
+          <ul class="inline-list right">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">About</a></li>
+          </ul>
+        </div>
       </div>
     </div>
+    
+    <!-- End Footer -->
   </div>
- </footer>   
-    <!-- End Footer --></div>
 
 
 
   <!-- Included JS Files (Uncompressed) -->
   <!--
-<script src="static/javascripts/jquery.js"></script>
-<script src="static/javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-<script src="static/javascripts/jquery.foundation.forms.js"></script>
-<script src="static/javascripts/jquery.foundation.reveal.js"></script>
-<script src="static/javascripts/jquery.foundation.orbit.js"></script>
-<script src="static/javascripts/jquery.foundation.navigation.js"></script>
-<script src="static/javascripts/jquery.foundation.buttons.js"></script>
-<script src="static/javascripts/jquery.foundation.tabs.js"></script>
-<script src="static/javascripts/jquery.foundation.tooltips.js"></script>
-<script src="static/javascripts/jquery.foundation.accordion.js"></script>
-<script src="static/javascripts/jquery.placeholder.js"></script>
-<script src="static/javascripts/jquery.foundation.alerts.js"></script>
-<script src="static/javascripts/jquery.foundation.topbar.js"></script>
-<script src="static/javascripts/jquery.foundation.joyride.js"></script>
-<script src="static/javascripts/jquery.foundation.clearing.js"></script>
-<script src="static/javascripts/jquery.foundation.magellan.js"></script>
+  
+  <script src="static/javascripts/jquery.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="static/javascripts/jquery.placeholder.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.alerts.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.topbar.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.joyride.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.clearing.js"></script>
+  
+  <script src="static/javascripts/jquery.foundation.magellan.js"></script>
+  
 -->
 
 <!-- Included JS Files (Compressed) -->
