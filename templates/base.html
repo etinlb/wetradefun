@@ -27,132 +27,134 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
 </head>
 
 <body>
-  <!-- Top Bar -->
-  <nav class="top-bar">
-    <ul>
-      <!-- Title Area -->
-      <li class="name">
-        <h1>
-          <a href="/">
-            We Trade Fun
-          </a>
-        </h1>
-      </li>
-    </ul>
-
-    <ul>
-      <li>
-        <a>Recycling Old Games Since 2012</a>
-      </li>
-
-      <li class="search">
-        <form class="search" action="/trades/search" method="GET">
-         <input type="text" placeholder="Search for a game..." name="term">
-        </form>
-      </li>
-    </ul>
-
-
-    <ul class = "right">
-      <li class="divider"></li>
-      <li class="has-dropdown">
-        {%if user.is_authenticated%}
-        <a href="/users/account_management">{{user.username}}</a>
-        <ul class="dropdown">
-          <li><a href="/users/account_management">Manage Account</a></li>
-          <li><a href="/users/account_management">Edit Account Details</a></li>
-          <li><a href="/users/account_management">Manage Wishlist</a></li>
-          <li class="divider"></li>
-          <li><a href="/users/sign_out">Logout</a></li>
-        {%else%}
-        <a href="/users/account_management">Account</a>
-        <ul class="dropdown">
-          <li><a href="/users/sign_in">Login</a></li>
-          <li><a href="/users/sign_up">Create Account</a></li>
-        {%endif%}
-            
-        </ul>
-    </ul>
-
-  </nav>
-  <!-- End Top Bar -->
-
-  <div class="row">
-    <div id="content">
-      {% block content-header %}
-      {% if error %}<div class="error">{{ error }}</div>{% endif %}
-      {% if info %}<div class="info">{{ info }}</div>{% endif %}
-      {% if messages %}
-      {% for message in messages %}
-        <div class="alert-box {% if message.level == 40 %}alert{% endif %}">
-          {{ message }}
-          <a href="" class="close">&times;</a>
-        </div>
-      {% endfor %}
-      {% endif %}
-      {% endblock %}
-
-      {% block content %}{% endblock %}
+  <div class="container"><!-- Top Bar -->
+    <nav class="top-bar" id="header">
+      <ul>
+        <!-- Title Area -->
+        <li class="name">
+          <h1>
+            <a href="/">
+              We Trade Fun
+            </a>
+          </h1>
+        </li>
+      </ul>
+    
+      <ul>
+        <li>
+          <a>Recycling Old Games Since 2012</a>
+        </li>
+    
+        <li class="search">
+          <form class="search" action="/trades/search" method="GET">
+           <input type="text" placeholder="Search for a game..." name="term">
+          </form>
+        </li>
+      </ul>
+    
+    
+      <ul class = "right">
+        <li class="divider"></li>
+        <li class="has-dropdown">
+          {%if user.is_authenticated%}
+          <a href="/users/manage_account.html">{{user.username}}</a>
+          <ul class="dropdown">
+            <li><a href="/users/manage_account.html">Manage Account</a></li>
+            <li><a href="/users/manage_account.html">Edit Account Details</a></li>
+            <li><a href="/users/manage_account.html">Manage Wishlist</a></li>
+            <li class="divider"></li>
+            <li><a href="/users/sign_out">Logout</a></li>
+          {%else%}
+          <a href="/users/manage_account.html">Account</a>
+          <ul class="dropdown">
+            <li><a href="/users/sign_in">Login</a></li>
+            <li><a href="/users/sign_up">Create Account</a></li>
+          {%endif%}
+              
+          </ul>
+      </ul>
+    
+    </nav>
+    <!-- End Top Bar -->
+    
+    <div class="row" id="body">
+      <div id="content">
+        {% block content-header %}
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        {% if info %}<div class="info">{{ info }}</div>{% endif %}
+        {% if messages %}
+        {% for message in messages %}
+          <div class="alert-box {% if message.level == 40 %}alert{% endif %}">
+            {{ message }}
+            <a href="" class="close">&times;</a>
+          </div>
+        {% endfor %}
+        {% endif %}
+        {% endblock %}
+    
+        {% block content %}{% endblock %}
+      </div>
     </div>
-  </div>
-
-  <!-- Footer -->
-
-  <footer class="row">
-    <tr>
-      <td>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="920">
-          <tbody>
-          <tr>
-            <td height="100" width="50%">
-              <table border="0" cellpadding="0" cellspacing="0">
-                <tbody><tr>
-
-                  <!-- ABOUT -->
-
-                  <td class="footer" align="left" valign="top">
-                    <strong>About</strong><br>
-                    <a href="about.asp" class="#">About We Trade Fun</a><br>
-                    <a class="footerLink" href="#">Terms of use</a><br>
-                    <a class="footerLink" href="#">Privacy Policy</a><br>
-                    <a class="footerLink" href="#">Contact us</a><br>
-                  </td>
-                  <td class="footer" align="left" valign="top" width="25">&nbsp;</td>
-
-                  <!-- SITE AREAS -->
-
-                  <td class="footer" align="left" valign="top">
-                    <strong>Site areas</strong><br>
-                    <a class="footerLink" href="#">Games</a><br>
-                    <a class="footerLink" href="#">Users</a><br>
-
-                  <!-- More Stuff To Add Under Site Areas Section????? -->
-
-                  </td>         
-                  <td class="footer" align="left" valign="top" width="25">&nbsp;</td>
-
-                  <!-- Help and Support -->
-
-                  <td class="footer" align="left" valign="top">
-                    <strong>Help and Support</strong><br>
-                    <a class="footerLink" href="#">How it works</a><br>
-                    <a class="footerLink" href="#">FAQ</a><br>
-                    <a class="footerLink" href="#">Help</a>
-                  </td>
-
-                </tr>              <!-- End tBody -->
-              </tbody></table>
-            </td>
-            <td class="footerCopyright" align="right" valign="top" width="50%">
-              Copyright © 2006-2010 We Trade Fun - All rights reserved - Patent pending<br>
-            </td>
-          </tr>
-        </tbody></table>
-      </td>
-    </tr>
-  </footer>
-
-  <!-- End Footer -->
+    <div class="push"></div>
+    <!-- Footer -->
+    
+    <div id="footer">
+      <footer class="row">
+        <tr>
+          <td>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" width="920">
+              <tbody>
+              <tr>
+                <td height="100" width="50%">
+                  <table border="0" cellpadding="0" cellspacing="0">
+                    <tbody><tr>
+      
+                      <!-- ABOUT -->
+      
+                      <td class="footer" align="left" valign="top">
+                        <strong>About</strong><br>
+                        <a href="about.asp" class="#">About We Trade Fun</a><br>
+                        <a class="footerLink" href="#">Terms of use</a><br>
+                        <a class="footerLink" href="#">Privacy Policy</a><br>
+                        <a class="footerLink" href="#">Contact us</a><br>
+                      </td>
+                      <td class="footer" align="left" valign="top" width="25">&nbsp;</td>
+      
+                      <!-- SITE AREAS -->
+      
+                      <td class="footer" align="left" valign="top">
+                        <strong>Site areas</strong><br>
+                        <a class="footerLink" href="#">Games</a><br>
+                        <a class="footerLink" href="#">Users</a><br>
+      
+                      <!-- More Stuff To Add Under Site Areas Section????? -->
+      
+                      </td>         
+                      <td class="footer" align="left" valign="top" width="25">&nbsp;</td>
+      
+                      <!-- Help and Support -->
+      
+                      <td class="footer" align="left" valign="top">
+                        <strong>Help and Support</strong><br>
+                        <a class="footerLink" href="#">How it works</a><br>
+                        <a class="footerLink" href="#">FAQ</a><br>
+                        <a class="footerLink" href="#">Help</a>
+                      </td>
+      
+                    </tr>              <!-- End tBody -->
+                  </tbody></table>
+                </td>
+                <td class="footerCopyright" align="right" valign="top" width="50%">
+                  Copyright © 2006-2010 We Trade Fun - All rights reserved - Patent pending<br>
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+      </footer>
+    </div>
+    
+    <!-- End Footer --></div>
 
 
 
