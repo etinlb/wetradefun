@@ -10,8 +10,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
 from django.contrib import messages
+from django.db.models import Q
 
 import search as s
+# from trades.forms import SearchForm
 
 def sign_out(request):
   logout(request)
@@ -48,16 +50,29 @@ def sign_in(request):
     },
      context_instance=RequestContext(request))
 
-def account_management(request, userID):
-  try:
-    user_profile = UserProfile.objects.get(id = userID)
-  except Currentlist.DoesNotExist:
-    user_profile = None
+def account_management(request):
+  listing_list = {}
+  listing_dict = {}
+  current_listings = list(Currentlist.objects.filter(user = request.user.get_profile()).order_by('-datePosted'))
+  for idx, listing in enumerate(current_listings):
+      listing_dict[listing] = list(Transaction.objects.filter(Q(status = 'pending') & Q(receiver = request.user.get_profile())))
+      # listing_list[idx] = listing_dict 
+      # listing_dict['offers'] = 
 
-  current_list = Currentlist.objects.get(user = userID)
-  wish_list = Wishlist.objects.get(user = userID)
-  trans_hist = Transaction.objects.get(status = "completed", sender = userID)
-  trans_hist2 = Transaction.objects.get(status = "completed", receiver = userID)
+
+  wish_list = list(Wishlist.objects.filter(user = request.user.get_profile()))
+
+  hist = list(Transaction.objects.filter(status = 'confirmed', sender = request.user.get_profile()).order_by('-dateTraded'))
+  hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', receiver = request.user.get_profile()).order_by('-dateTraded'))
+  hist.extend(hist_as_receiver)
+
+  return render(request, 'users/account_management_test.html', {
+    'current_listings': current_listings,
+    'wish_list': wish_list,
+    'history': hist,
+    'listing_dict':listing_dict,
+    'username':request.user.username
+    })
 
 def sign_up(request):
     if request.method == 'POST': # If the form has been submitted...
@@ -86,7 +101,3 @@ def sign_up(request):
         'form': form,
     },
      context_instance=RequestContext(request))
-
-
-def account_management(request):
-    return render(request,'users/account_management.html')

@@ -15,6 +15,7 @@ class Wishlist(models.Model):
 class Currentlist(models.Model):
   user = models.ForeignKey(UserProfile)
   giantBombID = models.IntegerField()
+  game_listed = models.ForeignKey('Game', related_name='listed_name')
   status = models.CharField(max_length=64)
   datePosted = models.DateTimeField(auto_now_add=True)
 
@@ -29,8 +30,10 @@ class Transaction(models.Model):
 
 class Game(models.Model):
   platform = models.CharField(max_length=64)
-  image_url = models.CharField()
-  name = models.CharField()
-  giant_bomb_id = models.IntegerField()
+  image_url = models.CharField(max_length=500)
+  name = models.CharField(max_length=100)
+  giant_bomb_id = models.IntegerField(unique=True)
+  num_of_listings = models.IntegerField()
+  #deck = models.CharField(max_length=256)
 
 
