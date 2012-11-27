@@ -7,6 +7,7 @@ from django.contrib import messages
 from user.forms import RegistrationForm
 from user.models import UserProfile
 from trades.models import *
+from django.core.exceptions import ObjectDoesNotExist
 import re
 import search as s
 
@@ -123,16 +124,23 @@ def make_offer(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game1_id=request.GET.get('game1_id')
+    game1 = s.getGameDetsById(game1_id, 'platforms', 'image', 'name', 'id')
+    game1 = get_game_table(game1)
     game2_id=request.GET.get('game2_id')
+    game2 = s.getGameDetsById(game2_id, 'platforms', 'image', 'name', 'id')
+    game2 = get_game_table(game2)
     if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
       for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
         if userprofile!=currentlist.user:
           transaction=Transaction(sender=userprofile,
-                  sender_giantBombID=game1_id,
+                  sender_game=game1,
                   receiver=currentlist.user,
-                  receiver_giantBombID=game2_id)
+                  receiver_game=game2,
+                  status = 'pending')
           transaction.save()
           message="Transaction saved"
+        else:
+          message="You already have that game"
     elif game1_id==game2_id:
       message="These two games are the same"
     elif len(Currentlist.objects.filter(giantBombID=game2_id))==0:
@@ -145,11 +153,26 @@ def add_to_current_list(request):
   if request.is_ajax():
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
-    game_id=request.GET.get('game_id')
-    currentlist=Currentlist(user=userprofile, giantBombID=game_id,)
+    game_id = request.GET.get('game_id')
+    game = s.getGameDetsById(game_id, 'platforms', 'image', 'name', 'id')
+    game = get_game_table(game)
+    # game_id = game['id']
+    #game = Game.objects.get(id=511)
+    #game = add_to_game_table(game)
+    currentlist=Currentlist(user=userprofile, giantBombID=game_id, game_listed = game)
     currentlist.save()
     message=user_name+" add "+game_id+" to his current list"
   else:
       message="Not AJAX"
   return HttpResponse(message)
 
+def get_game_table(game):
+  try:
+    game = Game.objects.get(giant_bomb_id = game['id'])
+    game.num_of_listings = game.num_of_listings + 1
+    game.save()
+  except ObjectDoesNotExist:
+    game = Game(platform = game['platforms'], image_url = game['image'], \
+      name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
+    game.save()
+  return game  

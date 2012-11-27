@@ -36,3 +36,23 @@ indexes:
   properties:
   - name: username
   - name: email
+
+- kind: trades_currentlist
+  properties:
+  - name: user_id
+  - name: datePosted
+    direction: desc
+
+- kind: trades_transaction
+  properties:
+  - name: receiver_id
+  - name: status
+  - name: dateTraded
+    direction: desc
+
+- kind: trades_transaction
+  properties:
+  - name: sender_id
+  - name: status
+  - name: dateTraded
+    direction: desc
