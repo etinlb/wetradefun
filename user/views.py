@@ -48,16 +48,23 @@ def sign_in(request):
     },
      context_instance=RequestContext(request))
 
-def account_management(request, userID):
-  try:
-    user_profile = UserProfile.objects.get(id = userID)
-  except Currentlist.DoesNotExist:
-    user_profile = None
+# def account_management(request, userID):
+#   offers_dict = {}
+#   try:
+#     user_profile = UserProfile.objects.filters(id = userID)
+#   except Currentlist.DoesNotExist:
+#     user_profile = None
 
-  current_list = Currentlist.objects.get(user = userID)
-  wish_list = Wishlist.objects.get(user = userID)
-  trans_hist = Transaction.objects.get(status = "completed", sender = userID)
-  trans_hist2 = Transaction.objects.get(status = "completed", receiver = userID)
+#   current_list = Currentlist.objects.get(user = userID)
+#   for listing in current_list:
+#     offers = Transaction.objects.get(receiver=user_profile, receiver_giantBombID = listing.giantBombID)
+#     offers = offers
+#     offers_dict.append{listing:offers}
+
+
+  # wish_list = Wishlist.objects.get(user = userID)
+  # trans_hist = Transaction.objects.get(status = "completed", sender = userID)
+  # trans_hist2 = Transaction.objects.get(status = "completed", receiver = userID)
 
 def sign_up(request):
     if request.method == 'POST': # If the form has been submitted...
