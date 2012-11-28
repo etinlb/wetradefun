@@ -7,11 +7,6 @@ from django.db import models
 #   address = models.CharField(max_length=64)
 #   rating = models.IntegerField()
 
-class Wishlist(models.Model):
-  user = models.ForeignKey(UserProfile, related_name='user_wishlist')
-  giantBombID = models.IntegerField()
-  datePosted = models.DateTimeField(auto_now_add=True)
-
 class Currentlist(models.Model):
   user = models.ForeignKey(UserProfile)
   giantBombID = models.IntegerField()
@@ -22,7 +17,7 @@ class Currentlist(models.Model):
 class Transaction(models.Model):
   status = models.CharField(max_length=64)
   dateRequested = models.DateTimeField(auto_now_add=True)
-  dateTraded = models.CharField(max_length=64)
+  dateTraded = models.DateTimeField()
   sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
   sender_game = models.ForeignKey('Game',  related_name='Transaction_sender_game')
   receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')
@@ -36,4 +31,7 @@ class Game(models.Model):
   num_of_listings = models.IntegerField()
   #deck = models.CharField(max_length=256)
 
-
+class Wishlist(models.Model):
+  user = models.ForeignKey(UserProfile, related_name='user_wishlist')
+  wishlist_game = models.ForeignKey(Game)
+  datePosted = models.DateTimeField(auto_now_add=True)
