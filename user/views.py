@@ -67,7 +67,7 @@ def account_management(request):
   hist.extend(hist_as_receiver)
   sort.sort(hist, 'dateTraded', "desc")
 
-  return render(request, 'users/account_management_test.html', {
+  return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
     'wish_list': wish_list,
     'history': hist,
