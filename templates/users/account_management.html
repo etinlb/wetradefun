@@ -17,36 +17,35 @@
 
     <ul class="tabs-content">
       <li class="active" id="currentListingsTab">
-        <table class="twelve columns">
+        <table class="twelve">
           <thead>
             <tr>
-              <th>My Listing</th>
-              <th>Information</th>
-              <th>Current Offers</th>
+              <th class="four columns">My Listing</th>
+              <th class="four columns">Information</th>
+              <th class="four columns">Current Offers</th>
             </tr> 
           </thead>
           <tbody>
             <tr>
-              {% for listing in currentList %}
-              <td>
-                <a href="#"><img src={{game.imageurl}} /><br /></a>
-                 <a href="#" onclick="remove_listing()" class="small alert button">Remove Listing</a>
+              {% for key, value in listing_dict.items %}
+              <td class="four columns">
+                  <a href="#"><img src="{{key.game_listed.image_url}}"/><br /></a>
+                  <a href="#" onclick="remove_listing()" class="small alert button">Remove Listing</a>
               </td>
-              <td>
+              <td class="four columns">
                 <ul class="no-bullet">
-                  <li>{{game.name}}</li>
-                  <li>{{game.platform}}</li>
-                  <hr>
-                  <li>Posted :{{transaction.date}}</li>
+                  <li>{{key.game_listed.name}}</li>
+                  <li>{{key.game_listed.platform}}</li>
+                  <li>Posted :{{key.datePosted}}</li>
                 </ul>
               </td>
-              <td>
+              <td class="four columns">
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
-                      {% for offer in currentList %}
+                      {% for offer in value %}
                       <li>
-                        <a href={{game.imagelink} Halo 3</a>
+                        <a href=/trades/game/{{offer.sender_game.giant_bomb_id}}>{{offer.sender_game.name}}</a>
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
@@ -59,14 +58,12 @@
                         </ul>
                       </li>
                       <li>
-                        <p>{{transaction.message}}</p>
+                        <p>This is great quality</p>
                       </li>
                       {% endfor %}
                     </ul>
                   </li>
-                  {% for listing in currentList %}
                   <hr>
-                  {% endfor %}
                 </ul>
               </td>
             </tr>
@@ -75,26 +72,26 @@
         </table>
       </li>
       <li id="currentOffersTab">
-        <table class="twelve columns">
+        <table class="twelve">
           <thead>
             <tr>
-              <th>Listing</th>
-              <th>My Offer</th>
-              <th>Date Offered</th>
-              <th>Status</th>
+              <th class="three columns">Listing</th>
+              <th class="three columns">My Offer</th>
+              <th class="three columns">Date Offered</th>
+              <th class="three columns">Status</th>
             </tr>              
           </thead>
           <tbody>
-            {% for offer in listing %}
+            {% for offer in current_offers %}
             <tr>
-              <td><a href="#"><img src={{transaction.receiver_giantBombID.image}}/></a></td>
-              <td><a href= "#"><img src={{transaction.sender_giantBombID.image}} /></a></td>
-              <td>{{transaction.date}}</td>
+              <td class = "three columns"><a href=/trades/game/{{offer.receiver_game.giant_bomb_id}}><img src="{{offer.receiver_game.image_url}}"/></a></td>
+              <td class = "three columns"><a href=/trades/game/{{offer.sender_game.giant_bomb_id}}><img src="{{offer.sender_game.image_url}}" /></a></td>
+              <td class = "three columns">{{offer.dateRequested}}</td>
 
-              <td>
+              <td class = "three columns">
                 <ul class="no-bullet">
                   <li>
-                    {{transaction.status}}
+                    {{offer.status}}
                   </li>
                   <li class="button-bar">
                     <ul class="button-group">
@@ -166,9 +163,9 @@
             </tr>
           </thead>
           <tbody>
-            {% for items in wishlist %}
+            {% for items in wislist %}
             <tr>
-              <td><a href= "#"><img src={{wishlist.giantBombID.image}} /></a></td>
+              <td><a href= "#"><img src={{wishlist..image}} /></a></td>
               <td><p>{{game.get_description}}</td>
               <td>
                 <div class="small button">
