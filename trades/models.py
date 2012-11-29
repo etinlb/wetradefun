@@ -33,5 +33,6 @@ class Game(models.Model):
 
 class Wishlist(models.Model):
   user = models.ForeignKey(UserProfile, related_name='user_wishlist')
-  wishlist_game = models.ForeignKey(Game)
+  #wishlist_game = models.ForeignKey(Game)
+  giantBombID = models.IntegerField(unique=True)
   datePosted = models.DateTimeField(auto_now_add=True)
