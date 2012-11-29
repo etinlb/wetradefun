@@ -37,9 +37,33 @@
     </div>
 
     <div id="new_listing_confirmation" class="reveal-modal medium">
-      <h2>Are you sure you want to publish a listing for "{{game.name}}"</h2>
-      <a class="success button" href="#" onclick="get_request_publishListing()">Yes</a>
-      <a class="alert button" href="#" onclick="$('#new_listing_confirmation').trigger('reveal:close')">No</a>
+      <h2>Publish listing for <br>{{game.name}}?</h2>
+        <form class="custom"><label for="customDropdown">Select Platform</label>
+          <select style="display:none;" id="customDropdown">
+            {% for platform in game.platforms %}
+            {% if forloop.first %}
+            <option selected>{{platform}}</option>
+            {% else %}
+            <option>{{platform}}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+          <div class="custom dropdown" style="width: 186px;">
+            <a href="#" class="current">{{game.platforms.0}}</a>
+            <a href="#" class="selector"></a>
+            <ul style="width: 184px;">
+              {% for platform in game.platforms %}
+              {% if forloop.first %}
+              <li class="selected">{{platform}}</li>
+              {% else %}
+              <li>{{platform}}</li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </form>
+      <a class="button" href="#" onclick="get_request_publishListing()">Post</a>
+      <a class="alert button" href="#" onclick="$('#new_listing_confirmation').trigger('reveal:close')">Cancel</a>
       <a class="close-reveal-modal">&#215;</a>
     </div>
 
@@ -51,7 +75,7 @@
         <label>Game ID</label>
         <input id="myGame" type="text" placeholder="ID" />
       </form>
-      <a class="success button" href="#" onclick="get_request_makeOffer()">Accept</a>
+      <a class="button" href="#" onclick="get_request_makeOffer()">Offer</a>
       <a class="alert button" href="#" onclick="$('#new_offer_confirmation').trigger('reveal:close')">Cancel</a>
       <a class="close-reveal-modal">&#215;</a>
     </div>
