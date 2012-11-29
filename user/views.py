@@ -56,9 +56,11 @@ def account_management(request):
   listing_dict = {}
   current_listings = list(Currentlist.objects.filter(user = request.user.get_profile()).order_by('-datePosted'))
   for idx, listing in enumerate(current_listings):
-      listing_dict[listing] = list(Transaction.objects.filter(Q(status = 'pending') & Q(receiver = request.user.get_profile())))
+      listing_dict[listing] = list(Transaction.objects.filter(Q(status = 'pending') \
+        & Q(receiver = request.user.get_profile()) & Q(receiver_game = listing.game_listed )))
       # listing_list[idx] = listing_dict 
       # listing_dict['offers'] = 
+  #assert false
   current_offers = list(Transaction.objects.filter(Q(status = 'pending') \
     & Q(sender = request.user.get_profile())))
 

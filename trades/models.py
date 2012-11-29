@@ -36,7 +36,3 @@ class Game(models.Model):
   num_of_listings = models.IntegerField()
   #deck = models.CharField(max_length=256)
 
-class Wishlist(models.Model):
-  user = models.ForeignKey(UserProfile, related_name='user_wishlist')
-  wishlist_game = models.ForeignKey(Game)
-  datePosted = models.DateTimeField(auto_now_add=True)

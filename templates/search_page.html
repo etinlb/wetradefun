@@ -6,34 +6,57 @@
 
 
 
-<table class="twelve">
-        <thead>
-          <tr>
-            <th>Cover</th>
-            <th>Name</th>
-            <th>Avaliable Platforms</th>
-            <th>Games Offered</th>
-            <th>Short Description</th>
-            <th>Genre(s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          {% for game in results %}
+  <table class="three columns">
+    <thead>
+      <tr>
+        <th>Search By Console</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <form class="custom">
+            <label for="checkbox1"><input type="checkbox" id="checkbox1" style="display: none;"><span class="custom checkbox"></span> Xbox 360</label>
+            <label for="checkbox2"><input type="checkbox" id="checkbox2" checked style="display: none;"><span class="custom checkbox checked"></span> PS3</label>
+            <label for="checkbox3"><input type="checkbox" CHECKED id="checkbox3"> Wii</label>
+            <label for="checkbox1"><input type="checkbox" id="checkbox1" style="display: none;"><span class="custom checkbox"></span> Xbox 360</label>
+            <label for="checkbox2"><input type="checkbox" id="checkbox2" checked style="display: none;"><span class="custom checkbox checked"></span> PS3</label>
+            <label for="checkbox3"><input type="checkbox" CHECKED id="checkbox3"> Wii</label>
+          </form>
+        <td>
+      </tr>
+    </tbody>
+  </table>
 
-            <tr>
-              <td><a href="/trades/game/{{game.id}}" class='th'><img class="miniature-result" src="{{game.image}}"></a></td>
-              <td><a href="/trades/game/{{game.id}}">{{game.name}}</a></td>
-              <td>{%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</td>
-              <td>{{game.number_of_listing}}</td>
-              <td>{{game.deck}}</td>
-              <td>{%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</td>
-            </tr>
-          <!--  {% empty %}
-            <p>That game does not exist. Try searching with different search terms.</p> -->
-          {% endfor %}
-        </tbody>
-      </table>
+
+<table class="nine columns">
+  <thead>
+    <tr>
+      <th>Cover</th>
+      <th>Name</th>
+      <th>Avaliable Platforms</th>
+      <th>Games Offered</th>
+      <th>Short Description</th>
+      <th>Genre(s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for game in results %}
+
+      <tr>
+        <td><a href="/trades/game/{{game.id}}" class='th'><img class="miniature-result" src="{{game.image}}"></a></td>
+        <td><a href="/trades/game/{{game.id}}">{{game.name}}</a></td>
+        <td>{%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</td>
+        <td>{{game.number_of_listing}}</td>
+        <td>{{game.deck}}</td>
+        <td>{%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</td>
+      </tr>
+    <!--  {% empty %}
+      <p>That game does not exist. Try searching with different search terms.</p> -->
+    {% endfor %}
+  </tbody>
+</table>
 
 
 

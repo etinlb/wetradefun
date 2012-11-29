@@ -16,9 +16,12 @@ def game_details(request, game_id):
   in_wishlist = False
   if request.user.is_authenticated():
     # TODO make this work when game isn't found in game table, i.e add it to there
-    game = Game.objects.get(giant_bomb_id = game_id )
-    if Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game):
-      in_wishlist = True
+    try:
+      wish_game = Game.objects.get(giant_bomb_id = game_id )
+      if Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = wish_game):
+        in_wishlist = True
+    except Game.DoesNotExist:
+      pass
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
@@ -54,13 +57,16 @@ def search(request):
 def add_to_wish_list(request): 
   # TODO make this add the foreign key 
   if request.is_ajax():
+    # get game from table or add if not there
+    game_id = request.GET.get('game_id')
+    game = get_game_table_by_id(game_id)
     # Check that is not already in wishlist
-    if not Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')):    
+    if not Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game):    
       user_id=request.GET.get('user_id')
       userprofile = request.user.get_profile()
       user_name= userprofile.user.username
       game_id=request.GET.get('game_id')
-      wishlist=Wishlist(user=userprofile, giantBombID=game_id,)
+      wishlist=Wishlist(user=userprofile, game_wanted=game,)
       wishlist.save()
       message=user_name+" added "+game_id+" to their wish list"
     else:
@@ -72,8 +78,10 @@ def add_to_wish_list(request):
 def remove_from_wish_list(request): 
   # TODO make this work with the foreign key 
   if request.is_ajax():
+    game_id = request.GET.get('game_id')
+    game = get_game_table_by_id(game_id)
     try:
-      Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')).delete()
+      Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game).delete()
       message=user_name+" deleted "+game_id+" from their wish list"
     except Exception, e:
       message="not in wishlist"
@@ -159,8 +167,8 @@ def add_to_current_list(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game_id = request.GET.get('game_id')
-    game = s.getGameDetsById(game_id, 'platforms', 'image', 'name', 'id')
-    game = get_game_table(game)
+    #game = s.getGameDetsById(game_id, 'platforms', 'image', 'name', 'id')
+    game = get_game_table_by_id(game_id)
     # game_id = game['id']
     #game = Game.objects.get(id=511)
     #game = add_to_game_table(game)
@@ -171,14 +179,39 @@ def add_to_current_list(request):
       message="Not AJAX"
   return HttpResponse(message)
 
-def get_game_table(game):
-  try:
-    game = Game.objects.get(giant_bomb_id = game['id'])
-    game.num_of_listings = game.num_of_listings + 1
-    game.save()
-  except ObjectDoesNotExist:
-    game = Game(platform = game['platforms'], image_url = game['image'], \
-      name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
-    game.save()
+def put_in_game_table(id):
+  # try:
+  #   game = Game.objects.get(giant_bomb_id = game['id'])
+  #   game.num_of_listings = game.num_of_listings + 1
+  #   game.save()
+  # except ObjectDoesNotExist:
+  game = s.getGameDetsById(id, 'platforms', 'image', 'name', 'id')
+  game = Game(platform = game['platforms'], image_url = game['image'], \
+    name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
+  game.save()
   return game  
+
+def get_game_table_by_id(id):
+  try:
+    game = Game.objects.get(giant_bomb_id = id)
+  except ObjectDoesNotExist:
+    game = put_in_game_table(id)
+  return game
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
