@@ -7,6 +7,8 @@ urlpatterns = patterns('',
     url(r'^trades/', include('trades.urls')),
     url(r'^users/', include('user.urls')),
     url(r'^$', 'views.home'),
+    url(r'^how_to_use', 'views.how_to_use'),
+    url(r'^contact_us', 'views.contact_us')
  # (r'^trades/$', 'trades.views.index'),
 # (r'^trades/save/(?P<users_name>\w+)/$', 'trades.views.save'),
 # (r'^trades/load/(?P<users_id>\d+)/$', 'trades.views.load'),
