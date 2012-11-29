@@ -9,7 +9,7 @@ from django.db import models
 
 class Wishlist(models.Model):
   user = models.ForeignKey(UserProfile, related_name='user_wishlist')
-  giantBombID = models.IntegerField()
+  game_wanted = models.ForeignKey('Game')
   datePosted = models.DateTimeField(auto_now_add=True)
 
 class Currentlist(models.Model):
