@@ -181,3 +181,4 @@ def get_game_table(game):
       name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
     game.save()
   return game  
+
