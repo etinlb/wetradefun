@@ -163,10 +163,10 @@
             </tr>
           </thead>
           <tbody>
-            {% for items in wislist %}
+            {% for game in wishlist %}
             <tr>
-              <td><a href= "#"><img src={{wishlist..image}} /></a></td>
-              <td><p>{{game.get_description}}</td>
+              <td><a href= "/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}" /></a></td>
+              <td><p>{{game.name}}</td>
               <td>
                 <div class="small button">
                   <a href="#" class="small button" onclick ="remove_from_wishlist()">Remove Item</a>
