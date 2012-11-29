@@ -133,36 +133,31 @@ def remove_listing(request):
 
 
 def make_offer(request):
-  if request.is_ajax():
-    userprofile = request.user.get_profile()
-    user_name=userprofile.user.username
-    game1_id=request.GET.get('game1_id')
-    game1 = s.getGameDetsById(game1_id, 'platforms', 'image', 'name', 'id')
-    game1 = get_game_table(game1)
-    game2_id=request.GET.get('game2_id')
-    game2 = s.getGameDetsById(game2_id, 'platforms', 'image', 'name', 'id')
-    game2 = get_game_table(game2)
-    if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
-      for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
-        if userprofile!=currentlist.user:
-          transaction=Transaction(sender=userprofile,
-                  sender_game=game1,
-                  receiver=currentlist.user,
-                  receiver_game=game2,
-                  status = 'pending')
+  if request.user.is_authenticated():
+    if request.is_ajax():
+      userprofile = request.user.get_profile()
+      user_name = userprofile.user.username
+      s_game = request.GET.get('sender_game') # game offered
+      r_game = request.GET.get('receiver_game') # game listed
+      if (s_game.giant_bomb_id != r_game.giant_bomb_id):
+        for listing in Currentlist.objects.filter(game_listed = r_game, status = 'open'):
+          transaction = Transaction(sender=userprofile,
+                  sender_game = s_game,
+                  receiver = listing.user,
+                  receiver_game = r_game,
+                  status = 'offered')
           transaction.save()
           message="Transaction saved"
-        else:
-          message="You already have that game" #we should try to convey these to the user better
-    elif game1_id==game2_id:
-      message="These two games are the same"
-    elif len(Currentlist.objects.filter(giantBombID=game2_id))==0:
-      message="No one has that game"
+      else:
+        message = "These two games are the same"
+    else:
+      message="Not AJAX"
   else:
-    message="Not AJAX"
-  return HttpResponse(message)
+    return render(request,'sign_in.html')
+  
+  return render(request,'sign_in.html')
 
-def add_to_current_list(request):
+def add_listing(request):
   if request.is_ajax():
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
@@ -187,9 +182,9 @@ def put_in_game_table(id):
   # except ObjectDoesNotExist:
   game = s.getGameDetsById(id, 'platforms', 'image', 'name', 'id')
   game = Game(platform = game['platforms'], image_url = game['image'], \
-    name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
+    name = game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
   game.save()
-  return game  
+  return game
 
 def get_game_table_by_id(id):
   try:
