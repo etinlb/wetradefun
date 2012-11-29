@@ -14,7 +14,7 @@ import search as s
 from django.db.models import Avg, Max, Min, Count
 
 from trades.models import *
-from users.sort import *
+from user.sort import *
 # def index(request):
 #     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
 #     return render_to_response('polls/index.html', {'latest_poll_list': latest_poll_list})
@@ -28,23 +28,21 @@ from users.sort import *
 def homepage(request):
 
 
-    mostTradedGames = getMostTradedGames()
-    mostWishlistedGames = getMostWishlistedGames()
-    mostListedGames = getMostListedGames()
+    # mostTradedGames = getMostTradedGames()
+    # mostWishlistedGames = getMostWishlistedGames()
+    # mostListedGames = getMostListedGames()
 
-    return render(request, 'base.html', {
-        'most_traded_games': mostTradedGames,
-        'most_Wishlisted_Games': mostWishlistedGames,
-        'most_Listed_Games': mostListedGames,
-        'username':request.user.username,
-        })
+    return render(request, 'base.html') #{
+    #     'most_traded_games': mostTradedGames,
+    #     'most_Wishlisted_Games': mostWishlistedGames,
+    #     'most_Listed_Games': mostListedGames,
+    #     'username':request.user.username,
+    #     })
     
 
 
 def getMostTradedGames():
-
     orderedTransaction = []
-
     orderedTransactionTmp = Transaction.objects.all()
     for transactionobjects in orderedTransactionTmp:
         if transactionobjects.status == "confirmed":
