@@ -7,10 +7,10 @@ from django.db import models
 #   address = models.CharField(max_length=64)
 #   rating = models.IntegerField()
 
-# class Wishlist(models.Model):
-#   user = models.ForeignKey(UserProfile, related_name='user_wishlist')
-#   game_wanted = models.ForeignKey('Game')
-#   datePosted = models.DateTimeField(auto_now_add=True)
+class Wishlist(models.Model):
+  user = models.ForeignKey(UserProfile, related_name='user_wishlist')
+  game_wanted = models.ForeignKey('Game')
+  datePosted = models.DateTimeField(auto_now_add=True)
 
 class Currentlist(models.Model):
   user = models.ForeignKey(UserProfile)

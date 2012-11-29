@@ -40,6 +40,7 @@ def search(request):
 
   results = s.getList(query, 'name', 'image', 'original_release_date', 
                       'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
+  #assert False
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
@@ -173,6 +174,7 @@ def add_to_current_list(request):
     #game = Game.objects.get(id=511)
     #game = add_to_game_table(game)
     currentlist=Currentlist(user=userprofile, giantBombID=game_id, game_listed = game)
+    # game.num_of_listings += 1
     currentlist.save()
     message=user_name+" add "+game_id+" to his current list"
   else:
@@ -194,7 +196,7 @@ def put_in_game_table(id):
 def get_game_table_by_id(id):
   try:
     game = Game.objects.get(giant_bomb_id = id)
-  except ObjectDoesNotExist:
+  except Game.DoesNotExist:
     game = put_in_game_table(id)
   return game
 

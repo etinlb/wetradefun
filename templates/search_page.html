@@ -29,8 +29,6 @@
               <td>{{game.deck}}</td>
               <td>{%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</td>
             </tr>
-          <!--  {% empty %}
-            <p>That game does not exist. Try searching with different search terms.</p> -->
           {% endfor %}
         </tbody>
       </table>
