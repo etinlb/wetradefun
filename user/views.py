@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 from user.forms import RegistrationForm, LoginForm
+from user import sort
 
 from trades.models import *
 
@@ -66,6 +67,7 @@ def account_management(request):
   hist = list(Transaction.objects.filter(status = 'confirmed', sender = request.user.get_profile()).order_by('-dateTraded'))
   hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', receiver = request.user.get_profile()).order_by('-dateTraded'))
   hist.extend(hist_as_receiver)
+  sort.sort(hist, 'dateTraded', "desc")
 
   return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
