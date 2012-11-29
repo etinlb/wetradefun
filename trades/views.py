@@ -7,8 +7,12 @@ from django.contrib import messages
 from user.forms import RegistrationForm
 from user.models import UserProfile
 from trades.models import *
+<<<<<<< HEAD
 from trades import giantbomb
 import json
+=======
+from django.core.exceptions import ObjectDoesNotExist
+>>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8
 import re
 import search as s
 
@@ -16,8 +20,13 @@ def game_details(request, game_id):
   # Is the game in wishlist?
   in_wishlist = False
   if request.user.is_authenticated():
-    if Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = game_id):
-      in_wishlist = True
+    # TODO make this work when game isn't found in game table, i.e add it to there
+    try:
+      wish_game = Game.objects.get(giant_bomb_id = game_id )
+      if Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = wish_game):
+        in_wishlist = True
+    except Game.DoesNotExist:
+      pass
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
@@ -34,8 +43,13 @@ def search(request):
   # Replace all runs of whitespace with a single dash
   query = re.sub(r"\s+", '+', query)
   results = s.getList(query, 'name', 'image', 'original_release_date', 
+<<<<<<< HEAD
                       'deck', 'platforms', 'id', 'genres', 'site_detail_url')
 
+=======
+                      'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
+  #assert False
+>>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
@@ -49,15 +63,19 @@ def search(request):
 # TODO Handle the game page and search page buttons
 
 # AJAX calls
-def add_to_wish_list(request):  
+def add_to_wish_list(request): 
+  # TODO make this add the foreign key 
   if request.is_ajax():
+    # get game from table or add if not there
+    game_id = request.GET.get('game_id')
+    game = get_game_table_by_id(game_id)
     # Check that is not already in wishlist
-    if not Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')):    
+    if not Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game):    
       user_id=request.GET.get('user_id')
       userprofile = request.user.get_profile()
       user_name= userprofile.user.username
       game_id=request.GET.get('game_id')
-      wishlist=Wishlist(user=userprofile, giantBombID=game_id,)
+      wishlist=Wishlist(user=userprofile, wishlist_game = game)
       wishlist.save()
       message=user_name+" added "+game_id+" to their wish list"
     else:
@@ -66,10 +84,13 @@ def add_to_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
-def remove_from_wish_list(request):  
+def remove_from_wish_list(request): 
+  # TODO make this work with the foreign key 
   if request.is_ajax():
+    game_id = request.GET.get('game_id')
+    game = get_game_table_by_id(game_id)
     try:
-      Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')).delete()
+      Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game).delete()
       message=user_name+" deleted "+game_id+" from their wish list"
     except Exception, e:
       message="not in wishlist"
@@ -77,46 +98,47 @@ def remove_from_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
-  def accept_offer(request):
-    #TODO verify if this is correct
-    if request.is_ajax():
-      transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-      if transaction.status == "offered":
-        transaction.status = "accepted"
-        message = "Please wait for " + reciever + " to make the final trade confirmation"
-        transaction.save()
-      else:
-        message="that trade is no longer available or has already been accepted"
+def accept_offer(request):
+  #TODO verify if this is correct
+  if request.is_ajax():
+    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    if transaction.status == "offered":
+      transaction.status = "accepted"
+      message = "Please wait for " + reciever + " to make the final trade confirmation"
+      transaction.save()
     else:
-      message="Not AJAX"
-    return HttpResponse(message)
+      message="that trade is no longer available or has already been accepted"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
 
 
-  def decline_offer(request):
-    if request.is_ajax():
-      transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-      if transaction.status == "offered":
-        transaction.status = "declined"
-        message = "this listing is now closed"
-        transaction.save()
-      else:
-        message="that trade is no longer available or has already been accepted"
+def decline_offer(request):
+  if request.is_ajax():
+    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    if transaction.status == "offered":
+      transaction.status = "declined"
+      message = "this listing is now closed"
+      transaction.save()
     else:
-      message="Not AJAX"
-    return HttpResponse(message)
+      message="that trade is no longer available or has already been accepted"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
 
-  def remove_listing(request):
-    if request.is_ajax():
-      listing = CurrentList.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get("game_id"))
-      if listing.status == "opened": #open is a keyword
-        listing.status = "closed"
-        message = "You have cancelled your listing"
-        listing.save()
-      else:
-        message="You have already cancelled this listing or the trade has been finalized."
+def remove_listing(request):
+  # TODO make this with the foreign key game
+  if request.is_ajax():
+    listing = CurrentList.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get("game_id"))
+    if listing.status == "opened": #open is a keyword
+      listing.status = "closed"
+      message = "You have cancelled your listing"
+      listing.save()
     else:
-      message="Not AJAX"
-    return HttpResponse(message)
+      message="You have already cancelled this listing or the trade has been finalized."
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
 
 
 def make_offer(request):
@@ -124,16 +146,23 @@ def make_offer(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game1_id=request.GET.get('game1_id')
+    game1 = s.getGameDetsById(game1_id, 'platforms', 'image', 'name', 'id')
+    game1 = get_game_table(game1)
     game2_id=request.GET.get('game2_id')
+    game2 = s.getGameDetsById(game2_id, 'platforms', 'image', 'name', 'id')
+    game2 = get_game_table(game2)
     if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
       for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
         if userprofile!=currentlist.user:
           transaction=Transaction(sender=userprofile,
-                  sender_game=game1_id,
+                  sender_game=game1,
                   receiver=currentlist.user,
-                  receiver_game=game2_id)
+                  receiver_game=game2,
+                  status = 'pending')
           transaction.save()
           message="Transaction saved"
+        else:
+          message="You already have that game" #we should try to convey these to the user better
     elif game1_id==game2_id:
       message="These two games are the same"
     elif len(Currentlist.objects.filter(giantBombID=game2_id))==0:
@@ -146,14 +175,21 @@ def add_to_current_list(request):
   if request.is_ajax():
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
-    game_id=request.GET.get('game_id')
-    currentlist=Currentlist(user=userprofile, giantBombID=game_id,)
+    game_id = request.GET.get('game_id')
+    #game = s.getGameDetsById(game_id, 'platforms', 'image', 'name', 'id')
+    game = get_game_table_by_id(game_id)
+    # game_id = game['id']
+    #game = Game.objects.get(id=511)
+    #game = add_to_game_table(game)
+    currentlist=Currentlist(user=userprofile, giantBombID=game_id, game_listed = game)
+    game.num_of_listings += 1
     currentlist.save()
     message=user_name+" add "+game_id+" to his current list"
   else:
       message="Not AJAX"
   return HttpResponse(message)
 
+<<<<<<< HEAD
 def get_request(request):
   if request.is_ajax():
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
@@ -167,7 +203,61 @@ def get_request(request):
       game_json['label']=game.name
       results.append(game_json)
     message=json.dumps(results)
+=======
+def put_in_game_table(id):
+  # try:
+  #   game = Game.objects.get(giant_bomb_id = game['id'])
+  #   game.num_of_listings = game.num_of_listings + 1
+  #   game.save()
+  # except ObjectDoesNotExist:
+  game = s.getGameDetsById(id, 'platforms', 'image', 'name', 'id')
+  game = Game(platform = game['platforms'], image_url = game['image'], \
+    name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
+  game.save()
+  return game  
+
+def get_game_table_by_id(id):
+  try:
+    game = Game.objects.get(giant_bomb_id = id)
+  except Game.DoesNotExist:
+    game = put_in_game_table(id)
+  return game
+
+
+def add_message(request):
+
+  if request.is_ajax():
+    if request.method == 'POST': # If the form has been submitted..
+      transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+      userprofile = request.user.get_profile()
+      usermessage = Message(content = request.POST) #??
+      usermessage.save()
+      if transaction.receiver == userprofile:
+        transaction.receiver_message =  usermessage
+      elif transaction.sender == userprofile:
+        transaction.receiver_message = usermessage
+      message = "Your message has been successfully sent"
+    else:
+      message = "Error"
+
+>>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8
   else:
     message="Not AJAX"
   return HttpResponse(message)
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8

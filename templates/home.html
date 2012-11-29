@@ -1,41 +1,136 @@
 {% extends 'base.html' %}
-{% block title %}It works!{% endblock %}
 
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 {% block content %}
-<h1>It works!</h1>
-<p>
-Your Django-nonrel installation is working fine. Now go and build something useful with it. :)
-</p>
 
-<p>
-If you'd like to learn more about using Django-nonrel take a look at the <a href="http://readthedocs.org/docs/django-nonrel">documentation</a>.
-You may also want to follow the <a href="https://github.com/django-nonrel">project on GitHub</a> or subscribe to its <a href="https://groups.google.com/group/django-non-relational">google group</a> so you don't miss any new features and improvements.
-</p>
+<head>
+  <meta charset="utf-8" />
 
-<p>
-If you're new to Django you should take a look at the <a href="http://docs.djangoproject.com/">Django documentation</a> and the <a href="http://www.djangobook.com/">Django book</a>.
-You'll also find <a href="http://djangosnippets.org/">djangosnippets</a> very useful.
-</p>
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
 
-<p>
-If you have an existing Django project that you'd like to use with a non-relational back-end or would simply like to learn what are the differences between the normal Django and its non-relational version take a look at: <a href="http://readthedocs.org/docs/django-nonrel/en/latest/content/porting.html">porting</a>.
-</p>
+  <title> We Trade Fun Homepage</title>
+  
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.css">
+  -->
+  
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="stylesheets/normalize.css">
+  <link rel="stylesheet" href="stylesheets/main.css">
+  <link rel="stylesheet" href="stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="stylesheets/app.css">
 
-<p>
-If you search for reusable apps that work with Django-nonrel here's a list to get you started:
-</p>
+  <script src="javascripts/modernizr.foundation.js"></script>
 
-<ul>
-  <li><a href="https://github.com/django-nonrel/django-dbindexer">django-dbindexer</a>: Emulates extra database features beyond its native API (filters like __iexact, __endswith and simple JOINs); those features are used by some Django modules (admin, auth)</li>
-  <li><a href="https://github.com/django-nonrel/django-permission-backend-nonrel">django-permission-backend-nonrel</a>: Authentication backend that works with non-relation databases</li>
-  <li><a href="https://github.com/django-nonrel/nonrel-search">nonrel-search</a>: A simple full-text search engine for App Engine and other non-relational DBs</li>
-  <li><a href="http://readthedocs.org/docs/django-nonrel/en/latest/content/django-mediagenerator%20asset%20manager.html">django-mediagenerator</a>: Combines and compresses your JS and CSS files</li>
-  <li><a href="http://readthedocs.org/docs/django-nonrel/en/latest/content/django-filetransfers%20-%20File%20upload-download%20abstraction.html">django-filetransfers</a>: Generic API for file uploads/downloads (e.g. via App Engine Blobstore)</li>
-  <li><a href="http://readthedocs.org/docs/django-nonrel/en/latest/content/All%20Buttons%20Pressed%20-%20CMS%20&amp;%20blog%20for%20Django-nonrel.html">allbuttonspressed</a>: The simple CMS/blog that powers the original <a href="http://www.allbuttonspressed.com">Django-nonrel website</a></li>
-  <li><a href="https://github.com/django-nonrel">...and other nonrel projects...</a></li>
-</ul>
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 
-<p>
-Finally, take a look at the apps listed on <a href="http://djangopackages.com/">Django Packages</a>. Many simple Django apps (e.g., <a href="https://bitbucket.org/ubernostrum/django-registration">django-registration</a>) should work unmodified. If you want to use <a href="http://robhudson.github.com/django-debug-toolbar/">django-debug-toolbar</a> you need to disable the SQLDebugPanel in your settings.
-</p>
+</head>
+<body>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="panel callout radius twelve columns centered">
+        <h1>WE TRADE FUN!</h3>
+        <p><a class="large button round button">Sign up &raquo;</a></p>
+      </div>
+
+      <!-- Example row of columns -->
+      
+        <div class="row">
+          <h2>Most Traded Games</h2>
+            <div class="row eleven columns centered">
+            <ul class="block-grid five-up">
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+          </ul>
+</div>
+    </div>
+
+
+
+        <div class="row">
+          <h2>Recent Listings</h2>
+            <div class="row eleven columns centered">
+            <ul class="block-grid five-up">
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
+          </ul>
+</div>
+    </div>
+
+        
+      
+
+    </div> <!-- /container -->
+       
 {% endblock %}
+
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  <script src="javascripts/jquery.foundation.topbar.js"></script>
+  
+  <script src="javascripts/jquery.foundation.joyride.js"></script>
+  
+  <script src="javascripts/jquery.foundation.clearing.js"></script>
+  
+  <script src="javascripts/jquery.foundation.magellan.js"></script>
+  
+  -->
+  
+  <!-- Included JS Files (Compressed) -->
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/foundation.min.js"></script>
+  
+  <!-- Initialize JS Plugins -->
+  <script src="javascripts/app.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+  </script>
+</body>
+</html>

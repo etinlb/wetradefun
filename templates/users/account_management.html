@@ -1,85 +1,8 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8" />
+{% block title %}{{user.name}}{% endblock %}
 
-  <!-- Set the viewport width to device width for mobile -->
-  <meta name="viewport" content="width=device-width" />
-
-  <title>Welcome to Foundation | Blog</title>
-
-  <!-- Included CSS Files (Uncompressed) -->
-  <!--
-  <link rel="stylesheet" href="stylesheets/foundation.css">
--->
-
-<!-- Included CSS Files (Compressed) -->
-<link rel="stylesheet" href="/static/stylesheets/foundation.min.css">
-<link rel="stylesheet" href="/static/stylesheets/app.css">
-
-<script src="/static/javascripts/modernizr.foundation.js"></script>
-</head>
-<body>
-
-  <!-- Top Bar -->
-
-  <nav class="top-bar">
-    <ul>
-      <!-- Title Area -->
-      <li class="name">
-        <h1>
-          <a href="#">
-            We Trade Fun
-          </a>
-        </h1>
-      </li>
-      <li class="toggle-topbar"><a href="#"></a></li>
-    </ul>
-
-    <section>
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">User</a>
-          <ul class="dropdown">
-            <li><label>Section Name</label></li>
-            <li class="has-dropdown">
-              <a href="#" class="">Has Dropdown, Level 1</a>
-              <ul class="dropdown">
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Level 2</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><label>Section Name</label></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><a href="#">See all &rarr;</a></li>
-          </ul>
-        </li>
-        <li class="divider"></li>
-        <li><a href="#">Main Item 2</a></li>
-      </ul>
-    </section>
-  </nav>
-
-  <!-- End Top Bar -->
-
-  <!-- Main Page Content and Sidebar -->
+{% block content %}
 
 <div class="row">
   <div class="twelve columns">
@@ -94,136 +17,96 @@
 
     <ul class="tabs-content">
       <li class="active" id="currentListingsTab">
-        <table class="twelve columns">
+        <table class="twelve">
           <thead>
             <tr>
-              <th>My Listing</th>
-              <th>Date Posted</th>
-              <th>Current Offers</th>
+              <th class="four columns">My Listing</th>
+              <th class="four columns">Information</th>
+              <th class="four columns">Current Offers</th>
             </tr> 
           </thead>
           <tbody>
             <tr>
-              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><br /></a></td>
-              <td>Febtober 2001</td>
-              <td>
+              {% for key, value in listing_dict.items %}
+              <td class="four columns">
+                  <a href="#"><img src="{{key.game_listed.image_url}}"/><br /></a>
+                  <a href="#" onclick="remove_listing()" class="small alert button">Remove Listing</a>
+              </td>
+              <td class="four columns">
+                <ul class="no-bullet">
+                  <li>{{key.game_listed.name}}</li>
+                  <li>{{key.game_listed.platform}}</li>
+                  <li>Posted :{{key.datePosted}}</li>
+                </ul>
+              </td>
+              <td class="four columns">
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
+                      {% for offer in value %}
                       <li>
-                        <a href="http://www.giantbomb.com/halo-4/61-35533/">Halo 3</a>
+                        <a href=/trades/game/{{offer.sender_game.giant_bomb_id}}>{{offer.sender_game.name}}</a>
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
-                            <a href="#" class="small button">Accept Offer</a>
+                            <a href="#" onclick="accept_offer()"  class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" class="small button">Decline Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Remove Listing</a>
-                          </li>                            
+                            <a href="#" onclick="decline_offer()" class="small alert button">Decline Offer</a>
+                          </li>                          
                         </ul>
                       </li>
                       <li>
-                        <p>YO THIS IS PERFECT QUALITY</p>
+                        <p>This is great quality</p>
                       </li>
+                      {% endfor %}
                     </ul>
                   </li>
-
                   <hr>
-
-                  <li>
-                    <ul class="no-bullet">
-                      <li>
-                        <a href="http://media.giantbomb.com">Halo 2</a>
-                      </li>
-                      <li class="button-bar">
-                        <ul class="button-group">
-                          <li>
-                            <a href="#" class="small button">Accept Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Decline Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Remove Listing</a>
-                          </li>                             
-                        </ul>
-                      </li>
-                      <li>
-                        <p>Shit quality but ill throw in a nickle</p>
-                      </li>
-                    </ul>                      
-                  </li>
-
-                  <hr>
-
-                  <li>
-                    <ul class="no-bullet">
-                      <li>
-                        <a href="http://media.giantbomb.com">Halo 2</a>
-                      </li>
-                      <li class="button-bar">
-                        <ul class="button-group">
-                          <li>
-                            <a href="#" class="small button">Accept Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Decline Offer</a>
-                          </li>
-                          <li>
-                            <a href="#" class="small button">Remove Listing</a>
-                          </li>                             
-                        </ul>
-                      </li>
-                      <li>
-                        <p>Third Offer</p>
-                      </li>
-                    </ul>                      
-                  </li>
-
                 </ul>
               </td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
       </li>
       <li id="currentOffersTab">
-        <table class="twelve columns">
+        <table class="twelve">
           <thead>
             <tr>
-              <th>Listing</th>
-              <th>My Offer</th>
-              <th>Date Offered</th>
-              <th>Status</th>
+              <th class="three columns">Listing</th>
+              <th class="three columns">My Offer</th>
+              <th class="three columns">Date Offered</th>
+              <th class="three columns">Status</th>
             </tr>              
           </thead>
           <tbody>
+            {% for offer in current_offers %}
             <tr>
-              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td>Nov 12 2012</td>
+              <td class = "three columns"><a href=/trades/game/{{offer.receiver_game.giant_bomb_id}}><img src="{{offer.receiver_game.image_url}}"/></a></td>
+              <td class = "three columns"><a href=/trades/game/{{offer.sender_game.giant_bomb_id}}><img src="{{offer.sender_game.image_url}}" /></a></td>
+              <td class = "three columns">{{offer.dateRequested}}</td>
 
-              <td>
+              <td class = "three columns">
                 <ul class="no-bullet">
                   <li>
-                    Accepted
+                    {{offer.status}}
                   </li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
-                        <a href="#" class="small button">Confirm Trade</a>
+                        <a href="#" onclick="confirm_offer()" class="small button">Confirm Trade</a>
                       </li>
                       <li>
-                        <a href="#" class="small button">Cancel Trade</a>
+                        <a href="#" onclock="cancel_offer()" class="small button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
                 </ul>
               </td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
       </li>
@@ -238,34 +121,35 @@
             </tr>
           </thead>
           <tbody>
+            {% for past_trades in history %}
             <tr>
-              <td><a href="#"><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /></a></td>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td>Nov 12 2012</td>
+              <td><a href="#"><img src={{transaction.receiver_giantBombID.image}} /></a></td>
+              <td><a href= "#"><img src={{transaction.sender_giantBombID.image}} /></a></td>
+              <td>{{transaction.date}}</td>
               <td>
                 <ul class="no-bullet">
                   <li>
-                      ellisbigelow@gmail.com
+                      {{user.email}}
                     </li>
                     <li class="button-bar">
                       <ul class="button-group">
                         <li class="small dropdown button">
                           Rate User
                           <ul>
-                            <li><a href="#">5: Excellent</a></li>
-                            <li><a href="#">4: Good</a></li>
-                            <li><a href="#">3: Acceptable</a></li>
-                            <li><a href="#">2: Would Not Trade Again</a></li>
-                            <li><a href="#">1: Criminal</a></li>
+                            <li><a href="#" onclick="rate_user(5)">5: Excellent</a></li>
+                            <li><a href="#" onclick="rate_user(4)">4: Good</a></li>
+                            <li><a href="#" onclick="rate_user(3)">3: Acceptable</a></li>
+                            <li><a href="#" onclick="rate_user(2)">2: Would Not Trade Again</a></li>
+                            <li><a href="#" onclick="rate_user(1)">1: Criminal</a></li>
                           </ul>
                         </li>
-                        <li><a href="#" class="small button">Report User</a></li>
+                        <li><a href="#" class="small button" onclick ="report_user()">Report User</a></li>
                       </ul>
                     </li>
                 </ul>
-
               </td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
       </li>
@@ -279,24 +163,17 @@
             </tr>
           </thead>
           <tbody>
+            {% for item in wishlist %}
             <tr>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
+              <td><a href= "/trades/game/{{item.wishlist_game.giant_bomb_id}}"><img src="{{item.wishlist_game.image_url}}" /></a></td>
+              <td><p>{{item.wishlist_game.name}}</td>
               <td>
                 <div class="small button">
-                  Remove
+                  <a href="#" class="small button" onclick ="remove_from_wishlist()">Remove Item</a>
                 </div>
               </td>
             </tr>
-            <tr>
-              <td><a href= "#"><img src="http://media.giantbomb.com/uploads/4/49962/1120752-jak_and_daxter_limited_edition_movie.png" /></a></td>
-              <td><p>Jak and Daxter <br>wefwefawdawd<br>ergerger<br>description</p></td>
-              <td>
-                <div class="small button">
-                  Remove
-                </div>
-              </td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
         <form class="search four columns">
@@ -307,75 +184,19 @@
   </div>
 </div>
 
+{% endblock %}
   <!-- End Main Content and Sidebar -->
 
 
-  <!-- Footer -->
 
-  <footer class="row">
-    <div class="twelve columns">
-      <hr />
-      <div class="row">
-        <div class="six columns">
-          <p>&copy; Copyright no one at all. Go to town.</p>
-        </div>
-        <div class="six columns">
-          <ul class="link-list right">
-            <li><a href="#">Link 1</a></li>
-            <li><a href="#">Link 2</a></li>
-            <li><a href="#">Link 3</a></li>
-            <li><a href="#">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- End Footer -->
-
-  <!-- Included JS Files (Uncompressed) -->
-  <!--
-  
-  <script src="javascripts/jquery.js"></script>
-  
-  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-  
-  <script src="javascripts/jquery.foundation.forms.js"></script>
-  
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
-  
-  <script src="javascripts/jquery.foundation.orbit.js"></script>
-  
-  <script src="javascripts/jquery.foundation.navigation.js"></script>
-  
-  <script src="javascripts/jquery.foundation.buttons.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tabs.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tooltips.js"></script>
-  
-  <script src="javascripts/jquery.foundation.accordion.js"></script>
-  
-  <script src="javascripts/jquery.placeholder.js"></script>
-  
-  <script src="javascripts/jquery.foundation.alerts.js"></script>
-  
-  <script src="javascripts/jquery.foundation.topbar.js"></script>
-  
-  <script src="javascripts/jquery.foundation.joyride.js"></script>
-  
-  <script src="javascripts/jquery.foundation.clearing.js"></script>
-  
-  <script src="javascripts/jquery.foundation.magellan.js"></script>
-  
--->
+ 
 
 <!-- Included JS Files (Compressed) -->
-<script src="/static/javascripts/jquery.js"></script>
-<script src="/static/javascripts/foundation.min.js"></script>
+<script src="javascripts/jquery.js"></script>
+<script src="javascripts/foundation.min.js"></script>
 
 <!-- Initialize JS Plugins -->
-<script src="/static/javascripts/app.js"></script>
+<script src="javascripts/app.js"></script>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
