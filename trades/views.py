@@ -199,8 +199,25 @@ def get_game_table_by_id(id):
   return game
 
 
+def add_message(request):
 
+  if request.is_ajax():
+    if request.method == 'POST': # If the form has been submitted..
+      transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+      userprofile = request.user.get_profile()
+      usermessage = Message(content = request.POST) #??
+      usermessage.save()
+      if transaction.receiver == userprofile:
+        transaction.receiver_message =  usermessage
+      elif transaction.sender == userprofile:
+        transaction.receiver_message = usermessage
+      message = "Your message has been successfully sent"
+    else:
+      message = "Error"
 
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
 
 
 
