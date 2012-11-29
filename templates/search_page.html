@@ -18,7 +18,9 @@
           </tr>
         </thead>
         <tbody>
+          
           {% for game in results %}
+
             <tr>
               <td><a href="/trades/game/{{game.id}}" class='th'><img class="miniature-result" src="{{game.image}}"></a></td>
               <td><a href="/trades/game/{{game.id}}">{{game.name}}</a></td>
@@ -27,6 +29,8 @@
               <td>{{game.deck}}</td>
               <td>{%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</td>
             </tr>
+          <!--  {% empty %}
+            <p>That game does not exist. Try searching with different search terms.</p> -->
           {% endfor %}
         </tbody>
       </table>
