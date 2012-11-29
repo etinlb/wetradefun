@@ -5,7 +5,6 @@ from django.db import models
 # Create your models here.
 class UserProfile(models.Model):
   user = models.ForeignKey(User, unique=True, null=True)
-
   address = models.CharField(max_length=64, null=True)
   rating = models.IntegerField(null=True)
 

@@ -18,7 +18,7 @@ def game_details(request, game_id):
     # TODO make this work when game isn't found in game table, i.e add it to there
     try:
       wish_game = Game.objects.get(giant_bomb_id = game_id )
-      if Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = wish_game):
+      if Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = wish_game):
         in_wishlist = True
     except Game.DoesNotExist:
       pass
@@ -40,6 +40,7 @@ def search(request):
 
   results = s.getList(query, 'name', 'image', 'original_release_date', 
                       'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
+  #assert False
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
@@ -61,12 +62,12 @@ def add_to_wish_list(request):
     game_id = request.GET.get('game_id')
     game = get_game_table_by_id(game_id)
     # Check that is not already in wishlist
-    if not Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game):    
+    if not Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game):    
       user_id=request.GET.get('user_id')
       userprofile = request.user.get_profile()
       user_name= userprofile.user.username
       game_id=request.GET.get('game_id')
-      wishlist=Wishlist(user=userprofile, game_wanted=game,)
+      wishlist=Wishlist(user=userprofile, wishlist_game = game)
       wishlist.save()
       message=user_name+" added "+game_id+" to their wish list"
     else:
@@ -81,7 +82,7 @@ def remove_from_wish_list(request):
     game_id = request.GET.get('game_id')
     game = get_game_table_by_id(game_id)
     try:
-      Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game).delete()
+      Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game).delete()
       message=user_name+" deleted "+game_id+" from their wish list"
     except Exception, e:
       message="not in wishlist"
@@ -173,6 +174,7 @@ def add_to_current_list(request):
     #game = Game.objects.get(id=511)
     #game = add_to_game_table(game)
     currentlist=Currentlist(user=userprofile, giantBombID=game_id, game_listed = game)
+    game.num_of_listings += 1
     currentlist.save()
     message=user_name+" add "+game_id+" to his current list"
   else:
@@ -194,7 +196,7 @@ def put_in_game_table(id):
 def get_game_table_by_id(id):
   try:
     game = Game.objects.get(giant_bomb_id = id)
-  except ObjectDoesNotExist:
+  except Game.DoesNotExist:
     game = put_in_game_table(id)
   return game
 

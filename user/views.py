@@ -54,20 +54,22 @@ def sign_in(request):
 def account_management(request):
   listing_list = {}
   listing_dict = {}
-  current_listings = list(Currentlist.objects.filter(user = request.user.get_profile()).order_by('-datePosted'))
+  current_listings = list(Currentlist.objects.filter(\
+    user = request.user.get_profile()).order_by('-datePosted'))
   for idx, listing in enumerate(current_listings):
-      listing_dict[listing] = list(Transaction.objects.filter(Q(status = 'pending') \
-        & Q(receiver = request.user.get_profile()) & Q(receiver_game = listing.game_listed )))
-      # listing_list[idx] = listing_dict 
-      # listing_dict['offers'] = 
+      listing_dict[listing] = list(Transaction.objects.filter(Q(status = \
+        'pending') & Q(receiver = request.user.get_profile()) & \
+      Q(receiver_game = listing.game_listed )))
   #assert false
   current_offers = list(Transaction.objects.filter(Q(status = 'pending') \
     & Q(sender = request.user.get_profile())))
 
   wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))
 
-  hist = list(Transaction.objects.filter(status = 'confirmed', sender = request.user.get_profile()).order_by('-dateTraded'))
-  hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', receiver = request.user.get_profile()).order_by('-dateTraded'))
+  hist = list(Transaction.objects.filter(status = 'confirmed', \
+    sender = request.user.get_profile()).order_by('-dateTraded'))
+  hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', \
+    receiver = request.user.get_profile()).order_by('-dateTraded'))
   hist.extend(hist_as_receiver)
   sort.sort(hist, 'dateTraded', "desc")
 
