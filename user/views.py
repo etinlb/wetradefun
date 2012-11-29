@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 from user.forms import RegistrationForm, LoginForm
+from user import sort
 
 from trades.models import *
 
@@ -58,20 +59,23 @@ def account_management(request):
       listing_dict[listing] = list(Transaction.objects.filter(Q(status = 'pending') & Q(receiver = request.user.get_profile())))
       # listing_list[idx] = listing_dict 
       # listing_dict['offers'] = 
+  current_offers = list(Transaction.objects.filter(Q(status = 'pending') \
+    & Q(sender = request.user.get_profile())))
 
-
-  wish_list = list(Wishlist.objects.filter(user = request.user.get_profile()))
+  wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))
 
   hist = list(Transaction.objects.filter(status = 'confirmed', sender = request.user.get_profile()).order_by('-dateTraded'))
   hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', receiver = request.user.get_profile()).order_by('-dateTraded'))
   hist.extend(hist_as_receiver)
+  sort.sort(hist, 'dateTraded', "desc")
 
   return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
-    'wish_list': wish_list,
+    'wishlist': wishlist,
     'history': hist,
     'listing_dict':listing_dict,
-    'username':request.user.username
+    'username':request.user.username,
+    'current_offers':current_offers
     })
 
 def sign_up(request):

@@ -15,7 +15,9 @@ def game_details(request, game_id):
   # Is the game in wishlist?
   in_wishlist = False
   if request.user.is_authenticated():
-    if Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = game_id):
+    # TODO make this work when game isn't found in game table, i.e add it to there
+    game = Game.objects.get(giant_bomb_id = game_id )
+    if Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game):
       in_wishlist = True
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
@@ -49,7 +51,8 @@ def search(request):
 # TODO Handle the game page and search page buttons
 
 # AJAX calls
-def add_to_wish_list(request):  
+def add_to_wish_list(request): 
+  # TODO make this add the foreign key 
   if request.is_ajax():
     # Check that is not already in wishlist
     if not Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')):    
@@ -66,7 +69,8 @@ def add_to_wish_list(request):
     message="Not AJAX" 
   return HttpResponse(message)
 
-def remove_from_wish_list(request):  
+def remove_from_wish_list(request): 
+  # TODO make this work with the foreign key 
   if request.is_ajax():
     try:
       Wishlist.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get('game_id')).delete()
@@ -106,6 +110,7 @@ def decline_offer(request):
   return HttpResponse(message)
 
 def remove_listing(request):
+  # TODO make this with the foreign key game
   if request.is_ajax():
     listing = CurrentList.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get("game_id"))
     if listing.status == "opened": #open is a keyword
@@ -140,7 +145,7 @@ def make_offer(request):
           transaction.save()
           message="Transaction saved"
         else:
-          message="You already have that game"
+          message="You already have that game" #we should try to convey these to the user better
     elif game1_id==game2_id:
       message="These two games are the same"
     elif len(Currentlist.objects.filter(giantBombID=game2_id))==0:
