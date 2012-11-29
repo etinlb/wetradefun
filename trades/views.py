@@ -62,12 +62,12 @@ def add_to_wish_list(request):
     game_id = request.GET.get('game_id')
     game = get_game_table_by_id(game_id)
     # Check that is not already in wishlist
-    if not Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game):    
+    if not Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game):    
       user_id=request.GET.get('user_id')
       userprofile = request.user.get_profile()
       user_name= userprofile.user.username
       game_id=request.GET.get('game_id')
-      wishlist=Wishlist(user=userprofile, game_wanted=game,)
+      wishlist=Wishlist(user=userprofile, wishlist_game = game)
       wishlist.save()
       message=user_name+" added "+game_id+" to their wish list"
     else:
@@ -82,7 +82,7 @@ def remove_from_wish_list(request):
     game_id = request.GET.get('game_id')
     game = get_game_table_by_id(game_id)
     try:
-      Wishlist.objects.filter(user = request.user.get_profile(), game_wanted = game).delete()
+      Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game).delete()
       message=user_name+" deleted "+game_id+" from their wish list"
     except Exception, e:
       message="not in wishlist"
@@ -201,8 +201,25 @@ def get_game_table_by_id(id):
   return game
 
 
+def add_message(request):
 
+  if request.is_ajax():
+    if request.method == 'POST': # If the form has been submitted..
+      transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+      userprofile = request.user.get_profile()
+      usermessage = Message(content = request.POST) #??
+      usermessage.save()
+      if transaction.receiver == userprofile:
+        transaction.receiver_message =  usermessage
+      elif transaction.sender == userprofile:
+        transaction.receiver_message = usermessage
+      message = "Your message has been successfully sent"
+    else:
+      message = "Error"
 
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
 
 
 
