@@ -161,20 +161,21 @@ def make_offer(request):
 def add_listing(request):
   if request.is_ajax():
     userprofile = request.user.get_profile()
-    user_name=userprofile.user.username
+    user_name = userprofile.user.username
     game_id = request.GET.get('game_id')
     #game = s.getGameDetsById(game_id, 'platforms', 'image', 'name', 'id')
     game = get_game_table_by_id(game_id)
     # game_id = game['id']
     #game = Game.objects.get(id=511)
     #game = add_to_game_table(game)
-    currentlist=Currentlist(user=userprofile, giantBombID=game_id, game_listed = game)
+    listing = Currentlist(user = userprofile, giantBombID = game_id, game_listed=game)
     game.num_of_listings += 1
-    currentlist.save()
-    message=user_name+" add "+game_id+" to his current list"
+    listing.save()
+    message = user_name + " add " + game_id + " to his current list"
   else:
-      message="Not AJAX"
-  return HttpResponse(message)
+    message = "Not AJAX"
+  
+  return render(request,'/')
 
 def put_in_game_table(id):
   # try:
