@@ -7,3 +7,7 @@ import search as s
 
 def home(request):
   return render(request,'base.html')
+def how_to_use(request):
+	return render(request, 'static/how_to_use.html')
+def contact_us(request):
+	return render(request, 'static/contact_us.html')

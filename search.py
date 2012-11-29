@@ -62,7 +62,7 @@ def parseFieldsJson(file, params):
     x['genres'] = []
     x['platforms'] = []
     if x['image'] != None:
-      x['image'] = x['image']['icon_url']  
+      x['image'] = x['image']['icon_url']
     #get the platform and genre
     if getGen and getPlat:
       game = getGameDetsById(str(x['id']), 'platforms', 'genres')

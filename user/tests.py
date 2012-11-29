@@ -107,8 +107,8 @@ class Test1(unittest.TestCase):
         self.wishlist15 = Wishlist.objects.create(user=self.edwardProfile, wishlist_game=self.HaloGame, datePosted=datetime.date(2010, 10, 10))
 
     def test_sort_desc(self):
-        h = list(Transaction.objects.filter(sender=self.allenProfile).order_by('-dateTraded'))
-        bob_h = list(Transaction.objects.filter(sender=self.bobProfile).order_by('-dateTraded'))
+        h = list(Transaction.objects.filter(sender=self.allenProfile))
+        bob_h = list(Transaction.objects.filter(sender=self.bobProfile))
         h.extend(bob_h)
 
         print "\n*** Unsorted List ***"
