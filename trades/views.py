@@ -7,6 +7,8 @@ from django.contrib import messages
 from user.forms import RegistrationForm
 from user.models import UserProfile
 from trades.models import *
+from trades import giantbomb
+import json
 import re
 import search as s
 
@@ -31,19 +33,18 @@ def search(request):
 
   # Replace all runs of whitespace with a single dash
   query = re.sub(r"\s+", '+', query)
-
   results = s.getList(query, 'name', 'image', 'original_release_date', 
-                      'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
+                      'deck', 'platforms', 'id', 'genres', 'site_detail_url')
+
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
   for x in results:
     x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id']).count()
 
-    if x['number_of_listing'] == None:
-      x['number_of_listing'] = 0
-   
-  return render(request,'search_page.html', {'results':results})  
+  if x['number_of_listing'] == None:
+    x['number_of_listing'] = 0
+  return render(request,'search_page.html', {'results':results})
 
 # TODO Handle the game page and search page buttons
 
@@ -128,9 +129,9 @@ def make_offer(request):
       for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
         if userprofile!=currentlist.user:
           transaction=Transaction(sender=userprofile,
-                  sender_giantBombID=game1_id,
+                  sender_game=game1_id,
                   receiver=currentlist.user,
-                  receiver_giantBombID=game2_id)
+                  receiver_game=game2_id)
           transaction.save()
           message="Transaction saved"
     elif game1_id==game2_id:
@@ -151,5 +152,22 @@ def add_to_current_list(request):
     message=user_name+" add "+game_id+" to his current list"
   else:
       message="Not AJAX"
+  return HttpResponse(message)
+
+def get_request(request):
+  if request.is_ajax():
+    gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+    inputString=request.GET.get('term')
+    games=gb.search(inputString)
+    results=[]
+    for game in games:
+      game_json={}
+      game_json['id']=game.id 
+      game_json['value']=game.name 
+      game_json['label']=game.name
+      results.append(game_json)
+    message=json.dumps(results)
+  else:
+    message="Not AJAX"
   return HttpResponse(message)
 

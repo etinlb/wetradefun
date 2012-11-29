@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^remove_from_wish_list/$', 'trades.views.remove_from_wish_list'),
     url(r'^make_offer/$', 'trades.views.make_offer'),
     url(r'^list_game/$', 'trades.views.add_to_current_list'),
+    url(r'^get_request/$', 'trades.views.get_request')
 )

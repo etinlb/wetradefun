@@ -16,10 +16,13 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
   <!-- Included CSS Files (Compressed) -->
   <link rel="stylesheet" href="/static/stylesheets/foundation.min.css">
   <link rel="stylesheet" href="/static/stylesheets/app.css">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
   {% block css %}
   {% endblock %}
 
   <script src="/static/javascripts/modernizr.foundation.js"></script>
+ 
+
   {% block preload_js %}
   {% endblock %}
 
@@ -193,6 +196,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
 <!-- Included JS Files (Compressed) -->
 <script src="/static/javascripts/jquery.js"></script>
 <script src="/static/javascripts/foundation.min.js"></script>
+ <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
 <!-- Initialize JS Plugins -->
 <script src="/static/javascripts/app.js"></script>
