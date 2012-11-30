@@ -36,7 +36,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
         <!-- Title Area -->
         <li class="name">
           <h1>
-            <a href="/">
+            <a href="/home">
               We Trade Fun
             </a>
           </h1>
@@ -68,7 +68,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
               <li><a href="/users/account_management.html">Edit Account Details</a></li>
               <li><a href="/users/account_management.html">Manage Wishlist</a></li>
               <li class="divider"></li>
-              <li><a href="/users/sign_out">Logout</a></li>
+              <li><a href="/home">Logout</a></li>
             {%else%}
             <a href="/users/account_management.html">Account</a>
             <ul class="dropdown">
@@ -112,10 +112,10 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
         </div>
         <div class="eight columns">
           <ul class="inline-list right">
-            <li><a href="/">Home</a></li>
+            <li><a href="/home">Home</a></li>
             <li><a href="">Documentation</a></li>
-            <li><a href="how_to_use">Confused?</a></li>
-            <li><a href="contact_us">Contact Us</a></li>
+            <li><a href="/how_to_use">Confused?</a></li>
+            <li><a href="/contact_us">Contact Us</a></li>
           </ul>
         </div>
       </div>

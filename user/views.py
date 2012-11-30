@@ -18,7 +18,7 @@ import search as s
 
 def sign_out(request):
   logout(request)
-  return render(request, 'base.html')
+  return HttpResponseRedirect('/')
 
 def sign_in(request):
     # If it's 

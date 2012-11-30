@@ -23,17 +23,24 @@ def searchresults(request):
 #2.hot wish-list item: the game that appears on the most wish-lists
 #3.hot current listing: (how many current listings have that game)
 #4.hot current listing: (the current listing with the most trade offers on it)
-def homepage(request):
+def home(request):
     mostTradedGames = getMostTradedGames()
     mostWishlistedGames = getMostWishlistedGames()
     mostListedGames = getMostListedGames()
 
-    return render(request, 'base.html', {
+    return render(request, 'home.html', {
         'most_traded_games': mostTradedGames,
-        'most_Wishlisted_Games': mostWishlistedGames,
-        'most_Listed_Games': mostListedGames,
+        'most_wishlisted_games': mostWishlistedGames,
+        'most_listed_games': mostListedGames,
         'username':request.user.username,
         })
+
+def how_to_use(request):
+    return render(request, 'staticpages/how_to_use.html')
+def contact_us(request):
+    return render(request, 'staticpages/contact_us.html')
+def no_game_found(request):
+    return render(request, 'staticpages/no_game_found.html')
     
 
 
@@ -137,7 +144,7 @@ def getMostListedGames():
     topRatedListings = []
     j = 0
 
-    while (j < len(orderedListing)):
+    while (j < len(orderedListing) and j != 4):
         
         topRatedListings.append(orderedListing[j].name)
         j = j + 1

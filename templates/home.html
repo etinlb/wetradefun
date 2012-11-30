@@ -1,136 +1,59 @@
 {% extends 'base.html' %}
-
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+{% block title %}{{user.name}} | We Trade Fun{% endblock %}
 {% block content %}
 
-<head>
-  <meta charset="utf-8" />
+<h2 style="text-align:center">Welcome to We Trade Fun</h2>
+<div class="row">
 
-  <!-- Set the viewport width to device width for mobile -->
-  <meta name="viewport" content="width=device-width" />
 
-  <title> We Trade Fun Homepage</title>
+
+     {%if user.is_authenticated%}
+            <a href="/users/account_management.html">{{user.username}}</a>
+            <ul class="dropdown">
+              <li><a href="/users/account_management.html">Manage Account</a></li>
+              <li><a href="/users/account_management.html">Edit Account Details</a></li>
+              <li><a href="/users/account_management.html">Manage Wishlist</a></li>
+              <li class="divider"></li>
+              <li><a href="/users/sign_out">Logout</a></li>
+            {%else%}
+            <a class="two offset-by-four button">Sign in &raquo;</a>
+            <a class="two button">Sign up &raquo;</a>
+            {%endif%}
+</div>
   
-  <!-- Included CSS Files (Uncompressed) -->
-  <!--
-  <link rel="stylesheet" href="stylesheets/foundation.css">
-  -->
-  
-  <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="stylesheets/normalize.css">
-  <link rel="stylesheet" href="stylesheets/main.css">
-  <link rel="stylesheet" href="stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="stylesheets/app.css">
-
-  <script src="javascripts/modernizr.foundation.js"></script>
-
-  <!-- IE Fix for HTML5 Tags -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-
-</head>
-<body>
-  <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="panel callout radius twelve columns centered">
-        <h1>WE TRADE FUN!</h3>
-        <p><a class="large button round button">Sign up &raquo;</a></p>
+  <div class="row">
+    <h4 class="centered">What's Popular Right Now?</h4>
+      <div class="twelve columns">
+        <ul class="block-grid five-up">
+          {% for game in most_wishlisted_games %}
+          <li><a href="/trades/game/{{game.id}}"><img src="{{game.image}}"/></a></li>
+          {% endfor %}
+        </ul>
       </div>
-
-      <!-- Example row of columns -->
-      
-        <div class="row">
-          <h2>Most Traded Games</h2>
-            <div class="row eleven columns centered">
-            <ul class="block-grid five-up">
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-          </ul>
+  </div>
+  <hr>
+  <div class="row">
+    <h4 class="centered">What's Available Right Now?</h4>
+      <div class="twelve columns">
+        <ul class="block-grid four-up">
+        {% for game in most_listed_games %}
+          <li><a href="/trades/game/{{game.id}}"><img src="{{game.image}}"/></a></li>
+        {% endfor %}
+      </ul>
+     </div>
+  </div>
+  <hr>
+  <div class="row">
+    <h4 class="centered">Most Popular of All Time</h4>
+      <div class="twelve columns">
+        <ul class="block-grid five-up">
+        {% for game in most_wishlisted_games %}
+        <li><a href="/trades/game/{{game.id}}"><img src="{{game.image}}"/></a></li>
+        {% endfor %}
+      </ul>
+     </div>
+  </div>
 </div>
-    </div>
-
-
-
-        <div class="row">
-          <h2>Recent Listings</h2>
-            <div class="row eleven columns centered">
-            <ul class="block-grid five-up">
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-            <li><a href="#" class='th hoverwithtext'><img src="http://media.giantbomb.com/uploads/8/87209/2348782-box_halo4_large.png" /><p>See Details</p></a></li>
-          </ul>
-</div>
-    </div>
-
-        
-      
-
-    </div> <!-- /container -->
        
 {% endblock %}
 
-  <!-- Included JS Files (Uncompressed) -->
-  <!--
-  
-  <script src="javascripts/jquery.js"></script>
-  
-  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-  
-  <script src="javascripts/jquery.foundation.forms.js"></script>
-  
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
-  
-  <script src="javascripts/jquery.foundation.orbit.js"></script>
-  
-  <script src="javascripts/jquery.foundation.navigation.js"></script>
-  
-  <script src="javascripts/jquery.foundation.buttons.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tabs.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tooltips.js"></script>
-  
-  <script src="javascripts/jquery.foundation.accordion.js"></script>
-  
-  <script src="javascripts/jquery.placeholder.js"></script>
-  
-  <script src="javascripts/jquery.foundation.alerts.js"></script>
-  
-  <script src="javascripts/jquery.foundation.topbar.js"></script>
-  
-  <script src="javascripts/jquery.foundation.joyride.js"></script>
-  
-  <script src="javascripts/jquery.foundation.clearing.js"></script>
-  
-  <script src="javascripts/jquery.foundation.magellan.js"></script>
-  
-  -->
-  
-  <!-- Included JS Files (Compressed) -->
-  <script src="javascripts/jquery.js"></script>
-  <script src="javascripts/foundation.min.js"></script>
-  
-  <!-- Initialize JS Plugins -->
-  <script src="javascripts/app.js"></script>
-
-  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-  <script>
-      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
-  </script>
-</body>
-</html>
