@@ -50,10 +50,13 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
             <a>Recycling Old Games Since 2012</a>
           </li>
             
+          
           <li class="search">
-            <form class="search" action="/trades/search" method="GET">
-             <input type="text" placeholder="Search for a game..." name="term">
-            </form>
+            <div class="ui-widget">
+              <form class="search" action="/trades/search" method="GET">
+                <input type="text" id="searchgame_game_name_bar" placeholder="Search for a game..." name="term" onkeyup="get_request_searchgame_bar()">
+              </form>
+            </div>
           </li>
         </ul>
             
@@ -178,6 +181,21 @@ var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
 (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
   g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
   s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+<script>
+function get_request_searchgame_bar(){
+    $("#searchgame_game_name_bar").autocomplete({
+      source: "/trades/get_request/",
+      select: function (event, ui) {
+        $("#searchgame_game_id").val(ui.item.id);
+        console.log("hola");
+        location.href = "/trades/game/" + ui.item.id;
+        return ui;
+            }});
+          
+    }
+      
+
 </script>
 {% block js %}
 {% endblock %}
