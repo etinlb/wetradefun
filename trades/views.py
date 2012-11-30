@@ -7,6 +7,8 @@ from django.contrib import messages
 from user.forms import RegistrationForm
 from user.models import UserProfile
 from trades.models import *
+from trades import giantbomb
+import json
 from django.core.exceptions import ObjectDoesNotExist
 import re
 import search as s
@@ -37,19 +39,17 @@ def search(request):
 
   # Replace all runs of whitespace with a single dash
   query = re.sub(r"\s+", '+', query)
+  results = s.getList(query, 'name', 'image', 'original_release_date', \
+    'deck', 'platforms', 'id', 'genres', 'site_detail_url')
 
-  results = s.getList(query, 'name', 'image', 'original_release_date',
-                      'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
-  #assert False
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
   for x in results:
     x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id']).count()
 
-    if x['number_of_listing'] == None:
-      x['number_of_listing'] = 0
-   
+  if x['number_of_listing'] == None:
+    x['number_of_listing'] = 0
   return render(request, 'search_page.html', {'results':results})
 
 # TODO Handle the game page and search page buttons
@@ -174,6 +174,20 @@ def add_listing(request):
     
   return HttpResponse(message)
 
+def get_request(request):
+  if request.is_ajax():
+    gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+    inputString=request.GET.get('term')
+    games=gb.search(inputString)
+    results=[]
+    for game in games:
+      game_json={}
+      game_json['id']=game.id 
+      game_json['value']=game.name 
+      game_json['label']=game.name
+      results.append(game_json)
+    message=json.dumps(results)
+
 def put_in_game_table(id):
   # try:
   # game = Game.objects.get(giant_bomb_id = game['id'])
@@ -195,7 +209,6 @@ def get_game_table_by_id(id):
 
 
 def add_message(request):
-
   if request.is_ajax():
     if request.method == 'POST': # If the form has been submitted..
       transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
@@ -209,8 +222,6 @@ def add_message(request):
       message = "Your message has been successfully sent"
     else:
       message = "Error"
-
   else:
     message="Not AJAX"
   return HttpResponse(message)
-

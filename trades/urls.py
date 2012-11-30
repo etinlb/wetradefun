@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^make_offer/$', 'trades.views.make_offer'),
     url(r'^add_listing/$', 'trades.views.add_listing'),
     url(r'^remove_listing/$', 'trades.views.remove_listing')
+    url(r'^get_request/$', 'trades.views.get_request')
 )
