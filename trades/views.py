@@ -19,7 +19,7 @@ def game_details(request, game_id):
   if request.user.is_authenticated():
     # TODO make this work when game isn't found in game table, i.e add it to there
     try:
-      wish_game = Game.objects.get(giant_bomb_id = game_id )
+      wish_game = Game.objects.get(giant_bomb_id = game_id, platform = '' )
       if Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = wish_game):
         in_wishlist = True
     except Game.DoesNotExist:
@@ -37,10 +37,10 @@ def search(request):
   if request.GET:
     query = request.GET['term']
 
-  # Replace all runs of whitespace with a single dash
+  # Replace all runs of whitespace with a single +
   query = re.sub(r"\s+", '+', query)
-  results = s.getList(query, 'name', 'image', 'original_release_date',
-                      'deck', 'platforms', 'id', 'genres', 'site_detail_url')
+  results = s.getList(query, 'name', 'image', 'original_release_date', \
+    'deck', 'id', 'site_detail_url')
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
@@ -59,7 +59,7 @@ def add_to_wish_list(request):
   if request.is_ajax():
     # get game from table or add if not there
     game_id = request.GET.get('game_id')
-    game = get_game_table_by_id(game_id)
+    game = get_game_table_by_id(game_id, '') #CHANGE PLEASE
     # Check that is not already in wishlist
     if not Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game):
       user_id=request.GET.get('user_id')
@@ -79,7 +79,7 @@ def remove_from_wish_list(request):
   # TODO make this work with the foreign key
   if request.is_ajax():
     game_id = request.GET.get('game_id')
-    game = get_game_table_by_id(game_id)
+    game = get_game_table_by_id(game_id, '')
     try:
       Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game).delete()
       message = user_name + " deleted " + game_id + " from their wish list"
@@ -138,7 +138,7 @@ def make_offer(request):
     if request.is_ajax():
       userprofile = request.user.get_profile()
       user_name = userprofile.user.username
-      s_game = get_game_table_by_id(request.GET.get('game1_id')) # game offered
+      s_game = get_game_table_by_id(request.GET.get('game1_id'),) # game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id')) # game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
         message=s_game.giant_bomb_id
@@ -161,8 +161,9 @@ def add_listing(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game_id = request.GET.get('game_id')
+    platform = request.GET.get('platfrom')
     #game = s.getGameDetsById(game_id, 'platforms', 'image', 'name', 'id')
-    game = get_game_table_by_id(game_id)
+    game = get_game_table_by_id(game_id, platform)
     # game_id = game['id']
     #game = Game.objects.get(id=511)
     #game = add_to_game_table(game)
@@ -192,23 +193,41 @@ def get_request(request):
     message="Not AJAX"
   return HttpResponse(message)
 
-def put_in_game_table(id):
+
+def get_platform(request):  
+  if request.is_ajax(): 
+    gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+    inputString=request.GET.get('platform')
+    platforms=gb.getPlatforms(inputString)
+    results=[]
+    for platform in platforms:
+      platform_json={}
+      # game_json['id']=game.id 
+      platform_json['value']=platform.name 
+      platform_json['label']=platform.name
+      results.append(game_json)
+    message=json.dumps(results)
+    return HttpResponse(message) 
+
+# def put_in_game_table(id):
+def put_in_game_table(id, platform):
+#>>>>>>> cb6169c106ef23a0b046c089e0b35abc5382b8fa
   # try:
   # game = Game.objects.get(giant_bomb_id = game['id'])
   # game.num_of_listings = game.num_of_listings + 1
   # game.save()
   # except ObjectDoesNotExist:
   game = s.getGameDetsById(id, 'platforms', 'image', 'name', 'id')
-  game = Game(platform = game['platforms'], image_url = game['image'], \
-    name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
+  game = Game(platform = platform, image_url = game['image'], \
+    name =game['name'], num_of_listings = 0, giant_bomb_id = game['id'])
   game.save()
   return game
 
-def get_game_table_by_id(id):
+def get_game_table_by_id(id, platform):
   try:
-    game = Game.objects.get(giant_bomb_id = id)
+    game = Game.objects.get(giant_bomb_id = id, platform = platform)
   except Game.DoesNotExist:
-    game = put_in_game_table(id)
+    game = put_in_game_table(id, platform)
   return game
 
 
