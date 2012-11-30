@@ -152,8 +152,9 @@ def make_offer(request):
     if request.is_ajax():
       userprofile = request.user.get_profile()
       user_name = userprofile.user.username
-      s_game = get_game_table_by_id(request.GET.get('game1_id'),) # game offered
-      r_game = get_game_table_by_id(request.GET.get('game2_id')) # game listed
+      platform = request.GET.get('platform')
+      s_game = get_game_table_by_id(request.GET.get('game1_id'), platform) # game offered
+      r_game = get_game_table_by_id(request.GET.get('game2_id'), platform) # game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
         for listing in Currentlist.objects.filter(game_listed = r_game):
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, receiver = listing.user, receiver_game = r_game)
@@ -207,18 +208,22 @@ def get_request(request):
     message=json.dumps(results)
     return HttpResponse(message)
 
-def get_platform(request):  
+def get_platform(request, game_id):  
   if request.is_ajax(): 
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
-    inputString=request.GET.get('platform')
-    platforms=gb.getPlatforms(inputString)
-    results=[]
+    id=request.GET.get('id')
+    #platforms=gb.getPlatforms(inputString)
+    results = s.getGameDetsById(game_id, 'platforms')
+    platforms = results['platforms']
+    results = []
+    id = 0
     for platform in platforms:
       platform_json={}
-      # game_json['id']=game.id 
-      platform_json['value']=platform.name 
-      platform_json['label']=platform.name
-      results.append(game_json)
+      platform_json['value'] = platform
+      platform_json['label'] = platform
+      platform_json['id'] = id
+      id += 1
+      results.append(platform_json)
     message=json.dumps(results)
     return HttpResponse(message) 
 

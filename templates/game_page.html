@@ -76,7 +76,7 @@
           <label for="searchgame_game_name">Game name: </label>
           <input type="text" id="searchgame_game_name" placeholder="call of duty" onkeyup="get_request_searchgame()"/>
           <input type="text" id="platform" placeholder="what platform?"
-          onkeyup="get_request_platform()">
+          onkeyup="get_request_platform()"/>
           <input type="hidden" id="searchgame_game_id"/>
         </div>
 
@@ -144,7 +144,9 @@ function get_request_makeOffer(){
     {
     game1_id : $('#searchgame_game_id').val(),
     message : $('#message').val(),
-    game2_id : {{ game.id }}
+    game2_id : {{ game.id }},
+    platform: $('#platform').val()
+
     }, 
     function(data){
       console.log(data);
@@ -161,14 +163,12 @@ function get_request_searchgame(){
     });
 }
 function get_request_platform(){
-    $("#platform").autocomplete({
-      source: "/trades/get_platform/",
-    });
+  $('#platform').autocomplete({    
+    source: "/trades/get_platform/"+$('#searchgame_game_id').val(),
+  });
 }
 
-function platform_keyup(){
-    delay(get_request_platform, 300);
-}
+
 
 function searchgame_game_name_keyup(){
     delay(get_request_searchgame, 300);
