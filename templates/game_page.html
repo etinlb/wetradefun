@@ -26,7 +26,7 @@
           <li class="bullet-item"><a class="secondary button" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
           <li class="cta-button"> 
             <a href="#" class="radius button" data-reveal-id="new_listing_confirmation">Publish a listing</a>
-            <a href="#" class="radius button" data-reveal-id="new_offer_confirmation">Make an offer</a>
+            <a id="make_offer_button" href="#" class="radius button" data-reveal-id="new_offer_confirmation">Make an offer</a>
             </ul>
           </li>
         </ul>
@@ -71,11 +71,18 @@
     <div id="new_offer_confirmation" class="reveal-modal medium">
       <h2>Which game would you like to offer?</h2>
 
-      <form>
-        <label>Game ID</label>
-        <input id="myGame" type="text" placeholder="ID" />
-      </form>
-      <a class="button" href="#" onclick="get_request_makeOffer()">Offer</a>
+
+        <div class="ui-widget">
+          <label for="searchgame_game_name">Game name: </label>
+          <input type="text" id="searchgame_game_name" placeholder="call of duty" onkeyup="get_request_searchgame()"/>
+          <input type="text" id="platform" placeholder="what platform?"
+          onkeyup="get_request_platform()">
+          <input type="hidden" id="searchgame_game_id"/>
+        </div>
+
+    <div id="search_game_result"></div>
+      <a class="success button" href="#" onclick="get_request_makeOffer()">Accept</a>
+
       <a class="alert button" href="#" onclick="$('#new_offer_confirmation').trigger('reveal:close')">Cancel</a>
       <a class="close-reveal-modal">&#215;</a>
     </div>
@@ -114,7 +121,7 @@ function get_request_removefromwishlist(){
 
 function get_request_publishListing(){
   $.get(
-    "/trades/list_game/", 
+    "/trades/add_listing/", 
     {
     platfrom : $('#plat').text(),
     game_id : {{game.id}}
@@ -123,6 +130,7 @@ function get_request_publishListing(){
     function(data){
       console.log(data);
       $('#new_listing_confirmation').trigger('reveal:close');
+      location.reload();
     }
   );
   return false;
@@ -134,7 +142,8 @@ function get_request_makeOffer(){
   $.get(
     "/trades/make_offer/", 
     {
-    game1_id : $('#myGame').val(),
+    game1_id : $('#searchgame_game_id').val(),
+    message : $('#message').val(),
     game2_id : {{ game.id }}
     }, 
     function(data){
@@ -143,8 +152,27 @@ function get_request_makeOffer(){
     }
   );
   return false;
-
-
 }
+
+function get_request_searchgame(){
+    $("#searchgame_game_name").autocomplete({
+      source: "/trades/get_request/",
+      change: function (event, ui) {$("#searchgame_game_id").val(ui.item.id)}
+    });
+}
+function get_request_platform(){
+    $("#platform").autocomplete({
+      source: "/trades/get_platform/",
+    });
+}
+
+function platform_keyup(){
+    delay(get_request_platform, 300);
+}
+
+function searchgame_game_name_keyup(){
+    delay(get_request_searchgame, 300);
+}
+
 </script>
 {% endblock %}
