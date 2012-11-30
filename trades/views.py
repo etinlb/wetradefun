@@ -138,19 +138,13 @@ def make_offer(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game1_id=request.GET.get('game1_id')
-    game1 = s.getGameDetsById(game1_id, 'platforms', 'image', 'name', 'id')
-    game1 = get_game_table(game1)
+    game1 = get_game_table_by_id(game1_id, 'Xbox 360') #THIS NEEDS TO BE CHANGED
     game2_id=request.GET.get('game2_id')
-    game2 = s.getGameDetsById(game2_id, 'platforms', 'image', 'name', 'id')
-    game2 = get_game_table(game2)
+    game2 = get_game_table_by_id(game2_id, 'Xbox 360')#THIS ALSO NEEDS TO BE CHANGED
     if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
       for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
         if userprofile!=currentlist.user:
-          transaction=Transaction(sender=userprofile,
-                  sender_game=game1,
-                  receiver=currentlist.user,
-                  receiver_game=game2,
-                  status = 'pending')
+          transaction=Transaction(sender=userprofile, sender_game=game1, receiver=currentlist.user, receiver_game=game2, status = 'pending')
           transaction.save()
           message="Transaction saved"
         else:
@@ -168,8 +162,9 @@ def add_to_current_list(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game_id = request.GET.get('game_id')
+    platform = request.GET.get('platfrom')
     #game = s.getGameDetsById(game_id, 'platforms', 'image', 'name', 'id')
-    game = get_game_table_by_id(game_id)
+    game = get_game_table_by_id(game_id, platform)
     # game_id = game['id']
     #game = Game.objects.get(id=511)
     #game = add_to_game_table(game)
@@ -181,23 +176,23 @@ def add_to_current_list(request):
       message="Not AJAX"
   return HttpResponse(message)
 
-def put_in_game_table(id):
+def put_in_game_table(id, platform):
   # try:
   #   game = Game.objects.get(giant_bomb_id = game['id'])
   #   game.num_of_listings = game.num_of_listings + 1
   #   game.save()
   # except ObjectDoesNotExist:
   game = s.getGameDetsById(id, 'platforms', 'image', 'name', 'id')
-  game = Game(platform = game['platforms'], image_url = game['image'], \
+  game = Game(platform = platform, image_url = game['image'], \
     name =game['name'], num_of_listings = 1, giant_bomb_id = game['id'])
   game.save()
   return game  
 
-def get_game_table_by_id(id):
+def get_game_table_by_id(id, platform):
   try:
-    game = Game.objects.get(giant_bomb_id = id)
+    game = Game.objects.get(giant_bomb_id = id, platform = platform)
   except Game.DoesNotExist:
-    game = put_in_game_table(id)
+    game = put_in_game_table(id, platform)
   return game
 
 
