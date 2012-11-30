@@ -134,7 +134,7 @@ def remove_listing(request):
   return HttpResponse(message)
 
 def make_offer(request):
-  message = ""
+  message = "not entered"
   if request.user.is_authenticated():
     if request.is_ajax():
       userprofile = request.user.get_profile()
@@ -142,7 +142,9 @@ def make_offer(request):
       s_game = get_game_table_by_id(request.GET.get('game1_id')) # game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id')) # game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
+        message=s_game.giant_bomb_id
         for listing in Currentlist.objects.filter(game_listed = r_game):
+          message="Estoy en el for"
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, receiver = listing.user, receiver_game = r_game)
           transaction.save()
           message += "\n" + str(user_name) + " offered to " + str(listing.user.user.username)
@@ -187,6 +189,9 @@ def get_request(request):
       game_json['label']=game.name
       results.append(game_json)
     message=json.dumps(results)
+  else:
+      message = "Not AJAX"
+  return HttpResponse(message)
 
 def put_in_game_table(id):
   # try:
