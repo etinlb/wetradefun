@@ -7,12 +7,9 @@ from django.contrib import messages
 from user.forms import RegistrationForm
 from user.models import UserProfile
 from trades.models import *
-<<<<<<< HEAD
 from trades import giantbomb
 import json
-=======
 from django.core.exceptions import ObjectDoesNotExist
->>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8
 import re
 import search as s
 
@@ -42,14 +39,8 @@ def search(request):
 
   # Replace all runs of whitespace with a single dash
   query = re.sub(r"\s+", '+', query)
-  results = s.getList(query, 'name', 'image', 'original_release_date', 
-<<<<<<< HEAD
+  results = s.getList(query, 'name', 'image', 'original_release_date',
                       'deck', 'platforms', 'id', 'genres', 'site_detail_url')
-
-=======
-                      'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
-  #assert False
->>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
@@ -147,17 +138,16 @@ def make_offer(request):
     user_name=userprofile.user.username
     game1_id=request.GET.get('game1_id')
     game1 = s.getGameDetsById(game1_id, 'platforms', 'image', 'name', 'id')
-    game1 = get_game_table(game1)
+    game1 = get_game_table_by_id('game1_id')
     game2_id=request.GET.get('game2_id')
     game2 = s.getGameDetsById(game2_id, 'platforms', 'image', 'name', 'id')
-    game2 = get_game_table(game2)
-    if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
-      for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
+    if game1_id!=game2_id and len(Currentlist.objects.filter(game2.giant_bomb_id))!=0:
+      for currentlist in Currentlist.objects.filter(game2):
         if userprofile!=currentlist.user:
           transaction=Transaction(sender=userprofile,
-                  sender_game=game1,
+                  sender_game=get_game_table_by_id(game1_id),
                   receiver=currentlist.user,
-                  receiver_game=game2,
+                  receiver_game=get_game_table_by_id(game2_id),
                   status = 'pending')
           transaction.save()
           message="Transaction saved"
@@ -189,7 +179,7 @@ def add_to_current_list(request):
       message="Not AJAX"
   return HttpResponse(message)
 
-<<<<<<< HEAD
+
 def get_request(request):
   if request.is_ajax():
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
@@ -203,7 +193,10 @@ def get_request(request):
       game_json['label']=game.name
       results.append(game_json)
     message=json.dumps(results)
-=======
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
+
 def put_in_game_table(id):
   # try:
   #   game = Game.objects.get(giant_bomb_id = game['id'])
@@ -239,25 +232,6 @@ def add_message(request):
       message = "Your message has been successfully sent"
     else:
       message = "Error"
-
->>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8
   else:
     message="Not AJAX"
   return HttpResponse(message)
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> f06fc33bed8c1affb0b269d739613afc5b054ce8
