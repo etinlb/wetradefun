@@ -8,6 +8,8 @@ urlpatterns = patterns('',
     url(r'^add_to_wish_list/$', 'trades.views.add_to_wish_list'),
     url(r'^remove_from_wish_list/$', 'trades.views.remove_from_wish_list'),
     url(r'^make_offer/$', 'trades.views.make_offer'),
-    url(r'^add_listing/$', 'trades.views.add_to_current_list'),
+    url(r'^add_listing/$', 'trades.views.add_listing'),
     url(r'^remove_listing/$', 'trades.views.remove_listing'),
+    url(r'^get_request/$', 'trades.views.get_request'),
+    url(r'^get_platform/$', 'trades.views.get_platform')
 )

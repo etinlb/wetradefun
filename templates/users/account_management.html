@@ -30,7 +30,7 @@
               {% for key, value in listing_dict.items %}
               <td class="four columns">
                   <a href="#"><img src="{{key.game_listed.image_url}}"/><br /></a>
-                  <a href="#" onclick="get_request_removelisting({{key.game_listed.giant_bomb_id}})" class="small alert button">Remove Listing</a>
+                  <a href="#" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
               </td>
               <td class="four columns">
                 <ul class="no-bullet">
@@ -164,13 +164,11 @@
           </thead>
           <tbody>
             {% for item in wishlist %}
-            <tr>
+            <tr id="wishlist_item">
               <td><a href= "/trades/game/{{item.wishlist_game.giant_bomb_id}}"><img src="{{item.wishlist_game.image_url}}" /></a></td>
               <td><p>{{item.wishlist_game.name}}</td>
               <td>
-                <div class="small button">
-                  <a href="#" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
-                </div>
+                <a href="#" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
               </td>
             </tr>
             {% endfor %}
@@ -184,38 +182,40 @@
   </div>
 </div>
 
+{% endblock %}
 
+{% block js %}
+<script>
+function get_request_removefromwishlist(wishlist_game_id){
+  $.get(
+    "/trades/remove_from_wish_list/", 
+    {game_id: wishlist_game_id},
+    function(data){
+      console.log(data);
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
+function get_request_removelisting(listing_primary_id){
+  $.get(
+    "/trades/remove_listing/", 
+    {listing_id: listing_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+    }
+  );
+  return false;
+} 
+
+</script>
+{% endblock %}
   <!-- End Main Content and Sidebar -->
 
 
 
-
-<script>
-function get_request_removefromwishlist(wishlist_game_id){
- $.get(
-   "/trades/remove_from_wish_list/", 
-   {game_id: wishlist_game_id},
-   function(data){
-     console.log(data);
-     location.reload();
-   }
- );
- return false;
-} 
-
-function get_request_removelisting(listing_game_id){
- $.get(
-   "/trades/remove_listing/", 
-   {game_id: listing_game_id},
-   function(data){
-     console.log(data);
-   }
- );
- return false;
-}
-
-</script>
-{% endblock %}
  
 
 <!-- Included JS Files (Compressed) -->

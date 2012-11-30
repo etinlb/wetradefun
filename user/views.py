@@ -77,9 +77,9 @@ def account_management(request):
     'current_listings': current_listings,
     'wishlist': wishlist,
     'history': hist,
-    'listing_dict':listing_dict,
-    'username':request.user.username,
-    'current_offers':current_offers
+    'listing_dict': listing_dict,
+    'username': request.user.username,
+    'current_offers': current_offers
     })
 
 def sign_up(request):

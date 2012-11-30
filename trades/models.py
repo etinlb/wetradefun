@@ -22,13 +22,23 @@ class Currentlist(models.Model):
 class Transaction(models.Model):
   status = models.CharField(max_length=64)
   dateRequested = models.DateTimeField(auto_now_add=True)
-  dateTraded = models.DateTimeField()
+# <<<<<<< HEAD
+#   dateTraded = models.DateTimeField(null = True)
+#   sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
+#   sender_game = models.ForeignKey('Game',  related_name='Transaction_sender_game')
+#   sender_message = models.ForeignKey(Message, related_name='Transaction_sender_message', null=True)
+#   receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')
+#   receiver_game = models.ForeignKey('Game', related_name='Transaction_receiver_game')
+#   receiver_message = models.ForeignKey(Message, related_name='Transaction_receiver_message', null=True)
+# =======
+  dateTraded = models.DateTimeField(null=True)
   sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
   sender_game = models.ForeignKey('Game',  related_name='Transaction_sender_game')
-  sender_message = models.ForeignKey('Message', related_name='Transaction_sender_message', null=True)
+  # sender_message = models.ForeignKey('Message', related_name='Transaction_sender_message', null=True)
   receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')
   receiver_game = models.ForeignKey('Game', related_name='Transaction_receiver_game')
-  receiver_message = models.ForeignKey('Message', related_name='Transaction_receiver_message', null=True)
+  # receiver_message = models.ForeignKey('Message', related_name='Transaction_receiver_message', null=True)
+# >>>>>>> cb6169c106ef23a0b046c089e0b35abc5382b8fa
 
 class Game(models.Model):
   platform = models.CharField(max_length=64)
