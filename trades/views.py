@@ -41,7 +41,6 @@ def search(request):
   query = re.sub(r"\s+", '+', query)
   results = s.getList(query, 'name', 'image', 'original_release_date', \
     'deck', 'id', 'site_detail_url')
-
   if results == None:
     render_to_response('no_game_found.html')
   # TODO make it get the number of listings
@@ -134,20 +133,7 @@ def remove_listing(request):
   return HttpResponse(message)
 
 def make_offer(request):
-# <<<<<<< HEAD
-#   if request.is_ajax():
-#     userprofile = request.user.get_profile()
-#     user_name=userprofile.user.username
-#     game1_id=request.GET.get('game1_id')
-#     game1 = get_game_table_by_id(game1_id, 'Xbox 360') #THIS NEEDS TO BE CHANGED
-#     game2_id=request.GET.get('game2_id')
-#     game2 = get_game_table_by_id(game2_id, 'Xbox 360')#THIS ALSO NEEDS TO BE CHANGED
-#     if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
-#       for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
-#         if userprofile!=currentlist.user:
-#           transaction=Transaction(sender=userprofile, sender_game=game1, receiver=currentlist.user, receiver_game=game2, status = 'pending')
-# =======
-  message = ""
+  message = "not entered"
   if request.user.is_authenticated():
     if request.is_ajax():
       userprofile = request.user.get_profile()
@@ -156,9 +142,10 @@ def make_offer(request):
       s_game = get_game_table_by_id(request.GET.get('game1_id'), platform) # game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), platform) # game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
+        message=s_game.giant_bomb_id
         for listing in Currentlist.objects.filter(game_listed = r_game):
+          message="Estoy en el for"
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, receiver = listing.user, receiver_game = r_game)
-# >>>>>>> cb6169c106ef23a0b046c089e0b35abc5382b8fa
           transaction.save()
           message += "\n" + str(user_name) + " offered to " + str(listing.user.user.username)
       else:
@@ -190,9 +177,6 @@ def add_listing(request):
     
   return HttpResponse(message)
 
-# <<<<<<< HEAD
-# def put_in_game_table(id, platform):
-# =======
 def get_request(request):
   if request.is_ajax():
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
@@ -206,7 +190,10 @@ def get_request(request):
       game_json['label']=game.name
       results.append(game_json)
     message=json.dumps(results)
-    return HttpResponse(message)
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
+
 
 def get_platform(request, game_id):  
   if request.is_ajax(): 
