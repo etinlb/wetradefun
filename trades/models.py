@@ -22,13 +22,13 @@ class Currentlist(models.Model):
 class Transaction(models.Model):
   status = models.CharField(max_length=64)
   dateRequested = models.DateTimeField(auto_now_add=True)
-  dateTraded = models.DateTimeField()
+  dateTraded = models.DateTimeField(null=True)
   sender = models.ForeignKey(UserProfile,related_name='Transaction_sender')
   sender_game = models.ForeignKey('Game',  related_name='Transaction_sender_game')
-  sender_message = models.ForeignKey('Message', related_name='Transaction_sender_message', null=True)
+  # sender_message = models.ForeignKey('Message', related_name='Transaction_sender_message', null=True)
   receiver = models.ForeignKey(UserProfile,related_name='Transaction_receiver')
   receiver_game = models.ForeignKey('Game', related_name='Transaction_receiver_game')
-  receiver_message = models.ForeignKey('Message', related_name='Transaction_receiver_message', null=True)
+  # receiver_message = models.ForeignKey('Message', related_name='Transaction_receiver_message', null=True)
 
 class Game(models.Model):
   platform = models.CharField(max_length=64)
