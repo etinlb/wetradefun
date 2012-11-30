@@ -131,7 +131,7 @@ def getMostListedGames():
 
     orderedListing = []
     if Game.objects.count() != 0:
-        orderedListing = Game.objects.all()
+        orderedListing = list(Game.objects.all())
 
         sort(orderedListing, 'num_of_listings', 'desc')
     topRatedListings = []
