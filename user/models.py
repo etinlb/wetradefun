@@ -14,5 +14,5 @@ class Message (models.Model):
 
 class Userrating (models.Model):
   rating = models.IntegerField()
-  sender = models.ForeignKey(UserProfile,related_name='Userrating_sender')
-  receiver = models.ForeignKey(UserProfile,related_name='Userrating_receiver')
+  sender = models.ForeignKey(UserProfile, related_name='Userrating_sender')
+  receiver = models.ForeignKey(UserProfile, related_name='Userrating_receiver')

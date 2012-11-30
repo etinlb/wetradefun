@@ -67,9 +67,9 @@ def account_management(request):
   wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))
 
   hist = list(Transaction.objects.filter(status = 'confirmed', \
-    sender = request.user.get_profile()).order_by('-dateTraded'))
+    sender = request.user.get_profile()))
   hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', \
-    receiver = request.user.get_profile()).order_by('-dateTraded'))
+    receiver = request.user.get_profile()))
   hist.extend(hist_as_receiver)
   sort.sort(hist, 'dateTraded', "desc")
 
