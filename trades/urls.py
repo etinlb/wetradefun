@@ -11,5 +11,5 @@ urlpatterns = patterns('',
     url(r'^add_listing/$', 'trades.views.add_listing'),
     url(r'^remove_listing/$', 'trades.views.remove_listing'),
     url(r'^get_request/$', 'trades.views.get_request'),
-    url(r'^get_platform/$', 'trades.views.get_platform')
+    url(r'^get_platform/(?P<game_id>\d+)/$', 'trades.views.get_platform')
 )
