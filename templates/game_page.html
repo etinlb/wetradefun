@@ -114,13 +114,14 @@ function get_request_removefromwishlist(){
 
 function get_request_publishListing(){
   $.get(
-    "/trades/list_game/", 
+    "/trades/add_listing/", 
     {
     game_id : {{game.id}}
     }, 
     function(data){
       console.log(data);
       $('#new_listing_confirmation').trigger('reveal:close');
+      location.reload();
     }
   );
   return false;

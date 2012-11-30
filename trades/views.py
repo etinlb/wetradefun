@@ -38,7 +38,7 @@ def search(request):
   # Replace all runs of whitespace with a single dash
   query = re.sub(r"\s+", '+', query)
 
-  results = s.getList(query, 'name', 'image', 'original_release_date', 
+  results = s.getList(query, 'name', 'image', 'original_release_date', \
                       'deck', 'platforms', 'id', 'genres', 'site_detail_url' )
   #assert False
   if results == None:
@@ -96,10 +96,24 @@ def accept_offer(request):
     transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
     if transaction.status == "offered":
       transaction.status = "accepted"
-      message = "Please wait for " + reciever + " to make the final trade confirmation"
+      message = "Please wait for " + receiver.user.user_name + " to make the final trade confirmation"
       transaction.save()
     else:
       message="that trade is no longer available or has already been accepted"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
+
+def confirm_offer(request):
+  #TODO verify if this is correct
+  if request.is_ajax():
+    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    if transaction.status == "accepted":
+      transaction.status = "confirmed"
+      message = "Your transaction is now confirmed!"
+      transaction.save()
+    else:
+      message="that trade is no longer available or has already been confirmed"
   else:
     message="Not AJAX"
   return HttpResponse(message)
@@ -121,13 +135,11 @@ def decline_offer(request):
 def remove_listing(request):
   # TODO make this with the foreign key game
   if request.is_ajax():
-    listing = CurrentList.objects.filter(user = request.user.get_profile(), giantBombID = request.GET.get("game_id"))
-    if listing.status == "opened": #open is a keyword
-      listing.status = "closed"
-      message = "You have cancelled your listing"
-      listing.save()
-    else:
-      message="You have already cancelled this listing or the trade has been finalized."
+    game_id = request.GET.get('game_id')
+    game = get_game_table_by_id(game_id)
+    listing = Currentlist.objects.filter(user = request.user.get_profile(), game_listed = game, status = "open")
+    listing.delete()
+    message = "You have cancelled your listing"
   else:
     message="Not AJAX"
   return HttpResponse(message)
@@ -138,11 +150,9 @@ def make_offer(request):
     userprofile = request.user.get_profile()
     user_name=userprofile.user.username
     game1_id=request.GET.get('game1_id')
-    game1 = s.getGameDetsById(game1_id, 'platforms', 'image', 'name', 'id')
-    game1 = get_game_table(game1)
+    game1 = get_game_table_by_id(game1_id)
     game2_id=request.GET.get('game2_id')
-    game2 = s.getGameDetsById(game2_id, 'platforms', 'image', 'name', 'id')
-    game2 = get_game_table(game2)
+    game2 = get_game_table_by_id(game2_id)
     if game1_id!=game2_id and len(Currentlist.objects.filter(giantBombID=game2_id))!=0:
       for currentlist in Currentlist.objects.filter(giantBombID=game2_id):
         if userprofile!=currentlist.user:
@@ -173,7 +183,7 @@ def add_to_current_list(request):
     # game_id = game['id']
     #game = Game.objects.get(id=511)
     #game = add_to_game_table(game)
-    currentlist=Currentlist(user=userprofile, giantBombID=game_id, game_listed = game)
+    currentlist=Currentlist(user=userprofile, giantBombID=game_id, game_listed = game, status="open")
     game.num_of_listings += 1
     currentlist.save()
     message=user_name+" add "+game_id+" to his current list"

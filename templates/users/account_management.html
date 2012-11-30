@@ -30,7 +30,7 @@
               {% for key, value in listing_dict.items %}
               <td class="four columns">
                   <a href="#"><img src="{{key.game_listed.image_url}}"/><br /></a>
-                  <a href="#" onclick="remove_listing()" class="small alert button">Remove Listing</a>
+                  <a href="#" onclick="get_request_removelisting({{key.game_listed.giant_bomb_id}})" class="small alert button">Remove Listing</a>
               </td>
               <td class="four columns">
                 <ul class="no-bullet">
@@ -169,7 +169,7 @@
               <td><p>{{item.wishlist_game.name}}</td>
               <td>
                 <div class="small button">
-                  <a href="#" class="small button" onclick ="remove_from_wishlist()">Remove Item</a>
+                  <a href="#" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
                 </div>
               </td>
             </tr>
@@ -184,11 +184,38 @@
   </div>
 </div>
 
-{% endblock %}
+
   <!-- End Main Content and Sidebar -->
 
 
 
+
+<script>
+function get_request_removefromwishlist(wishlist_game_id){
+ $.get(
+   "/trades/remove_from_wish_list/", 
+   {game_id: wishlist_game_id},
+   function(data){
+     console.log(data);
+     location.reload();
+   }
+ );
+ return false;
+} 
+
+function get_request_removelisting(listing_game_id){
+ $.get(
+   "/trades/remove_listing/", 
+   {game_id: listing_game_id},
+   function(data){
+     console.log(data);
+   }
+ );
+ return false;
+}
+
+</script>
+{% endblock %}
  
 
 <!-- Included JS Files (Compressed) -->
