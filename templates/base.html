@@ -188,7 +188,6 @@ function get_request_searchgame_bar(){
       source: "/trades/get_request/",
       select: function (event, ui) {
         $("#searchgame_game_id").val(ui.item.id);
-        console.log("hola");
         location.href = "/trades/game/" + ui.item.id;
         return ui;
             }});

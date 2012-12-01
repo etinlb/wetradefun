@@ -56,11 +56,13 @@ def account_management(request):
   listing_dict = {}
   current_listings = list(Currentlist.objects.filter(user = request.user.get_profile(), status = 'open').order_by('-datePosted'))
   for idx, listing in enumerate(current_listings):
-      listing_dict[listing] = list(Transaction.objects.filter(status = 'offered', current_listing = listing))
+    listing_dict[listing] = list(Transaction.objects.filter(status = 'offered', current_listing = listing))
 
   #assert false
-  current_offers = list(Transaction.objects.filter(Q(status = 'offered') \
-    & Q(sender = request.user.get_profile())))
+  current_offers = list(Transaction.objects.filter(status = 'offered', sender = request.user.get_profile()))   
+  current_offers_accepted = list(Transaction.objects.filter(status = 'accepted', sender = request.user.get_profile()))
+  current_offers.extend(current_offers_accepted)
+  sort.sort(current_offers, 'dateRequested', "desc")
 
   wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))
 
