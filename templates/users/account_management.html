@@ -91,12 +91,21 @@
               <td class = "three columns">
                 <ul class="no-bullet">
                   <li>
-                    {{offer.status}}
+                    {% ifequal offer.status 'accepted' %}
+                        The other part accepted your deal. Confirm it to finish
+                    {% endifequal %}
+                    {% ifequal offer.status 'offered' %}
+                        Waiting for the other part to accept your deal
+                    {% endifequal %}
+                    
+
                   </li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
+                        {% ifequal offer.status 'accepted' %}
                         <a href="#" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
+                        {% endifequal %}
                       </li>
                       <li>
                         <a href="#" onclick="get_request_declineoffer({{offer.pk}})" class="small button">Cancel Trade</a>
