@@ -18,12 +18,12 @@ import search as s
 
 def sign_out(request):
   logout(request)
-  return HttpResponseRedirect('/')
+  return HttpResponseRedirect('/homepage')
 
 def sign_in(request):
     # If it's 
     if request.user.is_authenticated():
-      return HttpResponseRedirect('/')
+      return HttpResponseRedirect('/homepage')
     else:
       if request.method == 'POST': # If the form has been submitted...
           form = LoginForm(request.POST) # A form bound to the POST data
