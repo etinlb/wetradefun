@@ -52,8 +52,6 @@ def sign_in(request):
      context_instance=RequestContext(request))
 
 def account_management(request):
-  if not request.user.is_authenticated():
-    return HttpResponseRedirect('/users/sign_in')
   listing_list = {}
   listing_dict = {}
   current_listings = list(Currentlist.objects.filter(user = request.user.get_profile(), status = 'open').order_by('-datePosted'))
@@ -109,7 +107,7 @@ def sign_up(request):
     else:
         form = RegistrationForm() # An unbound form
 
-    return render_to_response('users/sign.html', {
+    return render_to_response('home.html', {
         'form': form,
     },
      context_instance=RequestContext(request))
