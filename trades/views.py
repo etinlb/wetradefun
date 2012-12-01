@@ -80,7 +80,7 @@ def remove_from_wish_list(request):
     game = get_game_table_by_id(game_id, '')
     try:
       Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game).delete()
-      message = user_name + " deleted " + game_id + " from their wish list"
+      message = user_name + " deleted " + game.name + " from their wish list"
     except Exception, e:
       message = "not in wishlist"
   else:
@@ -90,7 +90,7 @@ def remove_from_wish_list(request):
 def accept_offer(request):
   #TODO verify if this is correct
   if request.is_ajax():
-    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    transaction = Transaction.objects.filter(pk = request.GET.get('transaction_id'))
     if transaction.status == "offered":
       transaction.status = "accepted"
       message = "Please wait for " + reciever + " to make the final trade confirmation"
@@ -101,16 +101,46 @@ def accept_offer(request):
     message="Not AJAX"
   return HttpResponse(message)
 
+def confirm_offer(request):
+  #TODO verify if this is correct
+  if request.is_ajax():
+    transaction = Transaction.objects.filter(pk = request.GET.get('transaction_id'))
+    if transaction.status == "accepted":
+      transaction.status = "confirmed"
+      transaction_listing = transaction.current_listing.pk
+      message = "Your transaction is now complete! Proceed to the transaction history page to view it"
+      transaction.save()
+
+      currentlisting = Currentlist.objects.filter(pk = transaction_listing)
+      currentlisting.status = "closed"
+      currentlisting.save()
+    else:
+      message = "that trade is no longer available or has already been accepted"
+  else:
+    message = "Not AJAX"
+  return HttpResponse(message)
 
 def decline_offer(request):
   if request.is_ajax():
     transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
     if transaction.status == "offered":
       transaction.status = "declined"
-      message = "this listing is now closed"
+      message = "the offer has been declined"
       transaction.save()
     else:
-      message="that trade is no longer available or has already been accepted"
+      message="that offer is no longer available or has already been accepted"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
+
+def delete_offer(request):
+  if request.is_ajax():
+    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    if (transaction.status == "offered" or transaction.status == "accepted"):
+      transaction.delete()
+      message = "the offer has been deleted"
+    else:
+      message="that offer is no longer available or has already been confirmed"
   else:
     message="Not AJAX"
   return HttpResponse(message)

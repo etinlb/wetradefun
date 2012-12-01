@@ -50,10 +50,10 @@
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
-                            <a href="#" onclick="accept_offer()"  class="small button">Accept Offer</a>
+                            <a href="#" onclick="get_request_acceptoffer({{offer.id}})"  class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" onclick="decline_offer()" class="small alert button">Decline Offer</a>
+                            <a href="#" onclick="get_request_declineoffer({{offer.id}})" class="small alert button">Decline Offer</a>
                           </li>                          
                         </ul>
                       </li>
@@ -96,10 +96,10 @@
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
-                        <a href="#" onclick="confirm_offer()" class="small button">Confirm Trade</a>
+                        <a href="#" onclick="get_request_confirmoffer({{offer.id}})" class="small button">Confirm Trade</a>
                       </li>
                       <li>
-                        <a href="#" onclock="cancel_offer()" class="small button">Cancel Trade</a>
+                        <a href="#" onclick="get_request_declineoffer({{offer.id}})" class="small button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
@@ -209,6 +209,67 @@ function get_request_removelisting(listing_primary_id){
   );
   return false;
 } 
+
+function get_request_removefromwishlist(wishlist_game_id){
+  $.get(
+    "/trades/remove_from_wish_list/", 
+    {game_id: wishlist_game_id},
+    function(data){
+      console.log(data);
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
+function get_request_acceptoffer(transaction_primary_id){
+  $.get(
+    "/trades/accept_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
+function get_request_confirmoffer(transaction_primary_id){
+  $.get(
+    "/trades/confirm_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
+function get_request_declineoffer(transaction_primary_id){
+  $.get(
+    "/trades/decline_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
+function get_request_deleteoffer(transaction_primary_id){
+  $.get(
+    "/trades/delete_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
 
 </script>
 {% endblock %}
