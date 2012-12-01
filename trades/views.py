@@ -200,7 +200,7 @@ def make_offer(request):
       r_game = get_game_table_by_id(request.GET.get('game2_id'), platform) # receiver game / game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
         for listing in Currentlist.objects.filter(giantBombID = r_game.giant_bomb_id):
-          if listing.user != userprofile:
+          # if listing.user != userprofile:
       
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
           transaction.save()

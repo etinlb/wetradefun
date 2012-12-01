@@ -79,7 +79,7 @@ def getMostTradedGames():
 
             j = j + 1
    
-        topRatedGames.append(orderedTransaction[startIndex].name)
+        topRatedGames.append(orderedTransaction[startIndex])
 
         while (maxCount != 0):
             orderedTransaction.remove(orderedTransaction[startIndex])
@@ -146,7 +146,7 @@ def getMostListedGames():
 
     while (j < len(orderedListing) and j != 4):
         
-        topRatedListings.append(orderedListing[j].name)
+        topRatedListings.append(orderedListing[j])
         j = j + 1
 
     return topRatedListings
