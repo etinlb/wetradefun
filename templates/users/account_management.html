@@ -35,8 +35,8 @@
               <td class="four columns">
                 <ul class="no-bullet">
                   <li>{{key.game_listed.name}}</li>
-                  <li>{{key.game_listed.platform}}</li>
-                  <li>Posted :{{key.datePosted}}</li>
+                  <li>Platform: {{key.game_listed.platform}}</li>
+                  <li>Posted: {{key.datePosted}}</li>
                 </ul>
               </td>
               <td class="four columns">
@@ -45,15 +45,15 @@
                     <ul class="no-bullet">
                       {% for offer in value %}
                       <li>
-                        <a href=/trades/game/{{offer.sender_game.giant_bomb_id}}>{{offer.sender_game.name}}</a>
+                        <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
-                            <a href="#" onclick="accept_offer()"  class="small button">Accept Offer</a>
+                            <a href="#" onclick="get_request_acceptoffer({{offer.pk}})"  class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" onclick="decline_offer()" class="small alert button">Decline Offer</a>
+                            <a href="#" onclick="get_request_declineoffer({{offer.pk}})" class="small alert button">Decline Offer</a>
                           </li>                          
                         </ul>
                       </li>
@@ -84,8 +84,8 @@
           <tbody>
             {% for offer in current_offers %}
             <tr>
-              <td class = "three columns"><a href=/trades/game/{{offer.receiver_game.giant_bomb_id}}><img src="{{offer.receiver_game.image_url}}"/></a></td>
-              <td class = "three columns"><a href=/trades/game/{{offer.sender_game.giant_bomb_id}}><img src="{{offer.sender_game.image_url}}" /></a></td>
+              <td class = "three columns"><a href="/trades/game/{{offer.current_listing.game_listed.giant_bomb_id}}"><img src="{{offer.current_listing.game_listed.image_url}}"/></a></td>
+              <td class = "three columns"><a href="/trades/game/{{offer.sender_game.giant_bomb_id}}"><img src="{{offer.sender_game.image_url}}" /></a></td>
               <td class = "three columns">{{offer.dateRequested}}</td>
 
               <td class = "three columns">
@@ -96,10 +96,10 @@
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
-                        <a href="#" onclick="confirm_offer()" class="small button">Confirm Trade</a>
+                        <a href="#" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
                       </li>
                       <li>
-                        <a href="#" onclock="cancel_offer()" class="small button">Cancel Trade</a>
+                        <a href="#" onclick="get_request_declineoffer({{offer.pk}})" class="small button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
@@ -114,23 +114,29 @@
         <table class="twelve columns">
           <thead>
             <tr>
-              <th>Game Received</th>
+              <th>Game Listed</th>
               <th>Game Offered</th>
               <th>Completion Date</th>
               <th>User Contact</th>
             </tr>
           </thead>
           <tbody>
-            {% for past_trades in history %}
+            {% for transaction in history %}
             <tr>
-              <td><a href="#"><img src={{transaction.receiver_giantBombID.image}} /></a></td>
-              <td><a href= "#"><img src={{transaction.sender_giantBombID.image}} /></a></td>
-              <td>{{transaction.date}}</td>
+              <td><a href="#"><img src="{{transaction.current_listing.game_listed.image_url}}" /></a></td>
+              <td><a href= "#"><img src="{{transaction.sender_game.image_url}}" /></a></td>
+              <td>{{transaction.dateTraded}}</td>
               <td>
                 <ul class="no-bullet">
                   <li>
-                      {{user.email}}
-                    </li>
+                      {% if user == transaction.sender.user %}
+                        {{transaction.current_listing.user.user.username}}</br>
+                        {{transaction.current_listing.user.user.email}}
+                      {% else %}
+                        {{transaction.sender.user.username}}</br>
+                        {{transaction.sender.user.email}}
+                      {% endif %}
+                  </li>
                     <li class="button-bar">
                       <ul class="button-group">
                         <li class="small dropdown button">
@@ -143,7 +149,7 @@
                             <li><a href="#" onclick="rate_user(1)">1: Criminal</a></li>
                           </ul>
                         </li>
-                        <li><a href="#" class="small button" onclick ="report_user()">Report User</a></li>
+                        <li><a href="#" class="small button" onclick="report_user()">Report User</a></li>
                       </ul>
                     </li>
                 </ul>
@@ -209,6 +215,58 @@ function get_request_removelisting(listing_primary_id){
   );
   return false;
 } 
+
+function get_request_acceptoffer(transaction_primary_id){
+  $.get(
+    "/trades/accept_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+    }
+  );
+  return false;
+}
+
+function get_request_confirmoffer(transaction_primary_id){
+  $.get(
+    "/trades/confirm_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+      // TODO: reload page onto current offers tab
+    }
+  );
+  return false;
+}
+
+function get_request_declineoffer(transaction_primary_id){
+  $.get(
+    "/trades/decline_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+      // TODO: reload page onto current offers tab
+    }
+  );
+  return false;
+}
+
+function get_request_deleteoffer(transaction_primary_id){
+  $.get(
+    "/trades/delete_offer/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
 
 </script>
 {% endblock %}

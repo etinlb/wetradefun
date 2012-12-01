@@ -74,9 +74,11 @@
 
         <div class="ui-widget">
           <label for="searchgame_game_name">Game name: </label>
-          <input type="text" id="searchgame_game_name" placeholder="Search for a game..." onkeyup="get_request_searchgame()"/>
-          <input type="text" id="platform" placeholder="What platform?"
-          onkeyup="get_request_platform()">
+          <input type="text" id="searchgame_game_name" placeholder="call of duty" onkeyup="get_request_searchgame()"/>
+          <label for="platform">Platform:</label>
+          <input type="text" id="platform" placeholder="what platform?"
+          onkeyup="get_request_platform()"/>
+
           <input type="hidden" id="searchgame_game_id"/>
         </div>
 
@@ -123,7 +125,7 @@ function get_request_publishListing(){
   $.get(
     "/trades/add_listing/", 
     {
-    platfrom : $('#plat').text(),
+    platform : $('#plat').text(),
     game_id : {{game.id}}
     
     }, 
@@ -143,8 +145,10 @@ function get_request_makeOffer(){
     "/trades/make_offer/", 
     {
     game1_id : $('#searchgame_game_id').val(),
-    message : $('#message').val(),
-    game2_id : {{ game.id }}
+    // message : $('#message').val(),
+    game2_id : {{ game.id }},
+    platform: $('#platform').val()
+
     }, 
     function(data){
       console.log(data);
@@ -161,14 +165,12 @@ function get_request_searchgame(){
     });
 }
 function get_request_platform(){
-    $("#platform").autocomplete({
-      source: "/trades/get_platform/",
-    });
+  $('#platform').autocomplete({    
+    source: "/trades/get_platform/"+$('#searchgame_game_id').val(),
+  });
 }
 
-function platform_keyup(){
-    delay(get_request_platform, 300);
-}
+
 
 function searchgame_game_name_keyup(){
     delay(get_request_searchgame, 300);

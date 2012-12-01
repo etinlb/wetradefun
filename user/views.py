@@ -54,23 +54,25 @@ def sign_in(request):
 def account_management(request):
   listing_list = {}
   listing_dict = {}
-  current_listings = list(Currentlist.objects.filter(\
-    user = request.user.get_profile()).order_by('-datePosted'))
+  current_listings = list(Currentlist.objects.filter(user = request.user.get_profile(), status = 'open').order_by('-datePosted'))
   for idx, listing in enumerate(current_listings):
-      listing_dict[listing] = list(Transaction.objects.filter(Q(status = \
-        'pending') & Q(receiver = request.user.get_profile()) & \
-      Q(receiver_game = listing.game_listed )))
+    listing_dict[listing] = list(Transaction.objects.filter(status = 'offered', current_listing = listing))
+
   #assert false
-  current_offers = list(Transaction.objects.filter(Q(status = 'pending') \
-    & Q(sender = request.user.get_profile())))
+  current_offers = list(Transaction.objects.filter(status = 'offered', sender = request.user.get_profile()))   
+  current_offers_accepted = list(Transaction.objects.filter(status = 'accepted', sender = request.user.get_profile()))
+  current_offers.extend(current_offers_accepted)
+  sort.sort(current_offers, 'dateRequested', "desc")
 
   wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))
 
-  hist = list(Transaction.objects.filter(status = 'confirmed', \
-    sender = request.user.get_profile()).order_by('-dateTraded'))
-  hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', \
-    receiver = request.user.get_profile()).order_by('-dateTraded'))
-  hist.extend(hist_as_receiver)
+  hist = list(Transaction.objects.filter(status = 'confirmed', sender = request.user.get_profile()))
+  
+  hist_listings = Currentlist.objects.filter(user = request.user.get_profile(), status = 'closed')
+  for listing in hist_listings:
+    hist_as_receiver = list(Transaction.objects.filter(status = 'confirmed', current_listing = listing))
+    hist.extend(hist_as_receiver)
+  
   sort.sort(hist, 'dateTraded', "desc")
 
   return render(request, 'users/account_management.html', {

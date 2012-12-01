@@ -47,12 +47,12 @@ def no_game_found(request):
 def getMostTradedGames():
     i = 0
     orderedTransaction = []
-    if Transaction.objects.count() != 0:
+    if Transaction.objects.all().count() != 0:
         orderedTransactionTmp = Transaction.objects.all()
         for transactionobjects in orderedTransactionTmp:
             if transactionobjects.status == "confirmed":
                 orderedTransaction.append(transactionobjects.sender_game)
-                orderedTransaction.append(transactionobjects.receiver_game)
+                orderedTransaction.append(transactionobjects.current_listing.game_listed)
 
     sort(orderedTransaction, 'name', 'desc')
     topRatedGames = []
