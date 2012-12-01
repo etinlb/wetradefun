@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -16,41 +18,43 @@ from django.db.models import Q
 import search as s
 # from trades.forms import SearchForm
 
+@login_required(login_url='/users/sign_in/')
 def sign_out(request):
   logout(request)
-  return render(request, 'base.html')
+  return HttpResponseRedirect('/users/sign_in')
 
 def sign_in(request):
-    # If it's 
-    if request.user.is_authenticated():
-      return HttpResponseRedirect('/')
+  # If it's 
+  if request.user.is_authenticated():
+    return HttpResponseRedirect('/homepage')
+  else:
+    if request.method == 'POST': # If the form has been submitted...
+        form = LoginForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                  login(request, user)
+                  # Redirect to a success page.
+                  messages.add_message(request, messages.SUCCESS, 'Welcome %s!' % user.username)
+                  return HttpResponseRedirect('/')
+                else:
+                  # Return a 'disabled account' error message
+                  messages.add_message(request, messages.ERROR, 'Your account is disabled')
+            else:
+              # Return an 'invalid login' error message.
+              messages.add_message(request, messages.ERROR, 'Your username or password is incorrect')
     else:
-      if request.method == 'POST': # If the form has been submitted...
-          form = LoginForm(request.POST) # A form bound to the POST data
-          if form.is_valid(): # All validation rules pass
-              username = form.cleaned_data['username']
-              password = form.cleaned_data['password']
-              user = authenticate(username=username, password=password)
-              if user is not None:
-                  if user.is_active:
-                    login(request, user)
-                    # Redirect to a success page.
-                    messages.add_message(request, messages.SUCCESS, 'Welcome %s!' % user.username)
-                    return HttpResponseRedirect('/')
-                  else:
-                    # Return a 'disabled account' error message
-                    messages.add_message(request, messages.ERROR, 'Your account is disabled')
-              else:
-                # Return an 'invalid login' error message.
-                messages.add_message(request, messages.ERROR, 'Your username or password is incorrect')
-      else:
-          form = LoginForm() # An unbound form
+        form = LoginForm() # An unbound form
 
-    return render_to_response('users/sign_in.html', {
-        'form': form,
-    },
-     context_instance=RequestContext(request))
+  return render_to_response('users/sign_in.html', {
+      'form': form,
+  },
+   context_instance=RequestContext(request))
 
+@login_required(login_url='/users/sign_in/')
 def account_management(request):
   listing_list = {}
   listing_dict = {}
@@ -85,6 +89,9 @@ def account_management(request):
     })
 
 def sign_up(request):
+  if request.user.is_authenticated():
+    return HttpResponseRedirect('/')
+  else:
     if request.method == 'POST': # If the form has been submitted...
         form = RegistrationForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
