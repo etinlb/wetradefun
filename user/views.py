@@ -61,7 +61,7 @@ def account_management(request):
         'open') & Q(user = request.user.get_profile()) & \
       Q(game_listed = listing.game_listed )))
   #assert false
-  current_offers = list(Transaction.objects.filter(Q(status = 'pending') \
+  current_offers = list(Transaction.objects.filter(Q(status = 'offered') \
     & Q(sender = request.user.get_profile())))
 
   wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))

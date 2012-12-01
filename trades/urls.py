@@ -10,6 +10,10 @@ urlpatterns = patterns('',
     url(r'^make_offer/$', 'trades.views.make_offer'),
     url(r'^add_listing/$', 'trades.views.add_listing'),
     url(r'^remove_listing/$', 'trades.views.remove_listing'),
+    url(r'^accept_offer/$', 'trades.views.accept_offer'),
+    url(r'^confirm_offer/$', 'trades.views.confirm_offer'),
+    url(r'^decline_offer/$', 'trades.views.decline_offer'),
+    url(r'^delete_offer/$', 'trades.views.delete_offer'),
     url(r'^get_request/$', 'trades.views.get_request'),
     url(r'^get_platform/$', 'trades.views.get_platform')
 )

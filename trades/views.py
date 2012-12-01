@@ -104,6 +104,24 @@ def accept_offer(request):
     message="Not AJAX"
   return HttpResponse(message)
 
+def confirm_offer(request):
+  #TODO verify if this is correct
+  if request.is_ajax():
+    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    if transaction.status == "accepted":
+      transaction.status = "confirmed"
+      transactions_listing = transaction.current_listing.id
+      message = "Your transaction is now complete! Proceed to the transaction history page to view it"
+      transaction.save()
+      currentlisting = Currentlist.objects.filter(id = transactions_listing)
+      currentlisting.status = "closed"
+      currentlisting.save()
+
+    else:
+      message="that trade is no longer available or has already been accepted"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
 
 def decline_offer(request):
   if request.is_ajax():
@@ -118,12 +136,26 @@ def decline_offer(request):
     message="Not AJAX"
   return HttpResponse(message)
 
+def delete_offer(request):
+  if request.is_ajax():
+    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    if transaction.status == "offered" or transaction.status == "accepted":
+      transaction.delete()
+      message = "this listing is now deleted"
+      #transaction.save()
+    else:
+      message="that trade is no longer available or has already been confirmed"
+  else:
+    message="Not AJAX"
+  return HttpResponse(message)
+
 def remove_listing(request):
   # TODO make this with the foreign key game
   if request.is_ajax():
     listing = Currentlist.objects.filter(pk = request.GET.get('listing_id'))
     if (listing.count() == 1):
-      listing.delete()
+      listing.status = "deleted"
+      lis
       message = "You have deleted your listing"
     elif (listing.count() == 0):
       message = "This listing does not exist"
