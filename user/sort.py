@@ -41,9 +41,4 @@ def sort(unsorted_list, sort_field, asc_or_desc):
     elif (asc_or_desc == "desc"):
         return h.reverse()
     else:
-<<<<<<< HEAD
         raise NotImplementedError, "'" + asc_or_desc + "' must either be 'asc' or 'desc'"
-        
-=======
-        raise NotImplementedError, "'" + asc_or_desc + "' must either be 'asc' or 'desc'"
->>>>>>> 10b5a2234b90dd73881aa653cae8106561d20a98
