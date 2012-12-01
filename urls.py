@@ -6,10 +6,14 @@ urlpatterns = patterns('',
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
     url(r'^trades/', include('trades.urls')),
     url(r'^users/', include('user.urls')),
+<<<<<<< HEAD
     url(r'^$', 'views.homepage'),
     url(r'^how_to_use', 'views.how_to_use'),
     url(r'^contact_us', 'views.contact_us'),
     url(r'^no_game_found', 'views.no_game_found'),
+=======
+    (r'^homepage/$', 'views.homepage'),
+>>>>>>> 10b5a2234b90dd73881aa653cae8106561d20a98
  # (r'^trades/$', 'trades.views.index'),
 # (r'^trades/save/(?P<users_name>\w+)/$', 'trades.views.save'),
 # (r'^trades/load/(?P<users_id>\d+)/$', 'trades.views.load'),
