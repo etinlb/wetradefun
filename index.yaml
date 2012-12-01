@@ -39,6 +39,13 @@ indexes:
 
 - kind: trades_currentlist
   properties:
+  - name: status
+  - name: user_id
+  - name: datePosted
+    direction: desc
+
+- kind: trades_currentlist
+  properties:
   - name: user_id
   - name: datePosted
     direction: desc
