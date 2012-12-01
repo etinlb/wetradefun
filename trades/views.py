@@ -221,7 +221,6 @@ def add_listing(request):
     
   return HttpResponse(message)
 
-@login_required(login_url='/users/sign_in/')
 def get_request(request):
   if request.is_ajax():
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
