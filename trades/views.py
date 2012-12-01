@@ -131,25 +131,33 @@ def confirm_offer(request):
 
 def decline_offer(request):
   if request.is_ajax():
-    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-    if transaction.status == "offered":
-      transaction.status = "declined"
-      message = "the offer has been declined"
-      transaction.save()
+    transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    userprofile = request.user.get_profile()
+    if transaction != None:
+      if (transaction.status == "offered" and userprofile == transaction.current_listing.user) or (transaction.status == "accepted" and userprofile == transaction.sender):
+        transaction.status = "declined"
+        message = "the offer has been declined by " + str(userprofile.user.username)
+        transaction.save()
+      else:
+        message="that offer is no longer available or has already been accepted"
     else:
-      message="that offer is no longer available or has already been accepted"
+      message = "This trade does not exist"
   else:
     message="Not AJAX"
   return HttpResponse(message)
 
 def delete_offer(request):
   if request.is_ajax():
-    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-    if (transaction.status == "offered" or transaction.status == "accepted"):
-      transaction.delete()
-      message = "the offer has been deleted"
+    transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    userprofile = request.user.get_profile()
+    if transaction != None:
+      if ((userprofile == transaction.sender) and ((transaction.status == "offered") or (transaction.status == "accepted"))):
+        transaction.delete()
+        message = "the offer has been deleted"
+      else:
+        message="that offer is no longer available or has already been confirmed"
     else:
-      message="that offer is no longer available or has already been confirmed"
+      message = "This trade does not exist"
   else:
     message="Not AJAX"
   return HttpResponse(message)
@@ -183,6 +191,8 @@ def make_offer(request):
       r_game = get_game_table_by_id(request.GET.get('game2_id'), platform) # receiver game / game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
         for listing in Currentlist.objects.filter(giantBombID = r_game.giant_bomb_id):
+          if listing.user != userprofile:
+      
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
           transaction.save()
           message += str(user_name) + " offered " + s_game.name + " to " + str(listing.user.user.username) + " for " + r_game.name+ "\n"

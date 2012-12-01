@@ -20,7 +20,7 @@ def searchresults(request):
 # This big pro homepage should have (ideally):
 
 #1.most traded games: all time
-#2.hot wish-list item: the game that appears on the most wish-lists
+#2.hot wish-list item: the game that appears     on the most wish-lists
 #3.hot current listing: (how many current listings have that game)
 #4.hot current listing: (the current listing with the most trade offers on it)
 def homepage(request):
