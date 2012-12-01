@@ -67,7 +67,6 @@ def account_management(request):
   current_offers_accepted = list(Transaction.objects.filter(status = 'accepted', sender = request.user.get_profile()))
   current_offers.extend(current_offers_accepted)
   sort.sort(current_offers, 'dateRequested', "desc")
-
   wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))
 
   hist = list(Transaction.objects.filter(status = 'confirmed', sender = request.user.get_profile()))
@@ -78,6 +77,16 @@ def account_management(request):
     hist.extend(hist_as_receiver)
   
   sort.sort(hist, 'dateTraded', "desc")
+
+  message = "You're ready to start trading!\n"
+  if len(current_listings) == 0:
+    messages.add_message(request, messages.SUCCESS,"Got any old games? Go ahead and post a listing for them.")
+  if len(current_offers) == 0:
+    messages.add_message(request, messages.SUCCESS,"You don't have any active offers, go ahead and browse for a new game.")
+  if len(hist) == 0:
+    messages.add_message(request, messages.SUCCESS, "Don't worry if your history is empty, that will fill up as soon as you complete a trade.")
+
+
 
   return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
