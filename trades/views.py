@@ -12,6 +12,7 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 import re
 import search as s
+import datetime
 
 def game_details(request, game_id):
   # Is the game in wishlist?
@@ -78,11 +79,12 @@ def remove_from_wish_list(request):
   if request.is_ajax():
     game_id = request.GET.get('game_id')
     game = get_game_table_by_id(game_id, '')
-    try:
-      Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game).delete()
-      message = user_name + " deleted " + game.name + " from their wish list"
-    except Exception, e:
-      message = "not in wishlist"
+    game_in_wishlist = Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game)
+    if (game_in_wishlist.count() == 1):
+      message = "deleted " + game_in_wishlist[0].wishlist_game.name + " from their wish list"      
+      game_in_wishlist[0].delete()
+    else:
+      message = "game not in wishlist"
   else:
     message = "Not AJAX"
   return HttpResponse(message)
@@ -90,13 +92,16 @@ def remove_from_wish_list(request):
 def accept_offer(request):
   #TODO verify if this is correct
   if request.is_ajax():
-    transaction = Transaction.objects.filter(pk = request.GET.get('transaction_id'))
-    if transaction.status == "offered":
-      transaction.status = "accepted"
-      message = "Please wait for " + reciever + " to make the final trade confirmation"
-      transaction.save()
+    transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    if (transaction != None):
+      if (transaction.status == "offered"):
+        transaction.status = "accepted"
+        message = "Please wait for " + transaction.sender.user.username + " to make the final trade confirmation"
+        transaction.save()
+      else:
+        message="that trade is no longer available or has already been accepted"
     else:
-      message="that trade is no longer available or has already been accepted"
+      message = "No such trade exists"
   else:
     message="Not AJAX"
   return HttpResponse(message)
@@ -104,18 +109,22 @@ def accept_offer(request):
 def confirm_offer(request):
   #TODO verify if this is correct
   if request.is_ajax():
-    transaction = Transaction.objects.filter(pk = request.GET.get('transaction_id'))
-    if transaction.status == "accepted":
-      transaction.status = "confirmed"
-      transaction_listing = transaction.current_listing.pk
-      message = "Your transaction is now complete! Proceed to the transaction history page to view it"
-      transaction.save()
+    transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    if (transaction != None):
+      if (transaction.status == "accepted"):
+        transaction.status = "confirmed"
+        transaction.dateTraded = datetime.datetime.now()
+        message = "Your transaction is now complete! Proceed to the transaction history page to view it"
+        transaction.save()
 
-      currentlisting = Currentlist.objects.filter(pk = transaction_listing)
-      currentlisting.status = "closed"
-      currentlisting.save()
+        currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
+        currentlisting.status = "closed"
+        currentlisting.save()
+      else:
+        message = "that trade is no longer available or has already been accepted"
+        message = str(transaction.pk)
     else:
-      message = "that trade is no longer available or has already been accepted"
+      message = "No such trade exists"
   else:
     message = "Not AJAX"
   return HttpResponse(message)
@@ -149,13 +158,13 @@ def remove_listing(request):
   if request.is_ajax():
     listing = Currentlist.objects.filter(pk = request.GET.get('listing_id'))
     if (listing.count() == 1):
-      trans = Transaction.objects.filter(current_listing = listing)
+      trans = Transaction.objects.filter(current_listing = listing[0])
       for t in trans:
-        t.status = "deleted"
-      listing.status = "deleted"
-      listing.game_listed.num_of_listings -= 1
-      message = "You have deleted your listing"
-    elif (listing.count() == 0):
+        t.delete()
+      listing[0].game_listed.num_of_listings -= 1
+      message = "You have deleted your listing for " + str(listing[0].game_listed.name)
+      listing[0].delete()
+    elif (listing.count == 0):
       message = "This listing does not exist"
     else:
       message = "ERROR: Multiple listings of this id exists"
@@ -173,11 +182,10 @@ def make_offer(request):
       s_game = get_game_table_by_id(request.GET.get('game1_id'), platform) # sender game / game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), platform) # receiver game / game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
-        message=s_game.giant_bomb_id
-        for listing in Currentlist.objects.filter(game_listed = r_game):
+        for listing in Currentlist.objects.filter(giantBombID = r_game.giant_bomb_id):
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
           transaction.save()
-          message += str(user_name) + " offered to " + str(listing.user.user.username) + "\n"
+          message += str(user_name) + " offered " + s_game.name + " to " + str(listing.user.user.username) + " for " + r_game.name+ "\n"
       else:
         message = "These two games are the same"
     else:
@@ -197,7 +205,7 @@ def add_listing(request):
     currentlist = Currentlist.objects.create(user = userprofile, giantBombID = game_id, game_listed = game, status = "open")
     game.num_of_listings += 1
     currentlist.save()
-    message  = user_name + " added " + game.name + " to his current list"
+    message  = "You created a listing for " + game.name
   else:
     message = "Not AJAX"
     
