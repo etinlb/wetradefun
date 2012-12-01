@@ -52,6 +52,8 @@ def sign_in(request):
      context_instance=RequestContext(request))
 
 def account_management(request):
+  if not request.user.is_authenticated():
+    return HttpResponseRedirect('/users/sign_in')
   listing_list = {}
   listing_dict = {}
   current_listings = list(Currentlist.objects.filter(user = request.user.get_profile(), status = 'open').order_by('-datePosted'))
