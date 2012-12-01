@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 import datetime, random, sha
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -55,6 +56,7 @@ def search(request):
 # TODO Handle the game page and search page buttons
 
 # AJAX calls
+@login_required(login_url='/users/sign_in/')
 def add_to_wish_list(request):
   if request.is_ajax():
     # get game from table or add if not there
@@ -75,6 +77,7 @@ def add_to_wish_list(request):
     message = "Not AJAX"
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def remove_from_wish_list(request):
   if request.is_ajax():
     game_id = request.GET.get('game_id')
@@ -89,6 +92,7 @@ def remove_from_wish_list(request):
     message = "Not AJAX"
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def accept_offer(request):
   #TODO verify if this is correct
   if request.is_ajax():
@@ -106,6 +110,7 @@ def accept_offer(request):
     message="Not AJAX"
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def confirm_offer(request):
   #TODO verify if this is correct
   if request.is_ajax():
@@ -129,6 +134,7 @@ def confirm_offer(request):
     message = "Not AJAX"
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def decline_offer(request):
   if request.is_ajax():
     transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
@@ -142,6 +148,7 @@ def decline_offer(request):
     message="Not AJAX"
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def delete_offer(request):
   if request.is_ajax():
     transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
@@ -154,6 +161,7 @@ def delete_offer(request):
     message="Not AJAX"
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def remove_listing(request):
   if request.is_ajax():
     listing = Currentlist.objects.filter(pk = request.GET.get('listing_id'))
@@ -172,6 +180,7 @@ def remove_listing(request):
     message="Not AJAX"
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def make_offer(request):
   message = ""
   if request.user.is_authenticated():
@@ -195,6 +204,7 @@ def make_offer(request):
 
   return HttpResponse(message)  
 
+@login_required(login_url='/users/sign_in/')
 def add_listing(request):
   if request.is_ajax():
     userprofile = request.user.get_profile()
@@ -211,6 +221,7 @@ def add_listing(request):
     
   return HttpResponse(message)
 
+@login_required(login_url='/users/sign_in/')
 def get_request(request):
   if request.is_ajax():
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
@@ -229,6 +240,7 @@ def get_request(request):
   return HttpResponse(message)
 
 
+@login_required(login_url='/users/sign_in/')
 def get_platform(request, game_id):  
   if request.is_ajax(): 
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
