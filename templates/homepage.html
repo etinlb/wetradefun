@@ -4,25 +4,17 @@
 
 <h2 style="text-align:center">Welcome to We Trade Fun</h2>
 <div class="row">
-
-
-
-     {%if user.is_authenticated%}
-            <a href="/users/account_management.html">{{user.username}}</a>
-            <ul class="dropdown">
-              <li><a href="/users/account_management.html">Manage Account</a></li>
-              <li><a href="/users/account_management.html">Edit Account Details</a></li>
-              <li><a href="/users/account_management.html">Manage Wishlist</a></li>
-              <li class="divider"></li>
-              <li><a href="/users/sign_out">Logout</a></li>
-            {%else%}
-            <a class="two offset-by-four button" href="/users/sign_in">Sign in &raquo;</a>
-            <a class="two button" href="/users/sign_up">Sign up &raquo;</a>
-            {%endif%}
+  {%if user.is_authenticated%}
+  <a class="four offset-by-two large button" href="/how_to_use">Confused about what to do?</a>
+  <a class="four large button" href="/users/account_management">View Your Account</a>
+  {%else%}
+  <a class="two offset-by-four button" href="/users/sign_in">Sign in &raquo;</a>
+  <a class="two button" href="/users/sign_up">Sign up &raquo;</a>
+  {%endif%}
 </div>
   
   <div class="row">
-    <h4 class="centered">What's Popular Right Now?</h4>
+    <h4>What's Popular Right Now?</h4>
       <div class="twelve columns">
         <ul class="block-grid five-up">
           {% for game in most_wishlisted_games %}
@@ -33,7 +25,7 @@
   </div>
   <hr>
   <div class="row">
-    <h4 class="centered">What's Available Right Now?</h4>
+    <h4>What's Available Right Now?</h4>
       <div class="twelve columns">
         <ul class="block-grid four-up">
         {% for game in most_listed_games %}
@@ -44,7 +36,7 @@
   </div>
   <hr>
   <div class="row">
-    <h4 class="centered">Most Popular of All Time</h4>
+    <h4>Most Popular of All Time</h4>
       <div class="twelve columns">
         <ul class="block-grid five-up">
         {% for game in most_wishlisted_games %}
