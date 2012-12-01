@@ -24,18 +24,18 @@ def searchresults(request):
 #3.hot current listing: (how many current listings have that game)
 #4.hot current listing: (the current listing with the most trade offers on it)
 def homepage(request):
-    mostTradedGames = getMostTradedGames()
-    mostWishlistedGames = getMostWishlistedGames()
-    mostListedGames = getMostListedGames()
+    # mostTradedGames = getMostTradedGames()
+    # mostWishlistedGames = getMostWishlistedGames()
+    # mostListedGames = getMostListedGames()
 
-    return render(request, 'base.html', {
-        'most_traded_games': mostTradedGames,
-        'most_Wishlisted_Games': mostWishlistedGames,
-        'most_Listed_Games': mostListedGames,
-        'username':request.user.username,
-        })
+    # return render(request, 'base.html', {
+    #     'most_traded_games': mostTradedGames,
+    #     'most_Wishlisted_Games': mostWishlistedGames,
+    #     'most_Listed_Games': mostListedGames,
+    #     'username':request.user.username,
+    #     })
     
-
+    return render(request, 'base.html')
 
 def getMostTradedGames():
     i = 0

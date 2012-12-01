@@ -56,7 +56,7 @@ def account_management(request):
   listing_dict = {}
   current_listings = list(Currentlist.objects.filter(user = request.user.get_profile(), status = 'open').order_by('-datePosted'))
   for idx, listing in enumerate(current_listings):
-      listing_dict[listing] = list(Transaction.objects.filter(status = 'pending', current_listing = listing))
+      listing_dict[listing] = list(Transaction.objects.filter(status = 'offered', current_listing = listing))
 
   #assert false
   current_offers = list(Transaction.objects.filter(Q(status = 'offered') \

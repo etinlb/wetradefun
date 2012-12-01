@@ -41,11 +41,11 @@
               </td>
               <td class="four columns">
                 <ul class="no-bullet">
-                  <li><!-- list item for every offer-->
+                  <li> <!-- list item for every offer -->
                     <ul class="no-bullet">
                       {% for offer in value %}
                       <li>
-                        <a href=/trades/game/{{offer.sender_game.giant_bomb_id}}>{{offer.sender_game.name}}</a>
+                        <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
@@ -84,8 +84,8 @@
           <tbody>
             {% for offer in current_offers %}
             <tr>
-              <td class = "three columns"><a href=/trades/game/{{offer.receiver_game.giant_bomb_id}}><img src="{{offer.receiver_game.image_url}}"/></a></td>
-              <td class = "three columns"><a href=/trades/game/{{offer.sender_game.giant_bomb_id}}><img src="{{offer.sender_game.image_url}}" /></a></td>
+              <td class = "three columns"><a href="#"><img src="{{offer.current_listing.game_listed.image_url}}"/><br /></a></td>
+              <td class = "three columns"><a href="/trades/game/{{offer.sender_game.giant_bomb_id}}"><img src="{{offer.sender_game.image_url}}" /></a></td>
               <td class = "three columns">{{offer.dateRequested}}</td>
 
               <td class = "three columns">
@@ -123,8 +123,8 @@
           <tbody>
             {% for past_trades in history %}
             <tr>
-              <td><a href="#"><img src={{transaction.receiver_giantBombID.image}} /></a></td>
-              <td><a href= "#"><img src={{transaction.sender_giantBombID.image}} /></a></td>
+              <td><a href="#"><img src="{{transaction.current_listing.game_listed.image_url}}" /></a></td>
+              <td><a href= "#"><img src="{{transaction.sender_game.image_url}}" /></a></td>
               <td>{{transaction.date}}</td>
               <td>
                 <ul class="no-bullet">
@@ -210,24 +210,13 @@ function get_request_removelisting(listing_primary_id){
   return false;
 } 
 
-function get_request_removefromwishlist(wishlist_game_id){
-  $.get(
-    "/trades/remove_from_wish_list/", 
-    {game_id: wishlist_game_id},
-    function(data){
-      console.log(data);
-      // TODO: reload page onto wishlist tab
-    }
-  );
-  return false;
-}
 
 function get_request_acceptoffer(transaction_primary_id){
   $.get(
     "/trades/accept_offer/", 
     {transaction_id: transaction_primary_id},
     function(data){
-      console.log(data);
+      console.log({{transaction_id}});
       // TODO: reload page onto wishlist tab
     }
   );
