@@ -63,6 +63,14 @@ body {
 
 }
 
+#copies {
+  padding-top: 15px;
+}
+
+#li_copies {
+  border-bottom: solid 1px #ddd;
+}
+
 img.miniature-management{
   max-height: 200px;
 }
@@ -71,3 +79,6 @@ img.miniature-management{
   margin-bottom:20px;
 }
 
+#listed {
+  border-right: solid 1px #ddd;
+}

@@ -13,21 +13,28 @@
       <div class="seven columns">
         <ul class="pricing-table">
           <li class="title"><h3>{{game.name}}</h3></li>
-          <li class="price">{{listing}} copies avaliable
-            {% if in_wishlist %}
-              <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
-            {% else %}
-              <a class="tiny button right" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>
-            {% endif %}
-          </li>
+          {% for k,v in listings.items %}
+            <li class="price twelve columns" id="li_copies">
+              <div class="nine left" id="copies">{{v}} {{k}} cop{{ v|pluralize:"y,ies" }} avaliable</div>
+              <div class="three right">
+                {% if in_wishlist %}
+                  <a class="tiny success button twelve" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
+                  <a data-platform="{{k}}" href="#" class="make_offer_button radius button twelve" data-reveal-id="new_offer_confirmation">Make an offer</a>
+                {% else %}                  
+                  <a class="tiny button twelve" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>
+                  <a data-platform="{{k}}" href="#" class="make_offer_button tiny button left twelve" data-reveal-id="new_offer_confirmation">Make an offer</a>
+                {% endif %}
+              </div>
+            </li>
+          {% empty %}
+            <li class="price">There are no copies available</li>
+          {% endfor %}
           <li class="description">{{game.deck}}</li>          
           <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
           <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
           <li class="bullet-item"><a class="secondary button" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
           <li class="cta-button"> 
             <a href="#" class="radius button" data-reveal-id="new_listing_confirmation">Publish a listing</a>
-            <a id="make_offer_button" href="#" class="radius button" data-reveal-id="new_offer_confirmation">Make an offer</a>
-            </ul>
           </li>
         </ul>
 
@@ -70,19 +77,23 @@
 
     <div id="new_offer_confirmation" class="reveal-modal medium">
       <h2>Which game would you like to offer?</h2>
-
-
+      <div class="six columns" id="listed">
+        <h5>You are making an offer for this game:</h5>
         <div class="ui-widget">
-          <label for="searchgame_game_name">Game name: </label>
-          <input type="text" id="searchgame_game_name" placeholder="call of duty" onkeyup="get_request_searchgame()"/>
-          <label for="platform">Platform:</label>
-          <input type="text" id="platform" placeholder="what platform?"
-          onkeyup="get_request_platform()"/>
-
-          <input type="hidden" id="searchgame_game_id"/>
+          <h6>Platform:</h6>
+          <p id="platform"></p>
         </div>
+      </div>
+      <div class="six columns" id="offered">
+        <label for="searchgame_game_name">Game name: </label>
+        <input type="text" id="searchgame_game_name" placeholder="Call of Duty" onkeyup="get_request_searchgame()"/>
+        
 
-    <div id="search_game_result"></div>
+        <input type="hidden" id="searchgame_game_id"/>
+      </div>
+      
+
+      <div id="search_game_result"></div>
       <a class="success button" href="#" onclick="get_request_makeOffer()">Accept</a>
 
       <a class="alert button" href="#" onclick="$('#new_offer_confirmation').trigger('reveal:close')">Cancel</a>
@@ -93,6 +104,14 @@
 
 {% block js %}
 <script>
+$(document).ready(function(){
+   $(".make_offer_button").click(function(){
+    var plat = $(this).data('platform');
+    console.log(plat);
+    $('#platform').text(plat);
+   });
+});
+
 function get_request_addtowishlist(){
   $.get(
     "/trades/add_to_wish_list/", 
@@ -141,6 +160,7 @@ function get_request_publishListing(){
 } 
 
 function get_request_makeOffer(){
+  console.log($('#searchgame_game_id').val());
   $.get(
     "/trades/make_offer/", 
     {

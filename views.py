@@ -27,7 +27,6 @@ def homepage(request):
     mostTradedGames = getMostTradedGames()
     mostWishlistedGames = getMostWishlistedGames()
     mostListedGames = getMostListedGames()
-
     return render(request, 'homepage.html', {
         'most_traded_games': mostTradedGames,
         'most_wishlisted_games': mostWishlistedGames,
@@ -55,17 +54,18 @@ def getMostTradedGames():
                 orderedTransaction.append(transactionobjects.current_listing.game_listed)
 
     sort(orderedTransaction, 'name', 'desc')
+    prevorderedTransactionSize = len(orderedTransaction)
     topRatedGames = []
 
     i = 0
-    while (i != 4 and i < len(orderedTransaction)):
+    while ((len(topRatedGames) != 4 and i < prevorderedTransactionSize) and (len(orderedTransaction) != 0)):
         j = 0
         maxCount = 0
         startIndex = 0
         tmp = 0
-        while (j < len(orderedTransaction) - 1):
+        while (j < len(orderedTransaction)):
             tmp = 1
-            while (orderedTransaction[j] == orderedTransaction[j+1]):
+            while (j != len(orderedTransaction) - 1) and (orderedTransaction[j] == orderedTransaction[j+1]):
 
                 tmp = tmp + 1
                 j = j + 1
@@ -73,7 +73,7 @@ def getMostTradedGames():
                 if j == len(orderedTransaction) - 1:
                     break
 
-            if (tmp > maxCount):
+            if (tmp >= maxCount):
                 maxCount = tmp
                 startIndex = j - maxCount + 1
 
@@ -99,26 +99,27 @@ def getMostWishlistedGames():
             orderedWishlist.append(wishlistobjects.wishlist_game)
 
     sort(orderedWishlist, 'name', 'desc')
-
+    prevorderedWishlistSize = len(orderedWishlist)
     topRatedWishlist = []
 
     m = 0
-    while (m != 4 and m < len(orderedWishlist)):
+    while ((len(topRatedWishlist) != 4 and m < prevorderedWishlistSize) and (len(orderedWishlist) != 0)):
         n = 0
         maxCount = 0
         startIndex = 0
         tmp = 0
-        while (n < len(orderedWishlist) - 1):
+        while (n < len(orderedWishlist)):
             tmp = 1
-            while (orderedWishlist[n] == orderedWishlist[n+1]):
+
+            while (n != len(orderedWishlist) - 1) and (orderedWishlist[n] == orderedWishlist[n+1]):
 
                 tmp = tmp + 1
                 n = n + 1
 
-                if n == len(orderedWishlist) - 1:
-                    break
+            # if n == len(orderedWishlist) - 1:
+            
 
-            if (tmp > maxCount):
+            if (tmp >= maxCount):
                 maxCount = tmp
                 startIndex = n - maxCount + 1
 
@@ -137,16 +138,23 @@ def getMostWishlistedGames():
 def getMostListedGames():
 
     orderedListing = []
+    k = 0
     if Game.objects.count() != 0:
         orderedListing = list(Game.objects.all())
-
+        while (k < len(orderedListing)):
+            for listing in orderedListing:
+                if listing.name == orderedListing[k].name and orderedListing[k] != listing:
+                    orderedListing[k].num_of_listings += listing.num_of_listings
+                    orderedListing.remove(listing)
+            k += 1
         sort(orderedListing, 'num_of_listings', 'desc')
+
     topRatedListings = []
     j = 0
 
     while (j < len(orderedListing) and j != 4):
-        
-        topRatedListings.append(orderedListing[j])
+        if orderedListing[j].num_of_listings != 0:
+            topRatedListings.append(orderedListing[j])
         j = j + 1
 
     return topRatedListings
