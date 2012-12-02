@@ -1,46 +1,49 @@
 {% extends 'base.html' %}
-{% block title %}{{user.name}} | We Trade Fun{% endblock %}
+{% block title %}{{user.name}} {% endblock %}
 {% block content %}
 
-<h2 style="text-align:center">Welcome to We Trade Fun</h2>
-<div class="row">
-  {%if user.is_authenticated%}
-  <a class="four offset-by-two large button" href="/users/account_management">View Your Account</a>
-  <a class="four large button" href="/how_to_use">Confused about what to do?</a>
-  {%else%}
-  <a class="two offset-by-four button" href="/users/sign_in">Sign in &raquo;</a>
-  <a class="two button" href="/users/sign_up">Sign up &raquo;</a>
-  {%endif%}
+
+<div class="panel callout radius twelve columns centered" id="home-box">
+  <h2 style="text-align:center">Welcome to We Trade Fun</h2>
+  <div class="row">
+    {%if user.is_authenticated%}
+    <a class="four offset-by-two large button" href="/users/account_management">View Your Account</a>
+    <a class="four large button" href="/how_to_use">Confused about what to do?</a>
+    {%else%}
+    <a class="two offset-by-four button" href="/users/sign_in">Sign in &raquo;</a>
+    <a class="two button" href="/users/sign_up">Sign up &raquo;</a>
+    {%endif%}
+  </div>
 </div>
   
-  <div class="row">
-    <h4>What's Popular Right Now?</h4>
+  <div class="row panel">
+    <h3>What's Popular Right Now?</h3>
       <div class="twelve columns">
-        <ul class="block-grid five-up">
+        <ul class="block-grid four-up">
           {% for game in most_wishlisted_games %}
-          <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
           {% endfor %}
         </ul>
       </div>
   </div>
   <hr>
-  <div class="row">
-    <h4>What's Available Right Now?</h4>
+  <div class="row panel">
+    <h3>What's Available Right Now?</h3>
       <div class="twelve columns">
         <ul class="block-grid four-up">
         {% for game in most_listed_games %}
-          <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
         {% endfor %}
       </ul>
      </div>
   </div>
   <hr>
-  <div class="row">
-    <h4>Most Popular of All Time</h4>
+  <div class="row panel">
+    <h3>Most Popular of All Time</h3>
       <div class="twelve columns">
-        <ul class="block-grid five-up">
+        <ul class="block-grid four-up">
         {% for game in most_traded_games %}
-        <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
+        <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
         {% endfor %}
       </ul>
      </div>
@@ -48,4 +51,3 @@
 </div>
        
 {% endblock %}
-
