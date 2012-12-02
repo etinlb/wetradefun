@@ -137,7 +137,7 @@ def confirm_offer(request):
 @login_required(login_url='/users/sign_in/')
 def decline_offer(request):
   if request.is_ajax():
-    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
+    transaction = Transaction.objects.filter(pk = request.GET.get('transaction_id'))
     if transaction.status == "offered":
       transaction.status = "declined"
       message = "the offer has been declined"
