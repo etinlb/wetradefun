@@ -63,4 +63,14 @@ body {
 
 }
 
+#copies {
+  padding-top: 15px;
+}
 
+#li_copies {
+  border-bottom: solid 1px #ddd;
+}
+
+#listed {
+  border-right: solid 1px #ddd;
+}

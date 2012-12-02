@@ -29,12 +29,15 @@ def game_details(request, game_id):
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
-      # wish_game = Game.objects.get(giant_bomb_id = game_id)
-      games_listed = Game.objects.filter(giant_bomb_id = game_id).values_list('platform')
-      # assert False
+      platforms_listed = Game.objects.filter(giant_bomb_id = game_id).exclude(num_of_listings = 0).values_list('platform')
+      platforms_count = {}
+      if platforms_listed:
+        for k in platforms_listed:
+          v = Game.objects.get(giant_bomb_id = game_id, platform = k[0]).num_of_listings
+          platforms_count[k[0]] = v
   except Currentlist.DoesNotExist:
       games_listed = 0
-  return render(request,'game_page.html', {'game': game, 'listing': games_listed, 'in_wishlist': in_wishlist,})
+  return render(request,'game_page.html', {'game': game, 'listings': platforms_count, 'in_wishlist': in_wishlist,})
 
 
 def search(request):
