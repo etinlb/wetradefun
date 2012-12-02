@@ -32,7 +32,7 @@
           <li class="description">{{game.deck}}</li>          
           <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
           <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
-          <li class="bullet-item"><a class="secondary button" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
+          <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
           <li class="cta-button"> 
             <a href="#" class="radius button" data-reveal-id="new_listing_confirmation">Publish a listing</a>
           </li>
