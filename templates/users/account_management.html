@@ -245,15 +245,15 @@ function get_request_removefromwishlist(wishlist_game_id){
   );
   return false;
 }
-function edit_email(new_email){
-  ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$
-  $.get(
-    "/user/edit_email",
-    {new_email : new_email},
-    function(data){
-      console.log(data);
-    });
-}
+// function edit_email(new_email){
+//   ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$
+//   $.get(
+//     "/user/edit_email",
+//     {new_email : new_email},
+//     function(data){
+//       console.log(data);
+//     });
+// }
 
 function get_request_removelisting(listing_primary_id){
   $.get(
