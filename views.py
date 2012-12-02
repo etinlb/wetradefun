@@ -27,7 +27,6 @@ def homepage(request):
     mostTradedGames = getMostTradedGames()
     mostWishlistedGames = getMostWishlistedGames()
     mostListedGames = getMostListedGames()
-    assert false
     return render(request, 'homepage.html', {
         'most_traded_games': mostTradedGames,
         'most_wishlisted_games': mostWishlistedGames,

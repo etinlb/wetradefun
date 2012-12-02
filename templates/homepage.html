@@ -18,7 +18,7 @@
       <div class="twelve columns">
         <ul class="block-grid five-up">
           {% for game in most_wishlisted_games %}
-          <li><a href="/trades/game/{{game.name}}"><img src="{{game.image_url}}"/></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
           {% endfor %}
         </ul>
       </div>
@@ -29,7 +29,7 @@
       <div class="twelve columns">
         <ul class="block-grid four-up">
         {% for game in most_listed_games %}
-          <li><a href="/trades/game/{{game.name}}"><img src="{{game.image_url}}"/></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
         {% endfor %}
       </ul>
      </div>
@@ -40,7 +40,7 @@
       <div class="twelve columns">
         <ul class="block-grid five-up">
         {% for game in most_traded_games %}
-        <li><a href="/trades/game/{{game.name}}"><img src="{{game.image_url}}"/></a></li>
+        <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
         {% endfor %}
       </ul>
      </div>

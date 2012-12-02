@@ -279,19 +279,28 @@ function get_request_deleteoffer(transaction_primary_id){
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({
       source: "/trades/get_request/",
-      change: function (event, ui) {$("#searchgame_game_id").val(ui.item.id)}
-    });
+      select: function (event, ui) {
+        $("#searchgame_game_id").val(ui.item.id);
+        get_request_wishlist();
+        return ui;
+  }});
 }
 
 function get_request_wishlist(){
+  console.log($('#searchgame_game_id').val());
+  console.log('hello');
   $.get(
-    "/trades/add_to_wish_list/"),
-  {game_id : $("#searchgame_game_id").text},
+    "/trades/add_to_wish_list/",
+  {
+    game_id : $('#searchgame_game_id').val()
+  },
   function(data){
-      console.log(data);
+      console.log();
       location.reload();
+      //location.reload();
     }
-
+  );
+    return false;
 }
 
 
