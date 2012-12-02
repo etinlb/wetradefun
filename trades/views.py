@@ -29,10 +29,12 @@ def game_details(request, game_id):
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
-      num_of_listing = Currentlist.objects.filter(giantBombID = game_id).count()
+      # wish_game = Game.objects.get(giant_bomb_id = game_id)
+      games_listed = Game.objects.filter(giant_bomb_id = game_id).values_list('platform')
+      # assert False
   except Currentlist.DoesNotExist:
-      num_of_listing = 0
-  return render(request,'game_page.html', {'game': game, 'listing': num_of_listing, 'in_wishlist': in_wishlist,})
+      games_listed = 0
+  return render(request,'game_page.html', {'game': game, 'listing': games_listed, 'in_wishlist': in_wishlist,})
 
 
 def search(request):
@@ -137,13 +139,17 @@ def confirm_offer(request):
 @login_required(login_url='/users/sign_in/')
 def decline_offer(request):
   if request.is_ajax():
-    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-    if transaction.status == "offered":
-      transaction.status = "declined"
-      message = "the offer has been declined"
-      transaction.save()
+    transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    userprofile = request.user.get_profile()
+    if transaction != None:
+      if (transaction.status == "offered" and userprofile == transaction.current_listing.user) or (transaction.status == "accepted" and userprofile == transaction.sender):
+        transaction.status = "declined"
+        message = "the offer has been declined by " + str(userprofile.user.username)
+        transaction.save()
+      else:
+        message="that offer is no longer available or has already been accepted"
     else:
-      message="that offer is no longer available or has already been accepted"
+      message = "This trade does not exist"
   else:
     message="Not AJAX"
   return HttpResponse(message)
@@ -151,12 +157,16 @@ def decline_offer(request):
 @login_required(login_url='/users/sign_in/')
 def delete_offer(request):
   if request.is_ajax():
-    transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
-    if (transaction.status == "offered" or transaction.status == "accepted"):
-      transaction.delete()
-      message = "the offer has been deleted"
+    transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    userprofile = request.user.get_profile()
+    if transaction != None:
+      if ((userprofile == transaction.sender) and ((transaction.status == "offered") or (transaction.status == "accepted"))):
+        transaction.delete()
+        message = "the offer has been deleted"
+      else:
+        message="that offer is no longer available or has already been confirmed"
     else:
-      message="that offer is no longer available or has already been confirmed"
+      message = "This trade does not exist"
   else:
     message="Not AJAX"
   return HttpResponse(message)
@@ -169,7 +179,10 @@ def remove_listing(request):
       trans = Transaction.objects.filter(current_listing = listing[0])
       for t in trans:
         t.delete()
-      listing[0].game_listed.num_of_listings -= 1
+      
+      game_listed = listing[0].game_listed
+      game_listed.num_of_listings -= 1
+      game_listed.save()
       message = "You have deleted your listing for " + str(listing[0].game_listed.name)
       listing[0].delete()
     elif (listing.count == 0):
@@ -192,6 +205,8 @@ def make_offer(request):
       r_game = get_game_table_by_id(request.GET.get('game2_id'), platform) # receiver game / game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
         for listing in Currentlist.objects.filter(giantBombID = r_game.giant_bomb_id):
+          # if listing.user != userprofile:
+      
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
           transaction.save()
           message += str(user_name) + " offered " + s_game.name + " to " + str(listing.user.user.username) + " for " + r_game.name+ "\n"
@@ -214,6 +229,7 @@ def add_listing(request):
     game = get_game_table_by_id(game_id, platform)
     currentlist = Currentlist.objects.create(user = userprofile, giantBombID = game_id, game_listed = game, status = "open")
     game.num_of_listings += 1
+    game.save()
     currentlist.save()
     message  = "You created a listing for " + game.name
   else:
