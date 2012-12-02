@@ -73,7 +73,7 @@ def getMostTradedGames():
                 if j == len(orderedTransaction) - 1:
                     break
 
-            if (tmp > maxCount):
+            if (tmp >= maxCount):
                 maxCount = tmp
                 startIndex = j - maxCount + 1
 
@@ -118,7 +118,7 @@ def getMostWishlistedGames():
                 if n == len(orderedWishlist) - 1:
                     break
 
-            if (tmp > maxCount):
+            if (tmp >= maxCount):
                 maxCount = tmp
                 startIndex = n - maxCount + 1
 
@@ -141,12 +141,13 @@ def getMostListedGames():
         orderedListing = list(Game.objects.all())
 
         sort(orderedListing, 'num_of_listings', 'desc')
+
     topRatedListings = []
     j = 0
 
     while (j < len(orderedListing) and j != 4):
-        
-        topRatedListings.append(orderedListing[j])
+        if orderedListing[j].num_of_listings != 0:
+            topRatedListings.append(orderedListing[j])
         j = j + 1
 
     return topRatedListings

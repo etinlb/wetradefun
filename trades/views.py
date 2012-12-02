@@ -29,10 +29,12 @@ def game_details(request, game_id):
 
   game = s.getGameDetsById(game_id, 'id','name', 'original_release_date', 'image', 'deck', 'genres', 'platforms', 'site_detail_url')
   try:
-      num_of_listing = Currentlist.objects.filter(giantBombID = game_id).count()
+      # wish_game = Game.objects.get(giant_bomb_id = game_id)
+      games_listed = Game.objects.filter(giant_bomb_id = game_id).values_list('platform')
+      # assert False
   except Currentlist.DoesNotExist:
-      num_of_listing = 0
-  return render(request,'game_page.html', {'game': game, 'listing': num_of_listing, 'in_wishlist': in_wishlist,})
+      games_listed = 0
+  return render(request,'game_page.html', {'game': game, 'listing': games_listed, 'in_wishlist': in_wishlist,})
 
 
 def search(request):
@@ -177,7 +179,10 @@ def remove_listing(request):
       trans = Transaction.objects.filter(current_listing = listing[0])
       for t in trans:
         t.delete()
-      listing[0].game_listed.num_of_listings -= 1
+      
+      game_listed = listing[0].game_listed
+      game_listed.num_of_listings -= 1
+      game_listed.save()
       message = "You have deleted your listing for " + str(listing[0].game_listed.name)
       listing[0].delete()
     elif (listing.count == 0):
@@ -224,6 +229,7 @@ def add_listing(request):
     game = get_game_table_by_id(game_id, platform)
     currentlist = Currentlist.objects.create(user = userprofile, giantBombID = game_id, game_listed = game, status = "open")
     game.num_of_listings += 1
+    game.save()
     currentlist.save()
     message  = "You created a listing for " + game.name
   else:
