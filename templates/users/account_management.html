@@ -49,20 +49,20 @@
             </tr> 
           </thead>
           <tbody>
-            <tr>
-              {% for key, value in listing_dict.items %}
-              <td class="four columns">
+            {% for key, value in listing_dict.items %}
+            <tr>              
+              <td>
                   <a href="/trades/game/{{key.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{key.game_listed.image_url}}"/><br /></a>
                   <a href="#" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
               </td>
-              <td class="four columns">
+              <td>
                 <ul class="no-bullet">
                   <li>{{key.game_listed.name}}</li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
                 </ul>
               </td>
-              <td class="four columns">
+              <td>
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
@@ -202,7 +202,7 @@
           <tbody>
             {% for item in wishlist %}
             <tr id="wishlist_item">
-              <td><a href= "/trades/game/{{item.wishlist_game.giant_bomb_id}}"><img src="{{item.wishlist_game.image_url}}" /></a></td>
+              <td><a href= "/trades/game/{{item.wishlist_game.giant_bomb_id}}"><img class="miniature-management" src="{{item.wishlist_game.image_url}}" /></a></td>
               <td><p>{{item.wishlist_game.name}}</td>
               <td>
                 <a href="#" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
