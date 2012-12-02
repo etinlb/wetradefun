@@ -181,7 +181,7 @@
           </tbody>
         </table>
         <form class="search four columns">
-          <input type="text" placeholder="Add a game to your wishlist...">
+          <input type="text" id="searchgame_game_name" placeholder="Add a game to your wishlist..." onkeyup="get_request_searchgame()">
         </form>
       </li>
     </ul>
@@ -265,6 +265,13 @@ function get_request_deleteoffer(transaction_primary_id){
     }
   );
   return false;
+}
+
+function get_request_searchgame(){
+    $("#searchgame_game_name").autocomplete({
+      source: "/trades/get_request/",
+      change: function (event, ui) {$("#searchgame_game_id").val(ui.item.id)}
+    });
 }
 
 
