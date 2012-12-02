@@ -101,7 +101,7 @@ def remove_from_wish_list(request):
     game = get_game_table_by_id(game_id, '')
     game_in_wishlist = Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game)
     if (game_in_wishlist.count() == 1):
-      message = request.user.get_profile().username + "deleted " + game_in_wishlist[0].wishlist_game.name + " from their wish list"      
+      message = request.user.get_profile().user.username + "deleted " + game_in_wishlist[0].wishlist_game.name + " from their wish list"      
       game_in_wishlist[0].delete()
     else:
       message = "game not in wishlist"

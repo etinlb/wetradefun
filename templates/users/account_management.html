@@ -73,10 +73,10 @@
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
-                            <a href="#" onclick="get_request_acceptoffer({{offer.pk}})"  class="small button">Accept Offer</a>
+                            <a href="#currentListings" onclick="get_request_acceptoffer({{offer.pk}})"  class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" onclick="get_request_declineoffer({{offer.pk}})" class="small alert button">Decline Offer</a>
+                            <a href="#currentListings" onclick="get_request_declineoffer({{offer.pk}})" class="small alert button">Decline Offer</a>
                           </li>                          
                         </ul>
                       </li>
@@ -127,11 +127,11 @@
                     <ul class="button-group">
                       <li>
                         {% ifequal offer.status 'accepted' %}
-                        <a href="#" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
+                        <a href="#currentOffers" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
                         {% endifequal %}
                       </li>
                       <li>
-                        <a href="#" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
+                        <a href="#currentOffers" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
@@ -206,7 +206,7 @@
               <td><a href= "/trades/game/{{item.wishlist_game.giant_bomb_id}}"><img class="miniature-management" src="{{item.wishlist_game.image_url}}" /></a></td>
               <td><p>{{item.wishlist_game.name}}</td>
               <td>
-                <a href="#" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
+                <a href="#viewWishlist" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
               </td>
             </tr>
             {% endfor %}
@@ -240,7 +240,7 @@ function get_request_removefromwishlist(wishlist_game_id){
     {game_id: wishlist_game_id},
     function(data){
       console.log(data);
-      // TODO: reload page onto wishlist tab
+      location.reload();
     }
   );
   return false;
