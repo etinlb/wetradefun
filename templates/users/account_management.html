@@ -182,6 +182,7 @@
         </table>
         <form class="search four columns">
           <input type="text" id="searchgame_game_name" placeholder="Add a game to your wishlist..." onkeyup="get_request_searchgame()">
+          <input type="hidden" id="searchgame_game_id"/>
         </form>
       </li>
     </ul>
@@ -272,6 +273,17 @@ function get_request_searchgame(){
       source: "/trades/get_request/",
       change: function (event, ui) {$("#searchgame_game_id").val(ui.item.id)}
     });
+}
+
+function get_request_wishlist(){
+  $.get(
+    "/trades/add_to_wish_list/"),
+  {game_id : $("#searchgame_game_id").text},
+  function(data){
+      console.log(data);
+      location.reload();
+    }
+
 }
 
 
