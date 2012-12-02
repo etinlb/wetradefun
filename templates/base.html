@@ -55,6 +55,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
             <div class="ui-widget">
               <form class="search" action="/trades/search" method="GET">
                 <input type="text" id="searchgame_game_name_bar" placeholder="Search for a game..." name="term" onkeyup="get_request_searchgame_bar()">
+                <input type="hidden" name="offset" value="0" /> 
               </form>
             </div>
           </li>
