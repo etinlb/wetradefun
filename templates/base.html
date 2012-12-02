@@ -55,6 +55,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
             <div class="ui-widget">
               <form class="search" action="/trades/search" method="GET">
                 <input type="text" id="searchgame_game_name_bar" placeholder="Search for a game..." name="term" onkeyup="get_request_searchgame_bar()">
+                <input type="hidden" name="offset" value="0" /> 
               </form>
             </div>
           </li>
@@ -67,11 +68,9 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
             {%if user.is_authenticated%}
             <a href="/users/account_management.html">{{user.username}}</a>
             <ul class="dropdown">
-              <li><a href="/users/account_management.html">Manage Account</a></li>
-              <li><a href="/users/account_management.html">Edit Account Details</a></li>
-              <li><a href="/users/account_management.html">Manage Wishlist</a></li>
+              <li><a href="/users/account_management.html">Dashboard</a></li>
               <li class="divider"></li>
-              <li><a href="/">Logout</a></li>
+              <li><a href="/users/sign_out">Logout</a></li>
             {%else%}
             <a href="/users/sign_in">Login</a>
             <ul class="dropdown">

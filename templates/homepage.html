@@ -5,8 +5,8 @@
 <h2 style="text-align:center">Welcome to We Trade Fun</h2>
 <div class="row">
   {%if user.is_authenticated%}
-  <a class="four offset-by-two large button" href="/users/account_management">View Your Account</a>
-  <a class="four large button" href="/how_to_use">Confused about what to do?</a>
+  <a class="four offset-by-two large button" href="/how_to_use">Confused about what to do?</a>
+  <a class="four large button" href="/users/account_management">View Your Account</a>
   {%else%}
   <a class="two offset-by-four button" href="/users/sign_in">Sign in &raquo;</a>
   <a class="two button" href="/users/sign_up">Sign up &raquo;</a>
@@ -18,7 +18,7 @@
       <div class="twelve columns">
         <ul class="block-grid five-up">
           {% for game in most_wishlisted_games %}
-          <li><a href="/trades/game/{{game.name}}"><img src="{{game.image_url}}"/></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
           {% endfor %}
         </ul>
       </div>
@@ -29,7 +29,7 @@
       <div class="twelve columns">
         <ul class="block-grid four-up">
         {% for game in most_listed_games %}
-          <li><a href="/trades/game/{{game.name}}"><img src="{{game.image_url}}"/></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
         {% endfor %}
       </ul>
      </div>
@@ -40,7 +40,7 @@
       <div class="twelve columns">
         <ul class="block-grid five-up">
         {% for game in most_traded_games %}
-        <li><a href="/trades/game/{{game.name}}"><img src="{{game.image_url}}"/></a></li>
+        <li><a href="/trades/game/{{game.giant_bomb_id}}"><img src="{{game.image_url}}"/></a></li>
         {% endfor %}
       </ul>
      </div>

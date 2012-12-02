@@ -71,6 +71,11 @@ body {
   border-bottom: solid 1px #ddd;
 }
 
+img.miniature-management{
+  max-height: 200px;
+}
+
+
 #listed {
   border-right: solid 1px #ddd;
 }
