@@ -21,6 +21,7 @@ import search as s
 @login_required(login_url='/users/sign_in/')
 def sign_out(request):
   logout(request)
+  assert false
   return HttpResponseRedirect('/users/sign_in')
 
 def sign_in(request):

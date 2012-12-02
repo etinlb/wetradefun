@@ -40,20 +40,35 @@ def game_details(request, game_id):
 def search(request):
   if request.GET:
     query = request.GET['term']
+    offset = request.GET['offset']
 
   # Replace all runs of whitespace with a single +
   query = re.sub(r"\s+", '+', query)
-  results = s.getList(query, 'name', 'image', 'original_release_date', \
+  results = s.getList(query, offset,  'name', 'image', 'original_release_date', \
     'deck', 'id', 'site_detail_url')
   if results == None:
-    render_to_response('no_game_found.html')
+    return render_to_response('staticpages/no_game_found.html')
   # TODO make it get the number of listings
   for x in results:
     x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id']).count()
 
   if x['number_of_listing'] == None:
     x['number_of_listing'] = 0
-  return render(request, 'search_page.html', {'results':results})
+    
+  previous=int(int(offset)-10)
+  if previous == -10:
+    previous=-1;
+  
+  next=int(int(offset)+10)
+  if len(results) != 10:
+    next=-1;
+  
+  return render(request, 'search_page.html', 
+  {'results':results,
+  'query':query,
+  'previous':previous,
+  'next':next
+  })
 
 @login_required(login_url='/users/sign_in/')
 def add_to_wish_list(request):

@@ -5,9 +5,17 @@
 {% block content %}
 
 
-
+<ul class="pricing-table">
+<li class="cta-button"> 
+{% if previous != -1 %}
+<a href="/trades/search/?term={{query}}&offset={{previous}}" class="tiny radius button" >Previous</a>
+{% endif %}
+{% if next != -1 %}
+<a href="/trades/search/?term={{query}}&offset={{next}}" class="tiny radius button" >Next</a>
+{% endif %}
+</li>
+</ul>
 <table class="twelve">
-
         <thead>
           <tr>
             <th>Cover</th>
@@ -33,6 +41,16 @@
           {% endfor %}
         </tbody>
       </table>
+<ul class="pricing-table">
+<li class="cta-button"> 
+{% if previous != -1 %}
+<a href="/trades/search/?term={{query}}&offset={{previous}}" class="tiny radius button" >Previous</a>
+{% endif %}
+{% if next != -1 %}
+<a href="/trades/search/?term={{query}}&offset={{next}}" class="tiny radius button" >Next</a>
+{% endif %}
+</li>
+</ul>
 
 
 
