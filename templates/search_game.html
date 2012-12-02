@@ -11,52 +11,34 @@ var delay = (function(){
 		timer = setTimeout(callback, ms);
 	};
 })();
-function get_request_searchgame(){
+function get_request(){
     $.get(
 		"/trades/get_request/", 
-		{q :$("#searchgame_game_name").val()}, 
+		{q :$("#input").val()}, 
 		function(data){
 			$("#div2").text(data);
 		}
 	);
-	return false;
 }
-function get_request_makeoffer(){
+function get_request2(){
     $.get(
 		"/trades/make_offer/", 
-		{user_id :$("#makeoffer_user_id").val(), 
-		game1_id :$("#makeoffer_game1_id").val(), 
-		game2_id :$("#makeoffer_game2_id").val()}, 
+		{user_id :$("#user_id").val(), game1_id :$("#game1_id").val(), game2_id :$("#game2_id").val()}, 
 		function(data){
 			$("#div2").text(data);
 		}
 	);
+}
+function submit_method(){
+    get_request();
 	return false;
 }
-function get_request_addtowishlist(){
-    $.get(
-		"/trades/add_to_wish_list/", 
-		{user_id :$("#addtowishlist_user_id").val(), 
-		game_id :$("#addtowishlist_game_id").val()}, 
-		function(data){
-			$("#div2").text(data);
-		}
-	);
+function submit_method2(){
+    get_request2();
 	return false;
 }
-function get_request_addtocurrentlist(){
-    $.get(
-		"/trades/add_to_current_list/", 
-		{user_id :$("#addtocurrentlist_user_id").val(), 
-		game_id :$("#addtocurrentlist_game_id").val()}, 
-		function(data){
-			$("#div2").text(data);
-		}
-	);
-	return false;
-}
-function searchgame_game_name_keyup(){
-    delay(get_request_searchgame, 300);
+function keyup_method(){
+    delay(get_request, 300);
 }
 </script>
 </head>
@@ -69,25 +51,15 @@ Three ways to search a game name:<br/>
 2. Press enter<br/>
 3. Key in and wait<br/>
 </p>
-<form onsubmit="return get_request_searchgame();" id="searchgame">
-    Game Name: <input type="text" id="searchgame_game_name" value="call of duty" onkeyup="searchgame_game_name_keyup();">
+<form onsubmit="return submit_method();" id="form">
+    Game Name: <input type="text" id="input" value="call of duty" onkeyup="keyup_method();">
     <input type="submit" value="Search">
 </form>
-<form onsubmit="return get_request_makeoffer();" id="makeoffer">
-    My User ID: <input type="text" id="makeoffer_user_id">
-	My Game ID: <input type="text" id="makeoffer_game1_id">
-    Target Game ID: <input type="text" id="makeoffer_game2_id">
+<form onsubmit="return submit_method2();" id="form2">
+    My User ID: <input type="text" id="user_id">
+	My Game ID: <input type="text" id="game1_id">
+    Target Game ID: <input type="text" id="game2_id">
     <input type="submit" value="Trade">
-</form>
-<form onsubmit="return get_request_addtowishlist();" id="addtowishlist">
-    My User ID: <input type="text" id="addtowishlist_user_id">
-	Target Game ID: <input type="text" id="addtowishlist_game_id">
-    <input type="submit" value="Add to Wish List">
-</form>
-<form onsubmit="return get_request_addtocurrentlist();" id="addtocurrentlist">
-    My User ID: <input type="text" id="addtocurrentlist_user_id">
-	Target Game ID: <input type="text" id="addtocurrentlist_game_id">
-    <input type="submit" value="Add to Current List">
 </form>
 <p>==========</p>
 <p><div id="div2"></div></p>

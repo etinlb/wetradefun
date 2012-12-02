@@ -43,6 +43,10 @@ class Api:
         results = simplejson.load(urllib2.urlopen(self.base_url + "/search/?api_key=%s&resources=game&query=%s&field_list=id,name,image&offset=%s&format=json" % (self.api_key, urllib2.quote(query), offset)))
         return [SearchResult.NewFromJsonDict(x) for x in self.checkResponse(results)]
 
+    def searchPlat(self, query, offset=0):
+        results = simplejson.load(urllib2.urlopen(self.base_url + "/search/?api_key=%s&resources=platform&query=%s&field_list=id,name,image&offset=%s&format=json" % (self.api_key, urllib2.quote(query), offset)))
+        return [SearchResult.NewFromJsonDict(x) for x in self.checkResponse(results)]
+
     def getGame(self, id):
         if type(id).__name__ != 'int':
             id = id.id

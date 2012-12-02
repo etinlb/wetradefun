@@ -10,7 +10,22 @@
    Shared Styles
 ----------------------------------------- */
 body { 
-    background-image: url(../img/az_subtle.png);
+  background-image: url(../images/az_subtle.png);
+}
+
+#container {
+   min-height:100%;
+   position:relative;
+}
+#footer {
+   position:absolute;
+   margin: auto;
+   bottom:0;
+   width:100%;
+   height: 60px;
+}
+#body {
+  padding-bottom:60px;   /* Height of the footer */
 }
 
 .search {
@@ -35,7 +50,7 @@ body {
  
 .hoverwithtext:hover {
     line-height: 50px;
-    color: blue;
+    color: #2BA6CB;
 }
  
 .hoverwithtext img{
@@ -48,4 +63,27 @@ body {
 
 }
 
+#copies {
+  padding-top: 15px;
+}
 
+#li_copies {
+  border-bottom: solid 1px #ddd;
+}
+
+img.miniature-management{
+  max-height: 200px;
+}
+
+#home-box{
+  margin-bottom:20px;
+}
+
+#listed {
+  border-right: solid 1px #ddd;
+}
+
+
+img.miniature-homepage{
+  max-height: 250px;
+}

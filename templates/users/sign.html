@@ -1,269 +1,53 @@
 {% extends 'base.html' %}
 
+{% block title %}{% endblock %}
+
 {% block content %}
 
-<script type = "text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script>
-var delay = (function(){
-	var timer = 0;
-	return function(callback, ms){
-		clearTimeout (timer);
-		timer = setTimeout(callback, ms);
-	};
-})();
-function get_request_searchgame(){
-    $.get(
-		"/trades/get_request/", 
-		{q :$("#searchgame_game_name").val()}, 
-		function(data){
-			$("#searchgameResult").text(data);
-		}
-	);
-	return false;
-}
-function searchgame_game_name_keyup(){
-    delay(get_request_searchgame, 300);
-}
-function get_request_addtowishlist(){
-    $.get(
-		"/trades/add_to_wish_list/", 
-		{user_id :$("#addtowishlist_user_id").val(), 
-		game_id :$("#addtowishlist_game_id").val()}, 
-		function(data){
-			$("#addtowishlistResult").text(data);
-		}
-	);
-	return false;
-}
-function get_request_addtocurrentlist(){
-    $.get(
-		"/trades/add_to_current_list/", 
-		{user_id :$("#addtocurrentlist_user_id").val(), 
-		game_id :$("#addtocurrentlist_game_id").val()}, 
-		function(data){
-			$("#addtocurrentlistResult").text(data);
-		}
-	);
-	return false;
-}
-function get_request_makeofferajax(){
-    $.get(
-		"/trades/make_offer/", 
-		{user_id :$("#id_makeofferajax_user_id").val(), 
-		game1_id :$("#id_makeofferajax_game1_id").val(), 
-		game2_id :$("#id_makeofferajax_game2_id").val()}, 
-		function(data){
-			$("#makeofferajaxResult").text(data);
-		}
-	);
-	return false;
-}
-</script>
+<div class="seven columns centered panel">
+  <form action="" method="post">
+    <h3>Create an account</h3>
 
-<div class="twelve columns">
+    <div class="row collapse fieldWrapper">
+      {{ form.username.errors }}
+      <div class="three columns">
+        <label for="id_username">Username</label>
+      </div>
+      <div class="nine columns">
+        {{ form.username }}
+      </div>            
+    </div>
+    <div class="row collapse fieldWrapper">
+      {{ form.email.errors }}
+      <div class="three columns">
+        <label for="id_email">Email</label>
+      </div>
+      <div class="nine columns">
+        {{ form.email }}
+      </div>            
+    </div>
+    <div class="row collapse fieldWrapper">
+      {{ form.password.errors }}
+      <div class="three columns">
+        <label for="id_password">Password</label>
+      </div>
+      <div class="nine columns">
+        {{ form.password }}
+      </div>            
+    </div>
 
-  <dl class="contained tabs">
-    <dd class="active"><a href="#signUp">Sign Up</a></dd>
-	<dd><a href="#searchGame">Search Game</a></dd>
-	<dd><a href="#addtowishlist">Add to Wish List</a></dd>
-	<dd><a href="#addtocurrentlist">Add to Current List</a></dd>
-	<dd><a href="#makeOffer">Make Offer</a></dd>
-	<dd><a href="#makeOfferAJAX">Make Offer (AJAX)</a></dd>
-  </dl>
+    <div class="row collapse fieldWrapper">
+      {{ form.check_password.errors }}
+      <div class="three columns">
+        <label for="id_check_password">Repeat Password</label>
+      </div>
+      <div class="nine columns">
+        {{ form.check_password }}
+      </div>            
+    </div>
 
-  <ul class="tabs-content contained">
-
-    <li id="signUpTab" class="active">
-      <form action="" method="post">
-        {{ registration_form.non_field_errors }}
-        <div class="row collapse fieldWrapper">
-            {{ registration_form.username.errors }}
-            <div class="two columns">
-              <label for="id_username">Username</label>
-            </div>
-            <div class="ten columns">
-              {{ registration_form.username }}
-            </div>            
-        </div>
-
-        <div class="row collapse fieldWrapper">
-            {{ registration_form.email.errors }}
-            <div class="two columns">
-              <label for="id_email">Email</label>
-            </div>
-            <div class="ten columns">
-              {{ registration_form.email }}
-            </div>            
-        </div>
-
-        <div class="row collapse fieldWrapper">
-            {{ registration_form.password.errors }}
-            <div class="two columns">
-              <label for="id_password">Password</label>
-            </div>
-            <div class="ten columns">
-              {{ registration_form.password }}
-            </div>            
-        </div>
-
-        <div class="row collapse fieldWrapper">
-            {{ registration_form.check_password.errors }}
-            <div class="two columns">
-              <label for="id_check_password">Repeat Password</label>
-            </div>
-            <div class="ten columns">
-              {{ registration_form.check_password }}
-            </div>            
-        </div>
-
-        <button type="submit" name="registration_form_submit" class="radius button">Submit</button>
-		</form><br/>
-		{{registration_result}}<br/>
-		<a href="trades/load/{{registration_userID}}" target="_blank">Click me to load userID {{registration_userID}}</a><br/>
-		<a href="_ah/admin/datastore?kind=trades_userprofile" target="_blank">Click me to see database</a>
-    </li>
-
-	<li id="searchGameTab">
-	<form onsubmit="return get_request_searchgame();" id="searchgame">
-	  <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Game Name</label>
-        </div>
-        <div class="ten columns">
-          <input type="text" id="searchgame_game_name" placeholder="call of duty" onkeyup="searchgame_game_name_keyup();"/>
-        </div>
-      </div>
-      <button type="submit" class="radius button">Search</button>
-	  </form><br/>
-	<div id="searchgameResult"></div>
-    </li>
-	
-	<li id="addtowishlistTab">
-	<form onsubmit="return get_request_addtowishlist();" id="addtowishlist">
-	  <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">My User ID</label>
-        </div>
-        <div class="ten columns">
-          <input type="text" id="addtowishlist_user_id"/>
-        </div>
-      </div>
-	  <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Target Game ID</label>
-        </div>
-        <div class="ten columns">
-          <input type="text" id="addtowishlist_game_id"/>
-        </div>
-      </div>
-      <button type="submit" class="radius button">Add to Wish List</button>
-	  </form><br/>
-	<div id="addtowishlistResult"></div><br/>
-		<a href="_ah/admin/datastore?kind=trades_wishlist" target="_blank">Click me to see database</a>
-    </li>
-	
-	<li id="addtocurrentlistTab">
-	<form onsubmit="return get_request_addtocurrentlist();" id="addtocurrentlist">
-	  <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">My User ID</label>
-        </div>
-        <div class="ten columns">
-          <input type="text" id="addtocurrentlist_user_id"/>
-        </div>
-      </div>
-	  <div class="row collapse">
-        <div class="two columns">
-          <label class="inline">Target Game ID</label>
-        </div>
-        <div class="ten columns">
-          <input type="text" id="addtocurrentlist_game_id"/>
-        </div>
-      </div>
-      <button type="submit" class="radius button">Add to Current List</button>
-	  </form><br/>
-	<div id="addtocurrentlistResult"></div><br/>
-		<a href="_ah/admin/datastore?kind=trades_currentlist" target="_blank">Click me to see database</a>
-    </li>
-	
-	<li id="makeOfferTab">
-	<form action="" method="post" id="makeoffer">
-	{{ makeoffer_form.non_field_errors }}
-	  <div class="row collapse">
-	  {{ makeoffer_form.makeoffer_user_id.errors }}
-        <div class="two columns">
-          <label class="inline">My User ID</label>
-        </div>
-        <div class="ten columns">
-		 {{ makeoffer_form.makeoffer_user_id }}
-        </div>
-      </div>
-	  <div class="row collapse">
-	  {{ makeoffer_form.makeoffer_game1_id.errors }}
-        <div class="two columns">
-          <label class="inline">My Game ID</label>
-        </div>
-        <div class="ten columns">
-		{{ makeoffer_form.makeoffer_game1_id }}
-        </div>
-      </div>
-	  <div class="row collapse">
-	  {{ makeoffer_form.makeoffer_game2_id.errors }}
-        <div class="two columns">
-          <label class="inline">Target Game ID</label>
-        </div>
-        <div class="ten columns">
-        {{ makeoffer_form.makeoffer_game2_id }}
-        </div>
-      </div>
-      <button type="submit" name="makeoffer_form_submit" class="radius button">Trade</button>
-	  </form><br/>
-		{{makeoffer_result}}<br/>
-		<a href="trades/edit_offer/{{editofferID}}" target="_blank">
-		Click me to edit last offer whose offerID is {{editofferID}}</a><br/>
-		<a href="_ah/admin/datastore?kind=trades_transaction" target="_blank">Click me to see database</a>
-    </li>
-	
-	<li id="makeOfferAJAXTab">
-	<form onsubmit="return get_request_makeofferajax();" id="makeofferajax">
-	{{ makeofferajax_form.non_field_errors }}
-	  <div class="row collapse">
-	  {{ makeofferajax_form.makeofferajax_user_id.errors }}
-        <div class="two columns">
-          <label class="inline">My User ID</label>
-        </div>
-        <div class="ten columns">
-		 {{ makeofferajax_form.makeofferajax_user_id }}
-        </div>
-      </div>
-	  <div class="row collapse">
-	  {{ makeofferajax_form.makeofferajax_game1_id.errors }}
-        <div class="two columns">
-          <label class="inline">My Game ID</label>
-        </div>
-        <div class="ten columns">
-		{{ makeofferajax_form.makeofferajax_game1_id }}
-        </div>
-      </div>
-	  <div class="row collapse">
-	  {{ makeofferajax_form.makeofferajax_game2_id.errors }}
-        <div class="two columns">
-          <label class="inline">Target Game ID</label>
-        </div>
-        <div class="ten columns">
-        {{ makeofferajax_form.makeofferajax_game2_id }}
-        </div>
-      </div>
-      <button type="submit" name="makeofferajax_form_submit" class="radius button">Trade</button>
-	  </form><br/>
-	  <div id="makeofferajaxResult"></div><br/>
-		<a href="_ah/admin/datastore?kind=trades_transaction" target="_blank">Click me to see database</a>
-    </li>
-	
-	
-  </ul>
-
+    <button type="submit" class="radius button">Submit</button>
+  </form>
 </div>
 
 {% endblock %}
-

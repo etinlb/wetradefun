@@ -11,15 +11,18 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title>{% block title %}{% endblock %}We Trade Fun</title>
+  <title>{% block title %}{% endblock %} - We Trade Fun</title>
 
   <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="static/stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="static/stylesheets/app.css">
+  <link rel="stylesheet" href="/static/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/static/stylesheets/app.css">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
   {% block css %}
   {% endblock %}
+  
+  <script src="/static/javascripts/modernizr.foundation.js"></script>
+ 
 
-  <script src="static/javascripts/modernizr.foundation.js"></script>
   {% block preload_js %}
   {% endblock %}
 
@@ -27,95 +30,99 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
 </head>
 
 <body>
-  <!-- Top Bar -->
-  <nav class="top-bar">
-    <ul>
-      <!-- Title Area -->
-      <li class="name">
-        <h1>
-          <a href="#">
-            We Trade Fun
-          </a>
-        </h1>
-      </li>
-      <li class="toggle-topbar"><a href="#"></a></li>
-    </ul>
-
-    <section>
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">User</a>
-          <ul class="dropdown">
-            <li><label>Section Name</label></li>
-            <li class="has-dropdown">
-              <a href="#" class="">Has Dropdown, Level 1</a>
-              <ul class="dropdown">
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Level 2</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><label>Section Name</label></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><a href="#">See all &rarr;</a></li>
-          </ul>
+  <div class="container"><!-- Top Bar -->
+    <nav class="top-bar" id="header">
+      <ul>
+        <!-- Title Area -->
+        <li class="name">
+          <h1>
+            <a href="/">
+              We Trade Fun
+            </a>
+          </h1>
         </li>
-        <li class="divider"></li>
-        <li><a href="#">Main Item 2</a></li>
+        <li class="toggle-topbar"><a href="#"></a></li>
       </ul>
-    </section>
-  </nav>
-  <!-- End Top Bar -->
-
-  <div class="row">
-    <div id="content">
-      {% block content-header %}
-      {% if error %}<div class="error">{{ error }}</div>{% endif %}
-      {% if info %}<div class="info">{{ info }}</div>{% endif %}
-      {% if messages %}
-      {% for message in messages %}
-      <div class="info">{{ message }}</div>
-      {% endfor %}
-      {% endif %}
-      {% endblock %}
-
+    
+      <section>
+        <ul class="left">
+          <li>
+            <a>Recycling Old Games Since 2012</a>
+          </li>
+            
+          
+          <li class="search">
+            <div class="ui-widget">
+              <form class="search" action="/trades/search" method="GET">
+                <input type="text" id="searchgame_game_name_bar" placeholder="Search for a game..." name="term" onkeyup="get_request_searchgame_bar()">
+                <input type="hidden" name="offset" value="0" /> 
+              </form>
+            </div>
+          </li>
+        </ul>
+            
+            
+        <ul class = "right">
+          <li class="divider"></li>
+          <li class="has-dropdown">
+            {%if user.is_authenticated%}
+            <a href="/users/account_management.html">{{user.username}}</a>
+            <ul class="dropdown">
+              <li><a href="/users/account_management.html">Dashboard</a></li>
+              <li class="divider"></li>
+              <li><a href="/users/sign_out">Logout</a></li>
+            {%else%}
+            <a href="/users/sign_in">Login</a>
+            <ul class="dropdown">
+              <li><a href="/users/sign_up">Create Account</a></li>
+            </ul>
+            {%endif%}
+        </ul>
+      </section>
+    
+    </nav>
+    <!-- End Top Bar -->
+    
+    <div class="row" id="body">
+      <div id="content">
+        {% block content-header %}
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        {% if info %}<div class="info">{{ info }}</div>{% endif %}
+        {% if messages %}
+        {% for message in messages %}
+          <div class="alert-box {% if message.level == 40 %}alert{% endif %}">
+            {{ message }}
+            <a href="" class="close">&times;</a>
+          </div>
+        {% endfor %}
+        {% endif %}
+        {% endblock %}
+    
       {% block content %}{% endblock %}
+      </div>
     </div>
-  </div>
-
-  <!-- Footer -->
-
-  <footer class="row">
-    <div class="twelve columns">
+    <div class="push"></div>
+    <!-- Footer -->
+    
+    <div id="footer">
       <hr />
       <div class="row">
-        <div class="six columns">
-          <p>&copy; Copyright no one at all. Go to town.</p>
+        <div class="four columns">
+          <p>We Trade Fun © 2012 WTF, inc.</p>
         </div>
-        <div class="six columns">
-          <ul class="link-list right">
-            <li><a href="#">Link 1</a></li>
-            <li><a href="#">Link 2</a></li>
-            <li><a href="#">Link 3</a></li>
-            <li><a href="#">Link 4</a></li>
+        <div class="eight columns">
+          <ul class="inline-list right">
+            <li><a href="/">Home</a></li>
+            <li><a href="">Documentation</a></li>
+            <li><a href="/how_to_use">Confused?</a></li>
+            <li><a href="/contact_us">Contact Us</a></li>
           </ul>
         </div>
       </div>
     </div>
-  </footer>
-
-  <!-- End Footer -->
+    
+    <!-- End Footer -->
+  </div>
 
 
 
@@ -157,11 +164,13 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
 -->
 
 <!-- Included JS Files (Compressed) -->
-<script src="static/javascripts/jquery.js"></script>
-<script src="static/javascripts/foundation.min.js"></script>
+<script src="/static/javascripts/jquery.js"></script>
+<script src="/static/javascripts/foundation.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="/static/javascripts/jquery.foundation.forms.js"></script>
 
 <!-- Initialize JS Plugins -->
-<script src="static/javascripts/app.js"></script>
+<script src="/static/javascripts/app.js"></script>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
@@ -169,6 +178,20 @@ var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
 (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
   g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
   s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+<script>
+function get_request_searchgame_bar(){
+    $("#searchgame_game_name_bar").autocomplete({
+      source: "/trades/get_request/",
+      select: function (event, ui) {
+        $("#searchgame_game_id").val(ui.item.id);
+        location.href = "/trades/game/" + ui.item.id;
+        return ui;
+            }});
+          
+    }
+      
+
 </script>
 {% block js %}
 {% endblock %}
