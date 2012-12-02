@@ -314,6 +314,7 @@ class Test1(unittest.TestCase):
         self.assertEquals(topRatedWishlist[4].name, "Portal")
 
  
+<<<<<<< HEAD
     def test4(self):
 
         orderedListing = []
@@ -329,5 +330,22 @@ class Test1(unittest.TestCase):
    
         self.assertEquals(topRatedGames[0], "Portal")
         self.assertEquals(topRatedGames[1], "Halo")
+=======
+    # def test4(self):
+
+    #     orderedListing = []
+    #     orderedListing = Game.objects.all()
+    #     sort(orderedListing, 'num_of_listings', 'desc')
+    #     topRatedGames = []
+    #     j = 0
+
+    #     while (j < len(orderedListing) - 1):
+            
+    #         topRatedGames.append(orderedListing[j].name)
+    #         j = j + 1
+   
+    #     self.assertEquals(topRatedGames[0], "Portal")
+    #     self.assertEquals(topRatedGames[1], "Halo")
+>>>>>>> 10b5a2234b90dd73881aa653cae8106561d20a98
 
     

@@ -6,7 +6,7 @@
 
 <div class="row">
   <div class="twelve columns">
-    <h3>Account Management</h3>
+    <h3>Dashboard</h3>
 
     <dl class="tabs">
       <dd class="active"><a href="#currentListings">Current Listings</a></dd>
@@ -20,7 +20,7 @@
         <table class="twelve columns">
           <thead>
             <tr>
-              <th>My Listing</th>
+              <th>My Listings</th>
               <th>Information</th>
               <th>Current Offers</th>
             </tr> 
@@ -107,7 +107,7 @@
                         {% endifequal %}
                       </li>
                       <li>
-                        <a href="#" onclick="get_request_declineoffer({{offer.pk}})" class="small button">Cancel Trade</a>
+                        <a href="#" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
