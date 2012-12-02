@@ -29,7 +29,7 @@
             <tr>
               {% for key, value in listing_dict.items %}
               <td class="four columns">
-                  <a href="#"><img src="{{key.game_listed.image_url}}"/><br /></a>
+                  <a href="/trades/game/{{key.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{key.game_listed.image_url}}"/><br /></a>
                   <a href="#" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
               </td>
               <td class="four columns">
@@ -91,12 +91,20 @@
               <td class = "three columns">
                 <ul class="no-bullet">
                   <li>
-                    {{offer.status}}
+                    {% ifequal offer.status 'accepted' %}
+                        The other part accepted your deal. Confirm it to finish
+                    {% endifequal %}
+                    {% ifequal offer.status 'offered' %}
+                        Waiting for the other part to accept your deal
+                    {% endifequal %}
+
                   </li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
+                        {% ifequal offer.status 'accepted' %}
                         <a href="#" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
+                        {% endifequal %}
                       </li>
                       <li>
                         <a href="#" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
@@ -123,8 +131,8 @@
           <tbody>
             {% for transaction in history %}
             <tr>
-              <td><a href="#"><img src="{{transaction.current_listing.game_listed.image_url}}" /></a></td>
-              <td><a href= "#"><img src="{{transaction.sender_game.image_url}}" /></a></td>
+              <td><a href="#"><img class="miniature-management" src="{{transaction.current_listing.game_listed.image_url}}" /></a></td>
+              <td><a href= "#"><img class="miniature-management" src="{{transaction.sender_game.image_url}}" /></a></td>
               <td>{{transaction.dateTraded}}</td>
               <td>
                 <ul class="no-bullet">
