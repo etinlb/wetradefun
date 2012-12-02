@@ -53,13 +53,13 @@
             <tr>              
               <td>
                   <a href="/trades/game/{{key.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{key.game_listed.image_url}}"/><br /></a>
-                  <a href="#" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
               </td>
               <td>
                 <ul class="no-bullet">
                   <li>{{key.game_listed.name}}</li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
+                  <a href="#currentListings" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
                 </ul>
               </td>
               <td>
@@ -107,11 +107,12 @@
           <tbody>
             {% for offer in current_offers %}
             <tr>
-              <td class = "three columns"><a href="/trades/game/{{offer.current_listing.game_listed.giant_bomb_id}}"><img src="{{offer.current_listing.game_listed.image_url}}"/></a></td>
-              <td class = "three columns"><a href="/trades/game/{{offer.sender_game.giant_bomb_id}}"><img src="{{offer.sender_game.image_url}}" /></a></td>
-              <td class = "three columns">{{offer.dateRequested}}</td>
+              <td>
+                <a href="/trades/game/{{offer.current_listing.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{offer.current_listing.game_listed.image_url}}"/></a></td>
+              <td><a href="/trades/game/{{offer.sender_game.giant_bomb_id}}"><img class="miniature-management" src="{{offer.sender_game.image_url}}" /></a></td>
+              <td>{{offer.dateRequested}}</td>
 
-              <td class = "three columns">
+              <td>
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
