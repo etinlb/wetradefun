@@ -50,7 +50,7 @@ body {
  
 .hoverwithtext:hover {
     line-height: 50px;
-    color: blue;
+    color: #2BA6CB;
 }
  
 .hoverwithtext img{
@@ -67,4 +67,7 @@ img.miniature-management{
   max-height: 200px;
 }
 
+#home-box{
+  margin-bottom:20px;
+}
 
