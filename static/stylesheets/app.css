@@ -63,4 +63,8 @@ body {
 
 }
 
+img.miniature-management{
+  max-height: 200px;
+}
+
 

@@ -6,21 +6,44 @@
 
 <div class="row">
   <div class="twelve columns">
-    <h3>Account Management</h3>
+    <h3>Dashboard</h3>
 
     <dl class="tabs">
-      <dd class="active"><a href="#currentListings">Current Listings</a></dd>
+      <dd class="active"><a href="#myInformation">My Information</a></dd>
+      <dd><a href="#currentListings">Current Listings</a></dd>
       <dd><a href="#currentOffers">Current Offers</a></dd>
       <dd><a href="#tradeHistory">Trade History</a></dd>
       <dd><a href="#viewWishlist">View Wishlist</a><dd>
     </dl>
 
     <ul class="tabs-content">
-      <li class="active" id="currentListingsTab">
+      <li class="active" id="myInformationTab">
+        <table class="eight columns">
+          <tbody>
+             <tr>
+              <td>My Rating</td>
+              {% if user.rating == None %}
+              <td>Unrated</td>
+              {% else %}
+              <td>{{user.rating}}</td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td>{{user.email}}</td>
+              <td><a>edit email</a></td>
+            </tr>
+            <tr>
+              <td>********</td>
+              <td><a>edit password</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li id="currentListingsTab">
         <table class="twelve columns">
           <thead>
             <tr>
-              <th>My Listing</th>
+              <th>My Listings</th>
               <th>Information</th>
               <th>Current Offers</th>
             </tr> 
@@ -29,7 +52,7 @@
             <tr>
               {% for key, value in listing_dict.items %}
               <td class="four columns">
-                  <a href="#"><img src="{{key.game_listed.image_url}}"/><br /></a>
+                  <a href="/trades/game/{{key.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{key.game_listed.image_url}}"/><br /></a>
                   <a href="#" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
               </td>
               <td class="four columns">
@@ -91,12 +114,20 @@
               <td class = "three columns">
                 <ul class="no-bullet">
                   <li>
-                    {{offer.status}}
+                    {% ifequal offer.status 'accepted' %}
+                        The other part accepted your deal. Confirm it to finish
+                    {% endifequal %}
+                    {% ifequal offer.status 'offered' %}
+                        Waiting for the other part to accept your deal
+                    {% endifequal %}
+
                   </li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
+                        {% ifequal offer.status 'accepted' %}
                         <a href="#" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
+                        {% endifequal %}
                       </li>
                       <li>
                         <a href="#" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
@@ -123,8 +154,8 @@
           <tbody>
             {% for transaction in history %}
             <tr>
-              <td><a href="#"><img src="{{transaction.current_listing.game_listed.image_url}}" /></a></td>
-              <td><a href= "#"><img src="{{transaction.sender_game.image_url}}" /></a></td>
+              <td><a href="#"><img class="miniature-management" src="{{transaction.current_listing.game_listed.image_url}}" /></a></td>
+              <td><a href= "#"><img class="miniature-management" src="{{transaction.sender_game.image_url}}" /></a></td>
               <td>{{transaction.dateTraded}}</td>
               <td>
                 <ul class="no-bullet">

@@ -12,7 +12,7 @@ searchStart = 'http://api.giantbomb.com/search/' + api_key
 specificGame = 'http://api.giantbomb.com/game/' 
 
 
-def getList(searchQuery, *params):
+def getList(searchQuery, offset, *params):
   """ Returns a nested dictionary based on the string passed in as searchQuery
   currently the outer dictionary uses the game name as a key and the inner uses
   the param associated with it as a key.
@@ -28,7 +28,8 @@ def getList(searchQuery, *params):
   'image' : for now it returns multiple image urls.
 
   example
-    x = getList('halo', 'name', 'id')
+    import search as s
+    x = s.getList('halo', 'name', 'id')
     x.keys() #prints out all the keys
     y = x['Halo 4'] #gets the nested halo 4 dict
     y['id'] #gets the id of Halo 4
@@ -37,12 +38,14 @@ def getList(searchQuery, *params):
   """
   #makes the params entered in the proper filter format
   filters = buildFilterStr(params)
-  # searchString = searchStart + '&resources=game&query='+ searchQuery + filters + '&limit=10'
-  searchString = searchStart + '&resources=game&query='+ searchQuery + filters + '&limit=10&format=json'
+  # searchString = searchStart + '&resources=game&query='+ searchQuery + filters + '&limit=10' +'&offset=' + offset
+  searchString = searchStart + '&resources=game&query='+ searchQuery + filters + '&limit=10&format=json' + '&offset=' + str(offset) 
+  # print searchString
 
   #queries the video game database
   file = urllib2.urlopen(searchString, timeout = 30)
   #make the dictionary
+  gameList = []
   gameList = parseFieldsJson(file, params)
   return gameList
 
