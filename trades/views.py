@@ -304,6 +304,18 @@ def get_game_table_by_id(id, platform):
     game = put_in_game_table(id, platform)
   return game
 
+def rate_user(request):
+  if request.is_ajax():
+    added_rating = request.GET.get('desired_rating')
+    userprofile = request.user.get_profile()
+    totalRatings = num_of_ratings * userprofile.rating
+    userprofile.num_of_ratings += 1
+    totalRatings += added_rating
+    userprofile.rating = totalRatings / userprofile.num_of_ratings
+    message = "You have rated " + str(userprofile.user.username) + "a rating of " + str(added_rating)
+    userprofile.save()
+  else:
+    message="Not AJAX"
 
 def add_message(request):
   if request.is_ajax():
@@ -322,3 +334,4 @@ def add_message(request):
   else:
     message="Not AJAX"
   return HttpResponse(message)
+

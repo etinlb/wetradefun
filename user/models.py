@@ -7,6 +7,7 @@ class UserProfile(models.Model):
   user = models.ForeignKey(User, unique=True, null=True)
   address = models.CharField(max_length=64, null=True)
   rating = models.IntegerField(null=True)
+  num_of_ratings = models.IntegerField(null=True)
 
 class Message (models.Model):
   content = models.CharField(max_length=128)

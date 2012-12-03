@@ -116,10 +116,10 @@
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
-                        The other part accepted your deal. Confirm it to finish
+                        The other party has accepted your deal. Confirm the trade in your Current Offers Tab to complete the transaction.
                     {% endifequal %}
                     {% ifequal offer.status 'offered' %}
-                        Waiting for the other part to accept your deal
+                        Waiting for the other party to accept your offer.
                     {% endifequal %}
 
                   </li>
@@ -317,6 +317,20 @@ function get_request_deleteoffer(transaction_primary_id){
   );
   return false;
 }
+
+function rate_user(rating){
+  $.get(
+    "/trades/rate_user/", 
+    {desired_rating: rating},
+    function(data){
+      console.log(data);
+      location.reload();
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
 
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({

@@ -109,7 +109,7 @@ def sign_up(request):
                 form.cleaned_data['username'],
                 form.cleaned_data['email'],
                 form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user)
+            user_profile = UserProfile(user = user, num_of_ratings = 0)
             user_profile.save()
             messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
             user = authenticate(username=form.cleaned_data['username'], password = form.cleaned_data['password'])
