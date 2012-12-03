@@ -21,7 +21,6 @@ import search as s
 @login_required(login_url='/users/sign_in/')
 def sign_out(request):
   logout(request)
-  assert false
   return HttpResponseRedirect('/users/sign_in')
 
 def sign_in(request):
@@ -117,6 +116,7 @@ def sign_up(request):
             if user is not None:
               # Login the user
               login(request, user)
+              return HttpResponseRedirect('/')
 
         else:
             if "__all__" in form._errors:
