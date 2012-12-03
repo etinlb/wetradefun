@@ -216,11 +216,12 @@ def make_offer(request):
     if request.is_ajax():
       userprofile = request.user.get_profile()
       user_name = userprofile.user.username
-      platform = request.GET.get('platform')
-      s_game = get_game_table_by_id(request.GET.get('game1_id'), platform) # sender game / game offered
-      r_game = get_game_table_by_id(request.GET.get('game2_id'), platform) # receiver game / game listed
+      r_platform = request.GET.get('r_platform')
+      s_platform = request.GET.get('s_platform')
+      s_game = get_game_table_by_id(request.GET.get('game1_id'), s_platform) # sender game / game offered
+      r_game = get_game_table_by_id(request.GET.get('game2_id'), r_platform) # receiver game / game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
-        for listing in Currentlist.objects.filter(giantBombID = r_game.giant_bomb_id):
+        for listing in Currentlist.objects.filter(game_listed = r_game):
           # if listing.user != userprofile:
       
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
@@ -279,16 +280,10 @@ def get_platform(request, game_id):
     results = s.getGameDetsById(game_id, 'platforms')
     platforms = results['platforms']
     results = []
-    id = 0
     for platform in platforms:
-      platform_json={}
-      platform_json['value'] = platform
-      platform_json['label'] = platform
-      platform_json['id'] = id
-      id += 1
-      results.append(platform_json)
+      results.append(platform)
     message=json.dumps(results)
-    return HttpResponse(message) 
+    return HttpResponse(message)
 
 def put_in_game_table(id, platform):
   game = s.getGameDetsById(id, 'platforms', 'image', 'name', 'id')
