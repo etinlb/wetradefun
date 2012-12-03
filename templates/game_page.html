@@ -12,18 +12,14 @@
       
       <div class="seven columns">
         <ul class="pricing-table">
-          <li class="title"><h3>{{game.name}}</h3></li>
+          <li class="title"><h3>{{game.name}}</h3>
+          </li>
           {% for k,v in listings.items %}
             <li class="price twelve columns" id="li_copies">
               <div class="nine left" id="copies">{{v}} {{k}} cop{{ v|pluralize:"y,ies" }} avaliable</div>
               <div class="three right">
-                {% if in_wishlist %}
-                  <a class="tiny success button twelve" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
-                  <a data-platform="{{k}}" href="#" class="make_offer_button radius button twelve" data-reveal-id="new_offer_confirmation">Make an offer</a>
-                {% else %}                  
-                  <a class="tiny button twelve" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
-                  <a data-platform="{{k}}" class="make_offer_button tiny button left twelve"{% if user.is_authenticated %}href="#"  data-reveal-id="new_offer_confirmation"{% else %} href="/users/sign_in" {% endif %}>Make an offer</a>
-                {% endif %}
+                  <a data-platform="{{k}}" class="make_offer_button small button left twelve"{% if user.is_authenticated %}href="#"  data-reveal-id="new_offer_confirmation"{% else %} href="/users/sign_in" {% endif %}>Make an offer</a>
+                
               </div>
             </li>
           {% empty %}
@@ -32,9 +28,14 @@
           <li class="description">{{game.deck}}</li>          
           <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
           <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
-          <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
+          <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a>
+          <div class="two right">{% if in_wishlist %}
+                            <a class="small success button twelve" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
+                      {% else %}                  
+                            <a class="small button twelve" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
+                      {% endif %}</div></li>
           <li class="cta-button"> 
-            <a class="radius button" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in" {% endif %}>Publish a listing</a>
+            <div class="centered"><a class="radius button" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in" {% endif %}>Publish a listing</a></div>
           </li>
         </ul>
 
