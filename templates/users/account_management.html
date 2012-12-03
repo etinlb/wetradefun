@@ -8,15 +8,14 @@
   <div class="twelve columns">
     <h3>Dashboard</h3>
 
-    <dl class="tabs">
+    <dl class="tabs contained">
       <dd class="active"><a href="#myInformation">My Information</a></dd>
-      <dd><a href="#currentListings">Current Listings</a></dd>
-      <dd><a href="#currentOffers">Current Offers</a></dd>
-      <dd><a href="#tradeHistory">Trade History</a></dd>
-      <dd><a href="#viewWishlist">View Wishlist</a><dd>
+      <dd class="hide-for-small"><a href="#currentListings">Current Listings</a></dd>
+      <dd class="hide-for-small"><a href="#currentOffers">Current Offers</a></dd>
+      <dd class="hide-for-small"><a href="#tradeHistory">Trade History</a></dd>
+      <dd class="hide-for-small"><a href="#viewWishlist">View Wishlist</a></dd>
     </dl>
-
-    <ul class="tabs-content">
+    <ul class="tabs-content contained">
       <li class="active" id="myInformationTab">
         <table class="eight columns">
           <tbody>
@@ -53,13 +52,13 @@
             <tr>              
               <td>
                   <a href="/trades/game/{{key.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{key.game_listed.image_url}}"/><br /></a>
-                  <a href="#" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
               </td>
               <td>
                 <ul class="no-bullet">
                   <li>{{key.game_listed.name}}</li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
+                  <a href="#currentListings" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
                 </ul>
               </td>
               <td>
@@ -73,10 +72,10 @@
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
-                            <a href="#" onclick="get_request_acceptoffer({{offer.pk}})"  class="small button">Accept Offer</a>
+                            <a href="#currentListings" onclick="get_request_acceptoffer({{offer.pk}})"  class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" onclick="get_request_declineoffer({{offer.pk}})" class="small alert button">Decline Offer</a>
+                            <a href="#currentListings" onclick="get_request_declineoffer({{offer.pk}})" class="small alert button">Decline Offer</a>
                           </li>                          
                         </ul>
                       </li>
@@ -107,11 +106,12 @@
           <tbody>
             {% for offer in current_offers %}
             <tr>
-              <td class = "three columns"><a href="/trades/game/{{offer.current_listing.game_listed.giant_bomb_id}}"><img src="{{offer.current_listing.game_listed.image_url}}"/></a></td>
-              <td class = "three columns"><a href="/trades/game/{{offer.sender_game.giant_bomb_id}}"><img src="{{offer.sender_game.image_url}}" /></a></td>
-              <td class = "three columns">{{offer.dateRequested}}</td>
+              <td>
+                <a href="/trades/game/{{offer.current_listing.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{offer.current_listing.game_listed.image_url}}"/></a></td>
+              <td><a href="/trades/game/{{offer.sender_game.giant_bomb_id}}"><img class="miniature-management" src="{{offer.sender_game.image_url}}" /></a></td>
+              <td>{{offer.dateRequested}}</td>
 
-              <td class = "three columns">
+              <td>
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
@@ -126,11 +126,11 @@
                     <ul class="button-group">
                       <li>
                         {% ifequal offer.status 'accepted' %}
-                        <a href="#" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
+                        <a href="#currentOffers" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
                         {% endifequal %}
                       </li>
                       <li>
-                        <a href="#" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
+                        <a href="#currentOffers" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
@@ -205,7 +205,7 @@
               <td><a href= "/trades/game/{{item.wishlist_game.giant_bomb_id}}"><img class="miniature-management" src="{{item.wishlist_game.image_url}}" /></a></td>
               <td><p>{{item.wishlist_game.name}}</td>
               <td>
-                <a href="#" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
+                <a href="#viewWishlist" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
               </td>
             </tr>
             {% endfor %}
@@ -239,19 +239,20 @@ function get_request_removefromwishlist(wishlist_game_id){
     {game_id: wishlist_game_id},
     function(data){
       console.log(data);
-      // TODO: reload page onto wishlist tab
+      location.reload();
     }
   );
   return false;
 }
-function edit_email(new_email){
-  $.get(
-    "/user/edit_email",
-    {new_email : new_email},
-    function(data){
-      console.log(data);
-    });
-}
+// function edit_email(new_email){
+//   ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$
+//   $.get(
+//     "/user/edit_email",
+//     {new_email : new_email},
+//     function(data){
+//       console.log(data);
+//     });
+// }
 
 function get_request_removelisting(listing_primary_id){
   $.get(

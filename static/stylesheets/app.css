@@ -82,3 +82,8 @@ img.miniature-management{
 #listed {
   border-right: solid 1px #ddd;
 }
+
+
+img.miniature-homepage{
+  max-height: 250px;
+}

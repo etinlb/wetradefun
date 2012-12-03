@@ -21,7 +21,7 @@
       <div class="twelve columns">
         <ul class="block-grid four-up">
           {% for game in most_wishlisted_games %}
-          <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img class="miniature-homepage" src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
           {% endfor %}
         </ul>
       </div>
@@ -32,7 +32,7 @@
       <div class="twelve columns">
         <ul class="block-grid four-up">
         {% for game in most_listed_games %}
-          <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
+          <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img class="miniature-homepage" src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
         {% endfor %}
       </ul>
      </div>
@@ -43,7 +43,7 @@
       <div class="twelve columns">
         <ul class="block-grid four-up">
         {% for game in most_traded_games %}
-        <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}}{% endifnotequal %}</p></a></li>
+        <li><a href="/trades/game/{{game.giant_bomb_id}}" class='th hoverwithtext'><img class="miniature-homepage" src="{{game.image_url}}"/><p>See Details {%ifnotequal game.num_of_listing 0L%}- {{game.num_of_listing}} listings avaiable{% endifnotequal %}</p></a></li>
         {% endfor %}
       </ul>
      </div>

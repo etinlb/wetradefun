@@ -116,6 +116,7 @@ def sign_up(request):
             if user is not None:
               # Login the user
               login(request, user)
+              return HttpResponseRedirect('/')
 
         else:
             if "__all__" in form._errors:
