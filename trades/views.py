@@ -141,13 +141,13 @@ def confirm_offer(request):
 
         currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
         currentlisting.status = "closed"
-        game = get_game_table_by_id(currentlisting.game_listed.pk)
+        game = get_game_table_by_id(currentlisting.game_listed.giant_bomb_id, currentlisting.game_listed.platform)
         game.num_of_listings -= 1
         game.save()
         currentlisting.save()
       else:
         message = "that trade is no longer available or has already been accepted"
-        message = str(transaction.pk)
+      message = currentlisting.game_listed.name
     else:
       message = "No such trade exists"
   else:
