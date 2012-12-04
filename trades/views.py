@@ -180,7 +180,7 @@ def delete_offer(request):
     if transaction != None:
       if ((userprofile == transaction.sender) and ((transaction.status == "offered") or (transaction.status == "accepted"))):
         transaction.delete()
-        message = userprofile.user.username + " deleted the offer"
+        #message = userprofile.user.username + " deleted the offer"
       else:
         message="that offer is no longer available or has already been confirmed"
     else:
