@@ -117,23 +117,32 @@ def accept_offer(request):
 
   if request.is_ajax():
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
-    other_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
+    all_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
     if (transaction != None):
 
-      for ot in other_trans:
+      # check if another offer has already been accepted
+      for ot in all_trans:
         if (ot.pk != transaction.pk and ot.status == "accepted"):
           already_accepted = True
           messages.error(request, "You have already accepted a trade offer for that listing")
 
+      # if not, accept this offer
       if (transaction.status == "offered" and already_accepted == False):
         transaction.status = "accepted"
         messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
 
+        for ot in all_trans:
+          if (ot.pk != transaction.pk and ot.status == "offered"):
+            ot.status = "deferred"
+            ot.save()
+
     else:
       message = "No such trade exists"
   else:
     message="Not AJAX"
+
+  message = "success!"
   return HttpResponse(message)
 
 @login_required(login_url='/users/sign_in/')
@@ -141,6 +150,8 @@ def confirm_offer(request):
   #TODO verify if this is correct
   if request.is_ajax():
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    all_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
+
     if (transaction != None):
       if (transaction.status == "accepted"):
         transaction.status = "confirmed"
@@ -185,13 +196,21 @@ def decline_offer(request):
 
 @login_required(login_url='/users/sign_in/')
 def delete_offer(request):
+  message = ""
+
   if request.is_ajax():
     userprofile = request.user.get_profile()    
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    all_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
+
     if transaction != None:
       if ((userprofile == transaction.sender) and ((transaction.status == "offered") or (transaction.status == "accepted"))):
+        for ot in all_trans:
+          if (ot.pk != transaction.pk and ot.status == "deferred"):
+            ot.status = "offered"
+            ot.save()        
         transaction.delete()
-        #message = userprofile.user.username + " deleted the offer"
+        message = userprofile.user.username + " deleted the offer"
       else:
         message="This trade is no longer available or has already been confirmed"
     else:
@@ -243,7 +262,7 @@ def make_offer(request):
             transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
             transaction.save()
 
-        messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
+        messages.success(request, "You offered " + s_game.name + " (" + s_game.platform + ") for " + r_game.name + " (" + r_game.platform + ")")
       message = "success"
     else:
       message = "Not AJAX"
