@@ -101,26 +101,35 @@ def remove_from_wish_list(request):
     game = get_game_table_by_id(game_id, '')
     game_in_wishlist = Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = game)
     if (game_in_wishlist.count() == 1):
-      message = request.user.get_profile().user.username + "deleted " + game_in_wishlist[0].wishlist_game.name + " from their wish list"      
+      message = request.user.get_profile().user.username + " deleted " + game_in_wishlist[0].wishlist_game.name + " from their wish list"      
       game_in_wishlist[0].delete()
     else:
       message = "game not in wishlist"
   else:
     message = "Not AJAX"
+
   return HttpResponse(message)
 
 @login_required(login_url='/users/sign_in/')
 def accept_offer(request):
   #TODO verify if this is correct
+  already_accepted = False
+
   if request.is_ajax():
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    other_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
     if (transaction != None):
-      if (transaction.status == "offered"):
+
+      for ot in other_trans:
+        if (ot.pk != transaction.pk and ot.status == "accepted"):
+          already_accepted = True
+          messages.error(request, "You have already accepted a trade offer for that listing")
+
+      if (transaction.status == "offered" and already_accepted == False):
         transaction.status = "accepted"
-        message = "Please wait for " + transaction.sender.user.username + " to make the final trade confirmation"
+        messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
-      else:
-        message="that trade is no longer available or has already been accepted"
+
     else:
       message = "No such trade exists"
   else:
@@ -141,7 +150,7 @@ def confirm_offer(request):
 
         currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
         currentlisting.status = "closed"
-        game = get_game_table_by_id(currentlisting.game_listed.pk)
+        game = get_game_table_by_id(currentlisting.game_listed.giant_bomb_id, currentlisting.game_listed.platform)
         game.num_of_listings -= 1
         game.save()
         currentlisting.save()
@@ -220,15 +229,17 @@ def make_offer(request):
       s_platform = request.GET.get('s_platform')
       s_game = get_game_table_by_id(request.GET.get('game1_id'), s_platform) # sender game / game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), r_platform) # receiver game / game listed
-      if (s_game.giant_bomb_id != r_game.giant_bomb_id):
-        for listing in Currentlist.objects.filter(game_listed = r_game):
-          # if listing.user != userprofile:
-      
-          transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
-          transaction.save()
-          message += user_name + " offered " + s_game.name + " to " + listing.user.user.username + " for " + r_game.name+ "\n"
+      if (s_game.giant_bomb_id == r_game.giant_bomb_id):
+        messages.error(request, "These two games are the same games for the same platforms")
       else:
-        message = "These two games are the same"
+        for listing in Currentlist.objects.filter(game_listed = r_game):
+          if (listing.user == userprofile):
+            message = "Cannot offer a game to your own listing"
+          else:
+            transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
+            transaction.save()
+
+        messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
     else:
       message = "Not AJAX"
   else:

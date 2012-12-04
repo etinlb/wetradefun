@@ -9,14 +9,14 @@
     <h3>Dashboard</h3>
 
     <dl class="tabs contained">
-      <dd class="active"><a href="#myInformation">My Information</a></dd>
-      <dd class="hide-for-small"><a href="#currentListings">Current Listings</a></dd>
+      <dd class="hide-for-small"><a href="#myInformation">My Information</a></dd>
+      <dd class="active"><a href="#currentListings">Current Listings</a></dd>
       <dd class="hide-for-small"><a href="#currentOffers">Current Offers</a></dd>
       <dd class="hide-for-small"><a href="#tradeHistory">Trade History</a></dd>
       <dd class="hide-for-small"><a href="#viewWishlist">View Wishlist</a></dd>
     </dl>
     <ul class="tabs-content contained">
-      <li class="active" id="myInformationTab">
+      <li id="myInformationTab">
         <table class="eight columns">
           <tbody>
              <tr>
@@ -38,7 +38,7 @@
           </tbody>
         </table>
       </li>
-      <li id="currentListingsTab">
+      <li class="active" id="currentListingsTab">
         <table class="twelve columns">
           <thead>
             <tr>
@@ -55,9 +55,10 @@
               </td>
               <td>
                 <ul class="no-bullet">
-                  <li>{{key.game_listed.name}}</li>
+                  <li><a href="/trades/game/{{key.game_listed.giant_bomb_id}}">{{key.game_listed.name}}</a></li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
+                </br>
                   <a href="#currentListings" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
                 </ul>
               </td>
@@ -68,6 +69,9 @@
                       {% for offer in value %}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
+                      </li>
+                      <li>
+                        Platform: {{offer.sender_game.platform}}
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
@@ -82,10 +86,10 @@
                       <li>
                         <p>This is great quality</p>
                       </li>
+                      <hr>
                       {% endfor %}
                     </ul>
                   </li>
-                  <hr>
                 </ul>
               </td>
             </tr>
@@ -115,13 +119,15 @@
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
-                        The other part accepted your deal. Confirm it to finish
+                        <b><font color="green">ACCEPTED</font></b></br>Confirm the trade below.
                     {% endifequal %}
                     {% ifequal offer.status 'offered' %}
-                        Waiting for the other part to accept your deal
+                        <b><font color="black">OFFERED</font></b></br>Please wait for a reply.
                     {% endifequal %}
-
                   </li>
+
+                </br>
+
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
@@ -130,7 +136,7 @@
                         {% endifequal %}
                       </li>
                       <li>
-                        <a href="#currentOffers" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
+                        <a href="#currentOffers" onclick="get_request_deleteoffer({{offer.pk}})" class="small alert button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
@@ -147,7 +153,7 @@
             <tr>
               <th>Game Listed</th>
               <th>Game Offered</th>
-              <th>Completion Date</th>
+              <th>Date Completed</th>
               <th>User Contact</th>
             </tr>
           </thead>
@@ -176,11 +182,11 @@
                             <li><a href="#" onclick="rate_user(5)">5: Excellent</a></li>
                             <li><a href="#" onclick="rate_user(4)">4: Good</a></li>
                             <li><a href="#" onclick="rate_user(3)">3: Acceptable</a></li>
-                            <li><a href="#" onclick="rate_user(2)">2: Would Not Trade Again</a></li>
+                            <li><a href="#" onclick="rate_user(2)">2: Poor</a></li>
                             <li><a href="#" onclick="rate_user(1)">1: Criminal</a></li>
                           </ul>
                         </li>
-                        <li><a href="#" class="small button" onclick="report_user()">Report User</a></li>
+                        <li><a href="#" class="small alert button" onclick="report_user()">Report User</a></li>
                       </ul>
                     </li>
                 </ul>
