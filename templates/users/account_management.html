@@ -226,39 +226,25 @@
   </div>
 </div>
 
-<div id="edit_email" class="reveal-modal medium">
-  <form action="" method="post">
+  <div id="edit_email" class="reveal-modal medium">
     <h2>What would you like to change it to?</h2>
-    <div class="row collapse fieldWrapper">
-  
-    <div class="three columns">
-      <label for="id_username">Username</label>
+    <div class="ui-widget">
+      <input type="text" id="old_email" placeholder="Old Email"/>
+      <input type="text" id="new_email" placeholder="New Email"/>
+      <input type="text" id="confirm_email" placeholder="Confirm Email"/>
+      <a class="button" href="#" onclick="edit_email()">Submit</a>
     </div>
-    <div class="nine columns">
-
-    </div>            
   </div>
-  <div class="row collapse fieldWrapper">
-    <div class="three columns">
-      <label for="id_password">Password</label>
-    </div>
-    <div class="nine columns">
-
-    </div>            
-  </div>
-  <button type="submit" class="radius button">Submit</button>
-</div>
 
   <div id="edit_password" class="reveal-modal medium">
-  <h2>What would you like to change it to?</h2>
-  <div class="ui-widget">
-    <input type="text" id="new_password" placeholder="Old Password"/>
-    <input type="text" id="new_password" placeholder="New Password"/>
-    <input type="text" id="new_password" placeholder="Confirm Password"/>
-    <a class="button" href="#" onclick="edit_password({{user.password}})">Submit</a>
+    <h2>What would you like to change it to?</h2>
+    <div class="ui-widget">
+      <input type="text" id="old_password" placeholder="Old Password"/>
+      <input type="text" id="new_password" placeholder="New Password"/>
+      <input type="text" id="confirm_password" placeholder="Confirm Password"/>
+      <a class="button" href="#" onclick="edit_password()">Submit</a>
+    </div>
   </div>
-
-</div>
 
 {% endblock %}
 
@@ -275,15 +261,35 @@ function get_request_removefromwishlist(wishlist_game_id){
   );
   return false;
 }
-// function edit_email(new_email){
-//   ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$
-//   $.get(
-//     "/user/edit_email",
-//     {new_email : new_email},
-//     function(data){
-//       console.log(data);
-//     });
-// }
+function edit_email(){
+  $.get(
+    "/users/edit_email/", 
+    {oemail: $('#old_email').val(),
+    nemail: $('#new_email').val(), 
+    cemail: $('#confirm_email').val()},
+
+    function(data){
+      console.log(data);
+      location.reload();
+    }
+  );
+  return false;
+
+}
+function edit_password(old_password, new_password, confirm_password){
+  $.get(
+    "/users/edit_password/", 
+    {opassword: $('#old_password').val(), 
+    npassword: $('#new_password').val(), 
+    cpassword: $('#confirm_passwords').val()},
+
+    function(data){
+      console.log(data);
+      location.reload();
+    }
+  );
+  return false;
+}
 
 function get_request_removelisting(listing_primary_id){
   $.get(
