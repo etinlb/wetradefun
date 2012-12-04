@@ -129,7 +129,7 @@ def accept_offer(request):
         transaction.status = "accepted"
         messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
-
+      message= "Offer accepted"
     else:
       message = "No such trade exists"
   else:
@@ -258,6 +258,7 @@ def make_offer(request):
         for listing in Currentlist.objects.filter(game_listed = r_game):
           if (listing.user == userprofile):
             message = "Cannot offer a game to your own listing"
+            messages.error(request,"You can't offer games to yourself. The offer you made to yourself will not be reflected")
           else:
             transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
             transaction.save()
@@ -317,7 +318,6 @@ def rate_user(request):
       userrating.num_of_ratings += 1
       totalRatings += float(added_rating)
       userrating.rating = float(totalRatings / userrating.num_of_ratings)
-      #userrating.rating = float(userrating.rating - (userrating.rating % 0.01))
       message = "You have rated " + str(userrating.user.username) + " a rating of " + str(added_rating)
       userrating.save()
     else:
