@@ -146,7 +146,7 @@ def confirm_offer(request):
         transaction.status = "confirmed"
         transaction.dateTraded = datetime.datetime.now()
         message = "Congratulations, you have completed your transaction"
-        transaction.save()
+        transaction.save()       
 
         currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
         currentlisting.status = "closed"
