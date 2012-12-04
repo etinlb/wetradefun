@@ -56,12 +56,19 @@ def sign_in(request):
 
 @login_required(login_url='/users/sign_in/')
 def account_management(request):
-  listing_list = {}
   listing_dict = {}
+  accepted_offer_dict = {}
   userprofiler = request.user.get_profile()
   current_listings = list(Currentlist.objects.filter(user = request.user.get_profile(), status = 'open').order_by('-datePosted'))
   for idx, listing in enumerate(current_listings):
     listing_dict[listing] = list(Transaction.objects.filter(status = 'offered', current_listing = listing))
+    try:
+      accepted_offer_dict[listing] = Transaction.objects.get(status = 'accepted', current_listing = listing)
+    except Transaction.DoesNotExist:
+       accepted_offer_dict[listing] = []
+
+
+  # assert False  
 
   #assert false
   current_offers = list(Transaction.objects.filter(status = 'offered', sender = request.user.get_profile()))   
@@ -85,7 +92,7 @@ def account_management(request):
     messages.success(request, "You don't have any active offers, go ahead and browse for a new game.")
   if len(hist) == 0:
     messages.success(request, "Don't worry if your history is empty, that will fill up as soon as you complete a trade.")  
-
+  # assert False
   return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
     'wishlist': wishlist,
@@ -93,7 +100,8 @@ def account_management(request):
     'listing_dict': listing_dict,
     'username': request.user.username,
     'current_offers': current_offers,
-    'userprofiler': userprofiler
+    'userprofiler': userprofiler,
+    'accepted_offer_dict':accepted_offer_dict
     })
 
 def sign_up(request):

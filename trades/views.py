@@ -129,7 +129,7 @@ def accept_offer(request):
         transaction.status = "accepted"
         messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
-
+      message = "success"
     else:
       message = "No such trade exists"
   else:

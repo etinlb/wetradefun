@@ -3,7 +3,7 @@
 {% block title %}{{user.name}}{% endblock %}
 
 {% block content %}
-
+{%load filters%}
 <div class="row">
   <div class="twelve columns">
     <h3>Dashboard</h3>
@@ -66,12 +66,18 @@
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
+                      {%if accepted_offer_dict|lookup:key%}
+                      <li>
+                        <a href="/trades/game/{{accepted_offer_dict|lookup_game_id:key}}"><img class="miniature-management" src="{{accepted_offer_dict|lookup_game_image:key}}" /></a>
+                      </li>
+                      {%else%}
                       {% for offer in value %}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
                       </li>
                       <li>
                         Platform: {{offer.sender_game.platform}}
+                        {{accepted_offer_dict.key}}
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
@@ -88,6 +94,7 @@
                       </li>
                       <hr>
                       {% endfor %}
+                      {%endif%}
                     </ul>
                   </li>
                 </ul>
