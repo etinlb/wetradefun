@@ -129,7 +129,7 @@ def accept_offer(request):
         transaction.status = "accepted"
         messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
-      message = "success"
+      message= "Offer accepted"
     else:
       message = "No such trade exists"
   else:
@@ -141,6 +141,9 @@ def confirm_offer(request):
   #TODO verify if this is correct
   if request.is_ajax():
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    senders_game = transaction.sender_game
+    userprofile = request.user.get_profile()
+    users_other_offers = Transaction.objects.filter(sender = userprofile, sender_game = senders_game)
     if (transaction != None):
       if (transaction.status == "accepted"):
         transaction.status = "confirmed"
@@ -149,11 +152,27 @@ def confirm_offer(request):
         transaction.save()
 
         currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
+        # currentlisting_user = currentlisting.user
+        listing_other_offers = Transaction.objects.filter(current_listing = currentlisting)
         currentlisting.status = "closed"
         game = get_game_table_by_id(currentlisting.game_listed.giant_bomb_id, currentlisting.game_listed.platform)
         game.num_of_listings -= 1
         game.save()
         currentlisting.save()
+
+        # to delete other tranactions where the sender offered the same game too but confirmed
+        for othertransactions in users_other_offers:
+          if othertransactions.current_listing.game_listed == transaction.current_listing.game_listed:
+            if othertransactions != transaction:
+              message += "HII"
+              othertransactions.delete()
+
+        #deletes the offer from the listings
+        for otheroffers in listing_other_offers:
+          if otheroffers != transaction:
+            message += "ASDA"
+            otheroffers.delete()
+
       else:
         message = "This trade is no longer available or has already been confirmed"
         message = str(transaction.pk)
@@ -239,6 +258,7 @@ def make_offer(request):
         for listing in Currentlist.objects.filter(game_listed = r_game):
           if (listing.user == userprofile):
             message = "Cannot offer a game to your own listing"
+            messages.error(request,"You can't offer games to yourself. The offer you made to yourself will not be reflected")
           else:
             transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
             transaction.save()
@@ -298,7 +318,6 @@ def rate_user(request):
       userrating.num_of_ratings += 1
       totalRatings += float(added_rating)
       userrating.rating = float(totalRatings / userrating.num_of_ratings)
-      userrating.rating = float(userrating.rating - (userrating.rating % 0.01))
       message = "You have rated " + str(userrating.user.username) + " a rating of " + str(added_rating)
       userrating.save()
     else:
