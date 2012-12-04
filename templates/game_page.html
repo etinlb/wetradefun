@@ -208,6 +208,7 @@ function get_request_platform(){
     {
     }, 
     function(data){
+      $('#offer_platform').empty();
       var response = JSON.parse(data);
       console.log(typeof(response));
       for (var key in response) {

@@ -7,4 +7,6 @@ urlpatterns = patterns('',
     url(r'^sign_in', 'user.views.sign_in'),
     url(r'^account_management', 'user.views.account_management'),
     url(r'^sign_out', 'user.views.sign_out'),
+    url(r'^edit_email', 'user.views.edit_email'),
+    url(r'^edit_password', 'user.views.edit_password')
 )
