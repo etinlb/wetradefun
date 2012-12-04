@@ -21,10 +21,10 @@
           <tbody>
              <tr>
               <td>My Rating</td>
-              {% if user.rating == None %}
+              {% if userprofiler.rating == 0 %}
               <td>Unrated</td>
               {% else %}
-              <td>{{user.rating}}</td>
+              <td>{{userprofiler.rating}}</td>
               {% endif %}
             </tr>
             <tr>
@@ -33,7 +33,7 @@
             </tr>
             <tr>
               <td>********</td>
-              <td><a>edit password</a></td>
+              <td><a href="#" data-reveal-id="edit_password">edit password</a></td>
             </tr>
           </tbody>
         </table>
@@ -173,11 +173,11 @@
                         <li class="small dropdown button">
                           Rate User
                           <ul>
-                            <li><a href="#" onclick="rate_user(5)">5: Excellent</a></li>
-                            <li><a href="#" onclick="rate_user(4)">4: Good</a></li>
-                            <li><a href="#" onclick="rate_user(3)">3: Acceptable</a></li>
-                            <li><a href="#" onclick="rate_user(2)">2: Would Not Trade Again</a></li>
-                            <li><a href="#" onclick="rate_user(1)">1: Criminal</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
                           </ul>
                         </li>
                         <li><a href="#" class="small button" onclick="report_user()">Report User</a></li>
@@ -221,6 +221,15 @@
 </div>
 
 <div id="edit_email" class="reveal-modal medium">
+      <h2>What would you like to change it to?</h2>
+        <div class="ui-widget">
+          <label for="new_email">Game name: </label>
+          <input type="text" id="new_email" placeholder="{{user.email}}"/>
+          <a class="button" href="#" onclick="edit_email({{user.email}})">Accept</a>
+        </div>
+</div>
+
+<div id="edit_password" class="reveal-modal medium">
       <h2>What would you like to change it to?</h2>
         <div class="ui-widget">
           <label for="new_email">Game name: </label>
@@ -317,10 +326,11 @@ function get_request_deleteoffer(transaction_primary_id){
   return false;
 }
 
-function rate_user(rating){
+function get_request_rateuser(rating, transaction_primary_id){
   $.get(
     "/trades/rate_user/", 
-    {desired_rating: rating},
+    {desired_rating: rating,
+    transaction_id: transaction_primary_id},
     function(data){
       console.log(data);
       location.reload();
