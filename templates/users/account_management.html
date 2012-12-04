@@ -67,6 +67,7 @@
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
                       {% for offer in value %}
+                      {% if offer.status=="offered"%}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
                       </li>
@@ -84,9 +85,10 @@
                         </ul>
                       </li>
                       <li>
-                        <p>This is great quality</p>
+                        <!-- The message should go here -->
                       </li>
                       <hr>
+                      {% endif %}
                       {% endfor %}
                     </ul>
                   </li>
@@ -308,7 +310,6 @@ function get_request_confirmoffer(transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto current offers tab
     }
   );
   return false;
@@ -321,7 +322,6 @@ function get_request_declineoffer(transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto current offers tab
     }
   );
   return false;
