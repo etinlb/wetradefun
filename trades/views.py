@@ -36,7 +36,7 @@ def game_details(request, game_id):
           v = Game.objects.get(giant_bomb_id = game_id, platform = k[0]).num_of_listings
           platforms_count[k[0]] = v
   except Currentlist.DoesNotExist:
-      games_listed = 0
+      games_listed = 0 #why is this here?
   return render(request,'game_page.html', {'game': game, 'listings': platforms_count, 'in_wishlist': in_wishlist,})
 
 
@@ -221,7 +221,7 @@ def make_offer(request):
       s_game = get_game_table_by_id(request.GET.get('game1_id'), s_platform) # sender game / game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), r_platform) # receiver game / game listed
       if (s_game.giant_bomb_id != r_game.giant_bomb_id):
-        for listing in Currentlist.objects.filter(game_listed = r_game):
+        for listing in Currentlist.objects.filter(game_listed = r_game, status = 'open'):
           # if listing.user != userprofile:
       
           transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
