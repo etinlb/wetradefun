@@ -10,7 +10,7 @@
    Shared Styles
 ----------------------------------------- */
 body { 
-  background-color: #C0C0C0;
+  background-image: url('/static/images/bluecross.png');
 }
 
 #container {
