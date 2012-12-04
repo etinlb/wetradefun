@@ -36,8 +36,10 @@ def homepage(request):
 
 def how_to_use(request):
     return render(request, 'staticpages/how_to_use.html')
+
 def contact_us(request):
     return render(request, 'staticpages/contact_us.html')
+    
 def no_game_found(request):
     return render(request, 'staticpages/no_game_found.html')
     
