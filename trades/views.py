@@ -233,18 +233,8 @@ def make_offer(request):
       s_platform = request.GET.get('s_platform')
       s_game = get_game_table_by_id(request.GET.get('game1_id'), s_platform) # sender game / game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), r_platform) # receiver game / game listed
-<<<<<<< HEAD
-      if (s_game.giant_bomb_id != r_game.giant_bomb_id):
-        for listing in Currentlist.objects.filter(game_listed = r_game, status = 'open'):
-          # if listing.user != userprofile:
-      
-          transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
-          transaction.save()
-          message += user_name + " offered " + s_game.name + " to " + listing.user.user.username + " for " + r_game.name+ "\n"
-=======
       if (s_game.giant_bomb_id == r_game.giant_bomb_id):
         messages.error(request, "These two games are the same games for the same platforms")
->>>>>>> 9f3d16ab01b4fcf4d600f33e6b6819f0e0d9e2b0
       else:
         for listing in Currentlist.objects.filter(game_listed = r_game):
           if (listing.user == userprofile):
