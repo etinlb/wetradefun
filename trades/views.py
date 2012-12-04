@@ -129,7 +129,7 @@ def accept_offer(request):
         transaction.status = "accepted"
         messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
-
+      message= "Offer accepted"
     else:
       message = "No such trade exists"
   else:
@@ -299,7 +299,6 @@ def rate_user(request):
       userrating.num_of_ratings += 1
       totalRatings += float(added_rating)
       userrating.rating = float(totalRatings / userrating.num_of_ratings)
-      userrating.rating = float(userrating.rating - (userrating.rating % 0.01))
       message = "You have rated " + str(userrating.user.username) + " a rating of " + str(added_rating)
       userrating.save()
     else:
