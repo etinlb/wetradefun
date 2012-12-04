@@ -36,7 +36,7 @@ def game_details(request, game_id):
           v = Game.objects.get(giant_bomb_id = game_id, platform = k[0]).num_of_listings
           platforms_count[k[0]] = v
   except Currentlist.DoesNotExist:
-      games_listed = 0
+      games_listed = 0 #why is this here?
   return render(request,'game_page.html', {'game': game, 'listings': platforms_count, 'in_wishlist': in_wishlist,})
 
 
@@ -191,7 +191,7 @@ def delete_offer(request):
     if transaction != None:
       if ((userprofile == transaction.sender) and ((transaction.status == "offered") or (transaction.status == "accepted"))):
         transaction.delete()
-        message = userprofile.user.username + " deleted the offer"
+        #message = userprofile.user.username + " deleted the offer"
       else:
         message="This trade is no longer available or has already been confirmed"
     else:
