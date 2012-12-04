@@ -243,7 +243,7 @@ def add_listing(request):
     game_id = request.GET.get('game_id')
     platform = request.GET.get('platform')
     game = get_game_table_by_id(game_id, platform)
-    currentlist = Currentlist.objects.create(user = userprofile, giantBombID = game_id, game_listed = game, status = "open")
+    currentlist = Currentlist.(user = userprofile, giantBombID = game_id, game_listed = game, status = "open")
     game.num_of_listings += 1
     game.save()
     currentlist.save()
@@ -306,9 +306,10 @@ def get_game_table_by_id(id, platform):
 
 def rate_user(request):
   if request.is_ajax():
+    message = "?AASDADAS?"
     added_rating = request.GET.get('desired_rating')
     userprofile = request.user.get_profile()
-    totalRatings = num_of_ratings * userprofile.rating
+    totalRatings = userprofile.num_of_ratings * userprofile.rating
     userprofile.num_of_ratings += 1
     totalRatings += added_rating
     userprofile.rating = totalRatings / userprofile.num_of_ratings
