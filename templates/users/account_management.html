@@ -24,7 +24,7 @@
               {% if userprofiler.rating == 0 %}
               <td>Unrated</td>
               {% else %}
-              <td>{{userprofiler.rating}}</td>
+              <td>{{userprofiler.rating|floatformat:2}}</td>
               {% endif %}
             </tr>
             <tr>
@@ -67,6 +67,7 @@
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
                       {% for offer in value %}
+                      {% if offer.status=="offered"%}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
                       </li>
@@ -84,9 +85,10 @@
                         </ul>
                       </li>
                       <li>
-                        <p>This is great quality</p>
+                        <!-- The message should go here -->
                       </li>
                       <hr>
+                      {% endif %}
                       {% endfor %}
                     </ul>
                   </li>
@@ -173,9 +175,15 @@
                         {{transaction.sender.user.username}}</br>
                         {{transaction.sender.user.email}}
                       {% endif %}
-                  </li>
+                      </li>
+                    
+                  
                     <li class="button-bar">
                       <ul class="button-group">
+                        {% if transaction.receiver_has_been_rated %}
+                        <li class="small success button">Already rated
+                        </li>
+                      {% else %}
                         <li class="small dropdown button">
                           Rate User
                           <ul>
@@ -186,9 +194,11 @@
                             <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
                           </ul>
                         </li>
+                        {% endif %}
                         <li><a href="#" class="small alert button" onclick="report_user()">Report User</a></li>
                       </ul>
                     </li>
+                    
                 </ul>
               </td>
             </tr>
@@ -322,7 +332,6 @@ function get_request_confirmoffer(transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto current offers tab
     }
   );
   return false;
@@ -335,7 +344,6 @@ function get_request_declineoffer(transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto current offers tab
     }
   );
   return false;
