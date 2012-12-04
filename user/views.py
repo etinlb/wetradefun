@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
-from user.forms import RegistrationForm, LoginForm
+from user.forms import *
 from user import sort
 
 from trades.models import *
@@ -22,6 +22,28 @@ import search as s
 def sign_out(request):
   logout(request)
   return HttpResponseRedirect('/users/sign_in')
+
+def forget(request):
+  # If it's 
+  if request.user.is_authenticated():
+    return HttpResponseRedirect('/')
+  else:
+    if request.method == 'POST': # If the form has been submitted...
+        form = ForgetForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            try:
+                user = User.objects.get(username=form.cleaned_data['username'],email=form.cleaned_data['email'])
+            except User.DoesNotExist:
+                messages.add_message(request, messages.ERROR, 'Username and Email does not exist')
+                return render_to_response('users/forget.html', {'form': form,},context_instance=RequestContext(request))
+            user.set_password("WeTradeFun")
+            user.save()
+            messages.add_message(request, messages.SUCCESS, 'Your password is reset to WeTradeFun')
+        else:
+            messages.add_message(request, messages.ERROR, 'Your form is incorrect')
+    else:
+        form = ForgetForm() # An unbound form
+  return render_to_response('users/forget.html', {'form': form,},context_instance=RequestContext(request))
 
 def sign_in(request):
   # If it's 

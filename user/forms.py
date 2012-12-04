@@ -21,6 +21,9 @@ class LoginForm(forms.Form):
   #     pass
   #   return self.cleaned_data
 
+class ForgetForm(forms.Form):
+  username = forms.CharField()
+  email = forms.EmailField()
  
 class RegistrationForm(forms.Form):
   """ 
