@@ -244,6 +244,7 @@ def make_offer(request):
             transaction.save()
 
         messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
+      message = "success"
     else:
       message = "Not AJAX"
   else:
