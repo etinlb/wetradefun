@@ -67,7 +67,7 @@
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
                       {% for offer in value %}
-                      {% if offer.status=="offered"%}
+                        {% ifequal offer.status 'offered'%}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
                       </li>
@@ -88,7 +88,7 @@
                         <!-- The message should go here -->
                       </li>
                       <hr>
-                      {% endif %}
+                        {% endifequal %}
                       {% endfor %}
                     </ul>
                   </li>
