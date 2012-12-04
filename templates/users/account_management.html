@@ -13,7 +13,7 @@
       <dd class="hide-for-small"><a href="#currentListings">Current Listings</a></dd>
       <dd class="hide-for-small"><a href="#currentOffers">Current Offers</a></dd>
       <dd class="hide-for-small"><a href="#tradeHistory">Trade History</a></dd>
-      <dd class="hide-for-small"><a href="#viewWishlist">View Wishlist</a><dd>
+      <dd class="hide-for-small"><a href="#viewWishlist">View Wishlist</a></dd>
     </dl>
     <ul class="tabs-content contained">
       <li class="active" id="myInformationTab">
@@ -21,10 +21,10 @@
           <tbody>
              <tr>
               <td>My Rating</td>
-              {% if user.rating == None %}
+              {% if userprofiler.rating == 0 %}
               <td>Unrated</td>
               {% else %}
-              <td>{{user.rating}}</td>
+              <td>{{userprofiler.rating}}</td>
               {% endif %}
             </tr>
             <tr>
@@ -33,7 +33,7 @@
             </tr>
             <tr>
               <td>********</td>
-              <td><a>edit password</a></td>
+              <td><a href="#" data-reveal-id="edit_password">edit password</a></td>
             </tr>
           </tbody>
         </table>
@@ -55,9 +55,10 @@
               </td>
               <td>
                 <ul class="no-bullet">
-                  <li>{{key.game_listed.name}}</li>
+                  <li><a href="/trades/game/{{key.game_listed.giant_bomb_id}}">{{key.game_listed.name}}</a></li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
+                </br>
                   <a href="#currentListings" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
                 </ul>
               </td>
@@ -68,6 +69,9 @@
                       {% for offer in value %}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
+                      </li>
+                      <li>
+                        Platform: {{offer.sender_game.platform}}
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
@@ -82,10 +86,10 @@
                       <li>
                         <p>This is great quality</p>
                       </li>
+                      <hr>
                       {% endfor %}
                     </ul>
                   </li>
-                  <hr>
                 </ul>
               </td>
             </tr>
@@ -115,13 +119,15 @@
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
-                        Accepted
+                        <b><font color="green">ACCEPTED</font></b></br>Confirm the trade below.
                     {% endifequal %}
                     {% ifequal offer.status 'offered' %}
-                        Pending
+                        <b><font color="black">OFFERED</font></b></br>Please wait for a reply.
                     {% endifequal %}
-
                   </li>
+
+                </br>
+
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
@@ -130,7 +136,7 @@
                         {% endifequal %}
                       </li>
                       <li>
-                        <a href="#currentOffers" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
+                        <a href="#currentOffers" onclick="get_request_deleteoffer({{offer.pk}})" class="small alert button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
@@ -147,7 +153,7 @@
             <tr>
               <th>Game Listed</th>
               <th>Game Offered</th>
-              <th>Completion Date</th>
+              <th>Date Completed</th>
               <th>User Contact</th>
             </tr>
           </thead>
@@ -173,14 +179,14 @@
                         <li class="small dropdown button">
                           Rate User
                           <ul>
-                            <li><a href="#" onclick="rate_user(5)">5: Excellent</a></li>
-                            <li><a href="#" onclick="rate_user(4)">4: Good</a></li>
-                            <li><a href="#" onclick="rate_user(3)">3: Acceptable</a></li>
-                            <li><a href="#" onclick="rate_user(2)">2: Would Not Trade Again</a></li>
-                            <li><a href="#" onclick="rate_user(1)">1: Criminal</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
                           </ul>
                         </li>
-                        <li><a href="#" class="small button" onclick="report_user()">Report User</a></li>
+                        <li><a href="#" class="small alert button" onclick="report_user()">Report User</a></li>
                       </ul>
                     </li>
                 </ul>
@@ -221,12 +227,37 @@
 </div>
 
 <div id="edit_email" class="reveal-modal medium">
-      <h2>What would you like to change it to?</h2>
-        <div class="ui-widget">
-          <label for="new_email">Game name: </label>
-          <input type="text" id="new_email" placeholder="{{user.email}}"/>
-          <a class="button" href="#" onclick="edit_email({{user.email}})">Accept</a>
-        </div>
+  <form action="" method="post">
+    <h2>What would you like to change it to?</h2>
+    <div class="row collapse fieldWrapper">
+  
+    <div class="three columns">
+      <label for="id_username">Username</label>
+    </div>
+    <div class="nine columns">
+
+    </div>            
+  </div>
+  <div class="row collapse fieldWrapper">
+    <div class="three columns">
+      <label for="id_password">Password</label>
+    </div>
+    <div class="nine columns">
+
+    </div>            
+  </div>
+  <button type="submit" class="radius button">Submit</button>
+</div>
+
+  <div id="edit_password" class="reveal-modal medium">
+  <h2>What would you like to change it to?</h2>
+  <div class="ui-widget">
+    <input type="text" id="new_password" placeholder="Old Password"/>
+    <input type="text" id="new_password" placeholder="New Password"/>
+    <input type="text" id="new_password" placeholder="Confirm Password"/>
+    <a class="button" href="#" onclick="edit_password({{user.password}})">Submit</a>
+  </div>
+
 </div>
 
 {% endblock %}
@@ -317,6 +348,21 @@ function get_request_deleteoffer(transaction_primary_id){
   return false;
 }
 
+function get_request_rateuser(rating, transaction_primary_id){
+  $.get(
+    "/trades/rate_user/", 
+    {desired_rating: rating,
+    transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
+
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({
       source: "/trades/get_request/",
@@ -348,10 +394,6 @@ function get_request_wishlist(){
 </script>
 {% endblock %}
   <!-- End Main Content and Sidebar -->
-
-
-
- 
 
 <!-- Included JS Files (Compressed) -->
 <script src="javascripts/jquery.js"></script>
