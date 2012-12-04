@@ -1,18 +1,9 @@
 {% extends '../templates/base.html' %}
 {% block content %}
-<html>
-	<head>
-		<link rel="stylesheet" href="stylesheets/foundation.min.css">
-
-		<style>
-			h1 {
-				text-align:center
-			}
-		</style>
-	</head>
-	
-	<body>
-		<div class="row">
+			<form action="" method="POST" class="panel">
+				{{ form }}
+				<button type="submit" class="right radius button">Submit</button>
+			</form>
 			<h1>Meet the We Trade Fun Team</h1>
 			<table class="twelve columns">
 				<tbody>
@@ -66,7 +57,4 @@
 					</tr>					
 				</tbody>
 			</table>
-		</div>
-	</body>
-</html>
 {% endblock %}
