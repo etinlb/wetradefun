@@ -186,6 +186,7 @@ function get_request_makeOffer(){
     function(data){
       console.log(data);
       $('#new_offer_confirmation').trigger('reveal:close');
+      location.reload();
     }
   );
   return false;
