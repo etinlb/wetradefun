@@ -58,6 +58,7 @@ def sign_in(request):
 def account_management(request):
   listing_list = {}
   listing_dict = {}
+  userprofiler = request.user.get_profile()
   current_listings = list(Currentlist.objects.filter(user = request.user.get_profile(), status = 'open').order_by('-datePosted'))
   for idx, listing in enumerate(current_listings):
     listing_dict[listing] = list(Transaction.objects.filter(status = 'offered', current_listing = listing))
@@ -78,15 +79,12 @@ def account_management(request):
   
   sort.sort(hist, 'dateTraded', "desc")
 
-  message = "You're ready to start trading!\n"
   if len(current_listings) == 0:
-    messages.add_message(request, messages.SUCCESS,"Got any old games? Go ahead and post a listing for them.")
+    messages.success(request, "Got any old games? Go ahead and post a listing for them.")
   if len(current_offers) == 0:
-    messages.add_message(request, messages.SUCCESS,"You don't have any active offers, go ahead and browse for a new game.")
+    messages.success(request, "You don't have any active offers, go ahead and browse for a new game.")
   if len(hist) == 0:
-    messages.add_message(request, messages.SUCCESS, "Don't worry if your history is empty, that will fill up as soon as you complete a trade.")
-
-
+    messages.success(request, "Don't worry if your history is empty, that will fill up as soon as you complete a trade.")  
 
   return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
@@ -94,7 +92,8 @@ def account_management(request):
     'history': hist,
     'listing_dict': listing_dict,
     'username': request.user.username,
-    'current_offers': current_offers
+    'current_offers': current_offers,
+    'userprofiler': userprofiler
     })
 
 def sign_up(request):
@@ -109,7 +108,7 @@ def sign_up(request):
                 form.cleaned_data['username'],
                 form.cleaned_data['email'],
                 form.cleaned_data['password'],)
-            user_profile = UserProfile(user = user)
+            user_profile = UserProfile.objects.create(user = user, rating = 0, num_of_ratings = 0)
             user_profile.save()
             messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
             user = authenticate(username=form.cleaned_data['username'], password = form.cleaned_data['password'])
