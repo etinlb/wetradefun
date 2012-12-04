@@ -286,12 +286,12 @@ function edit_email(){
   return false;
 
 }
-function edit_password(old_password, new_password, confirm_password){
+function edit_password(){
   $.get(
     "/users/edit_password/", 
     {opassword: $('#old_password').val(), 
     npassword: $('#new_password').val(), 
-    cpassword: $('#confirm_passwords').val()},
+    cpassword: $('#confirm_password').val()},
 
     function(data){
       console.log(data);
