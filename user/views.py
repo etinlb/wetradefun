@@ -178,6 +178,7 @@ def edit_password(request):
       message = "New passwords don't match!"
     else:
       current_user.set_password(new_password)
+      current_user.save()
       message = "Your password has been sucessfully changed"
   else:
     message = "Not AJAX"
