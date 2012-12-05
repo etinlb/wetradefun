@@ -123,7 +123,7 @@ def accept_offer(request):
   if request.is_ajax():
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
     other_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
-    r_message = request.get.GET('comment')
+    r_message = request.GET.get('comment')
     if (transaction != None):
 
       for ot in other_trans:
