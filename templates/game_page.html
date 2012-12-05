@@ -29,14 +29,18 @@
           <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
           <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
           <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a>
-          <div class="right">{% if in_wishlist %}
-                            <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">- Wishlist</a>
-                      {% else %}                  
-                            <a class="tiny button right" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in?next={{request.path}}" {% endif %}>+ Wishlist</a>
-                      {% endif %}</div></li>
-          <li class="cta-button"> 
 
-            <div class="centered"><a class="radius button" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in?next={{request.path}}" {% endif %}>Publish a listing</a></div>
+          </li>
+
+          <li class="cta-button"> 
+            <div class="button-bar centered">
+              <a class="radius button right" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in" {% endif %}>Publish a listing</a>
+              {% if in_wishlist %}
+                <a class="radius success button left" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
+              {% else %}                  
+                <a class="radius button left" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
+              {% endif %}
+            </div>
             
           </li>
         </ul>
@@ -133,7 +137,7 @@ function get_request_addtowishlist(){
     }, 
     function(data){
       console.log(data);
-      $('#wishlist').replaceWith('<a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">- Wishlist</a>');
+      $('#wishlist').replaceWith('<a class="radius success button left" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>');
     }
   );
   return false;
@@ -147,7 +151,7 @@ function get_request_removefromwishlist(){
     }, 
     function(data){
       console.log(data);
-      $('#wishlist').replaceWith('<a class="tiny button right" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>');
+      $('#wishlist').replaceWith('<a class="radius button left" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>');
     }
   );
   return false;
