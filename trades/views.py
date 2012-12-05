@@ -131,6 +131,13 @@ def accept_offer(request):
         transaction.status = "accepted"
         messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
+        mails.send(
+              'Someone has accepted an offer you done!',
+              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+              transaction.sender.user.username, 
+              transaction.sender.user.email, 
+              'Good news! '+request.user.get_profile().user.username+' has accepted the offer you made for ' + transaction.current_listing.name
+              )
       message= "Offer accepted"
     else:
       message = "No such trade exists"
@@ -266,10 +273,10 @@ def make_offer(request):
             transaction.save()
             mails.send(
               'Someone has made an offer for your game!',
-              'Webmaster', 'wetradefun.webmaster@gmail.com',
+              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+              listing.user.user.username, 
               listing.user.user.email, 
-              listing.user.user.email, 
-              'Good news! Someone has made an offer for your game' + listing.game_listed.name
+              'Good news! Someone has made an offer for your game ' + listing.game_listed.name
               )
 
         messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
