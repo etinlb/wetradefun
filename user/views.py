@@ -61,6 +61,8 @@ def sign_in(request):
                   login(request, user)
                   # Redirect to a success page.
                   messages.add_message(request, messages.SUCCESS, 'Welcome %s!' % user.username)
+                  if not request.GET.get("next") or request.GET.get("next")=="/users/sign_in":
+                    return HttpResponseRedirect("/")
                   return HttpResponseRedirect(request.GET.get("next"))
                 else:
                   # Return a 'disabled account' error message
