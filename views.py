@@ -108,7 +108,6 @@ def getMostWishlistedGames():
 
     orderedWishlist = []
     if Wishlist.objects.count() != 0:
-
         orderedWishlistTmp = Wishlist.objects.all()
         for wishlistobjects in orderedWishlistTmp:
             orderedWishlist.append(wishlistobjects.wishlist_game)
