@@ -29,10 +29,10 @@
           <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
           <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
           <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a>
-          <div class="two right">{% if in_wishlist %}
-                            <a class="small success button twelve" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
+          <div class="right">{% if in_wishlist %}
+                            <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">- Wishlist</a>
                       {% else %}                  
-                            <a class="small button twelve" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
+                            <a class="tiny button right" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
                       {% endif %}</div></li>
           <li class="cta-button"> 
 
@@ -133,7 +133,7 @@ function get_request_addtowishlist(){
     }, 
     function(data){
       console.log(data);
-      $('#wishlist').replaceWith('<a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>');
+      $('#wishlist').replaceWith('<a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">- Wishlist</a>');
     }
   );
   return false;
@@ -186,6 +186,7 @@ function get_request_makeOffer(){
     function(data){
       console.log(data);
       $('#new_offer_confirmation').trigger('reveal:close');
+      location.reload();
     }
   );
   return false;
@@ -207,6 +208,7 @@ function get_request_platform(){
     {
     }, 
     function(data){
+      $('#offer_platform').empty();
       var response = JSON.parse(data);
       console.log(typeof(response));
       for (var key in response) {

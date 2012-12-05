@@ -10,7 +10,7 @@
    Shared Styles
 ----------------------------------------- */
 body { 
-  background-image: url(../images/az_subtle.png);
+  background-image: url('/static/images/bluecross.png');
 }
 
 #container {
