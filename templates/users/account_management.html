@@ -81,6 +81,7 @@
                         Platform: {{offer.sender_game.platform}}
                         {{accepted_offer_dict.key}}
                       </li>
+                      <li>{{offer.sender_message}}</li>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
@@ -324,7 +325,8 @@ function get_request_removelisting(listing_primary_id){
 function get_request_acceptoffer(transaction_primary_id){
   $.get(
     "/trades/accept_offer/", 
-    {transaction_id: transaction_primary_id},
+    {transaction_id: transaction_primary_id,
+    accept_comment : },
     function(data){
       console.log(data);
       location.reload();
