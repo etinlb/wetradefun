@@ -373,17 +373,26 @@ def rate_user(request):
 
 def get_request(request):
   if request.is_ajax():
-    gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
+    #gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
     inputString=request.GET.get('term')
-    games=gb.search(inputString)
-    results=[]
+    #games=gb.search(inputString)
+    games = s.getList(inputString, 0, 'id', 'name')
+    results = []
     for game in games:
       game_json={}
-      game_json['id']=game.id 
-      game_json['value']=game.name 
-      game_json['label']=game.name
+      game_json['id']=game['id']
+      game_json['value']=game['name'] 
+      game_json['label']=game['name']
       results.append(game_json)
     message=json.dumps(results)
+    # results=[]
+    # for game in games:
+    #   game_json={}
+    #   game_json['id']=game.id 
+    #   game_json['value']=game.name 
+    #   game_json['label']=game.name
+    #   results.append(game_json)
+    # message=json.dumps(results)
   else:
     message="Not AJAX"
   return HttpResponse(message)
