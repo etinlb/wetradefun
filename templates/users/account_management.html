@@ -5,7 +5,7 @@
 {% block content %}
 {%load filters%}
 <div class="row">
-  <div class="twelve columns">
+  <div class="twelve columns panel">
     <h3>Dashboard</h3>
 
     <dl class="tabs contained">
@@ -17,7 +17,7 @@
     </dl>
     <ul class="tabs-content">
       <li class="active" id="myInformationTab">
-        <table class="eight columns">
+        <table class="twelve columns">
           <tbody>
              <tr>
               <td>My Rating</td>
@@ -29,11 +29,11 @@
             </tr>
             <tr>
               <td>{{user.email}}</td>
-              <td><a href="#" data-reveal-id="edit_email">edit email</a></td>
+              <td><a href="#" data-reveal-id="edit_email">Edit Email</a></td>
             </tr>
             <tr>
               <td>********</td>
-              <td><a href="#" data-reveal-id="edit_password">edit password</a></td>
+              <td><a href="#" data-reveal-id="edit_password">Edit Password</a></td>
             </tr>
           </tbody>
         </table>
@@ -47,6 +47,7 @@
               <th>Current Offers</th>
             </tr> 
           </thead>
+        <!--   ddd -->
           <tbody>
             {% for key, value in listing_dict.items %}
             <tr>              
@@ -382,7 +383,7 @@ function get_request_rateuser(rating, transaction_primary_id){
   );
   return false;
 }
-
+// <!-- comment -->
 
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({

@@ -15,6 +15,8 @@ import re
 import search as s
 import datetime
 
+import mails
+
 def game_details(request, game_id):
   # Is the game in wishlist?
   in_wishlist = False
@@ -136,6 +138,15 @@ def accept_offer(request):
           if (ot.pk != transaction.pk and ot.status == "offered"):
             ot.status = "deferred"
             ot.save()
+
+        mails.send(
+              'Someone has accepted an offer you done!',
+              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+              transaction.sender.user.username, 
+              transaction.sender.user.email, 
+              'Good news! '+request.user.get_profile().user.username+' has accepted the offer you made for ' + transaction.current_listing.name
+              )
+        message= "Offer accepted"
     else:
       message = "No such trade exists"
   else:
@@ -279,6 +290,13 @@ def make_offer(request):
           else:
             transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
             transaction.save()
+            mails.send(
+              'Someone has made an offer for your game!',
+              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+              listing.user.user.username, 
+              listing.user.user.email, 
+              'Good news! Someone has made an offer for your game ' + listing.game_listed.name
+              )
 
         messages.success(request, "You offered " + s_game.name + " (" + s_game.platform + ") for " + r_game.name + " (" + r_game.platform + ")")
       message = "success"
