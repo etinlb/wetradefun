@@ -58,7 +58,7 @@ def search(request):
     return render_to_response('staticpages/no_game_found.html')
   # TODO make it get the number of listings
   for x in results:
-    x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id']).count()
+    x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id'], status = 'open').count()
 
   if x['number_of_listing'] == None:
     x['number_of_listing'] = 0
@@ -291,7 +291,7 @@ def make_offer(request):
         for listing in Currentlist.objects.filter(game_listed = r_game):
           if (listing.user == userprofile):
             message = "Cannot offer a game to your own listing"
-            messages.error(request,"You can't offer games to yourself. The offer you made to yourself will not be reflected")
+            messages.error(request,"You can't offer games to yourself. The offer you made to yourself has been canceled.")
           else:
             transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
             transaction.save()
