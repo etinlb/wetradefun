@@ -67,7 +67,7 @@
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
                       {% for offer in value %}
-                        {% ifequal offer.status 'offered'%}
+                        {% ifequal offer.status 'offered' %}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
                       </li>
@@ -85,6 +85,19 @@
                         </ul>
                       </li>
                       <li>
+                        <!-- The message should go here -->
+                      </li>
+                      <hr>
+                        {% endifequal %}
+                        {% ifequal offer.status 'accepted' %}
+                      <li>
+                        <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
+                      </li>
+                      <li>
+                        Platform: {{offer.sender_game.platform}}
+                      </li>
+                      <li>
+                        Wait for confirmation by {{offer.sender.user.username}}...
                         <!-- The message should go here -->
                       </li>
                       <hr>

@@ -260,7 +260,7 @@ def make_offer(request):
             message = "Cannot offer a game to your own listing"
             messages.error(request,"You can't offer games to yourself. The offer you made to yourself will not be reflected")
           else:
-            transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
+            transaction = Transaction.objects.create(status="offered",sender=userprofile,sender_game=s_game,current_listing=listing,receiver=listing.user)
             transaction.save()
 
         messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
