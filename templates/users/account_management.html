@@ -3,7 +3,7 @@
 {% block title %}{{user.name}}{% endblock %}
 
 {% block content %}
-
+{%load filters%}
 <div class="row">
   <div class="twelve columns">
     <h3>Dashboard</h3>
@@ -15,7 +15,7 @@
       <dd class="hide-for-small"><a href="#tradeHistory">Trade History</a></dd>
       <dd class="hide-for-small"><a href="#viewWishlist">View Wishlist</a></dd>
     </dl>
-    <ul class="tabs-content contained">
+    <ul class="tabs-content">
       <li class="active" id="myInformationTab">
         <table class="eight columns">
           <tbody>
@@ -66,6 +66,11 @@
                 <ul class="no-bullet">
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
+                      {%if accepted_offer_dict|lookup:key%}
+                      <li>
+                        <a href="/trades/game/{{accepted_offer_dict|lookup_game_id:key}}"><img class="miniature-management" src="{{accepted_offer_dict|lookup_game_image:key}}" /></a>
+                      </li>
+                      {%else%}
                       {% for offer in value %}
                         {% ifequal offer.status 'offered'%}
                       <li>
@@ -73,6 +78,7 @@
                       </li>
                       <li>
                         Platform: {{offer.sender_game.platform}}
+                        {{accepted_offer_dict.key}}
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
@@ -90,6 +96,7 @@
                       <hr>
                         {% endifequal %}
                       {% endfor %}
+                      {%endif%}
                     </ul>
                   </li>
                 </ul>
@@ -286,12 +293,12 @@ function edit_email(){
   return false;
 
 }
-function edit_password(old_password, new_password, confirm_password){
+function edit_password(){
   $.get(
     "/users/edit_password/", 
     {opassword: $('#old_password').val(), 
     npassword: $('#new_password').val(), 
-    cpassword: $('#confirm_passwords').val()},
+    cpassword: $('#confirm_password').val()},
 
     function(data){
       console.log(data);
