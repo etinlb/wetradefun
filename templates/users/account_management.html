@@ -193,20 +193,38 @@
                   
                     <li class="button-bar">
                       <ul class="button-group">
-                        {% if transaction.receiver_has_been_rated %}
-                        <li class="small success button">Already rated
-                        </li>
-                      {% else %}
-                        <li class="small dropdown button">
-                          Rate User
-                          <ul>
-                            <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
-                          </ul>
-                        </li>
+                        {% if user == transaction.sender.user %}
+                          {% if transaction.receiver_has_been_rated %}
+                            <li class="small success button">Already rated
+                            </li>
+                          {% else %}
+                            <li class="small dropdown button">
+                            Rate User
+                              <ul>
+                                <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
+                              </ul>
+                            </li>
+                          {% endif %}
+                        {% else %}
+                          {% if transaction.sender_has_been_rated %}
+                            <li class="small success button">Already rated
+                            </li>
+                          {% else %}
+                            <li class="small dropdown button">
+                            Rate User
+                              <ul>
+                                <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
+                                <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
+                              </ul>
+                            </li>
+                          {% endif %}
                         {% endif %}
                         <li><a href="#" class="small alert button" onclick="report_user()">Report User</a></li>
                       </ul>
