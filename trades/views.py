@@ -199,13 +199,13 @@ def confirm_offer(request):
         for othertransactions in users_other_offers:
           if othertransactions.current_listing.game_listed == transaction.current_listing.game_listed:
             if othertransactions != transaction:
-              message += "HII"
+              # message += "HII"
               othertransactions.delete()
 
         #deletes the offer from the listings
         for otheroffers in listing_other_offers:
           if otheroffers != transaction:
-            message += "ASDA"
+            # message += "ASDA"
             otheroffers.delete()
 
       else:
