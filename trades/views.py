@@ -14,6 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import re
 import search as s
 import datetime
+import urllib2
 
 # import mails
 
@@ -51,7 +52,8 @@ def search(request):
 
 
   # Replace all runs of whitespace with a single +
-  query = re.sub(r"\s+", '+', query)
+  # query = re.sub(r"\s+", '+', query)
+  query = urllib2.quote(query)
   results = s.getList(query, offset,  'name', 'image', 'original_release_date', \
     'deck', 'id', 'site_detail_url')
   if results == None:
@@ -401,7 +403,7 @@ def rate_user(request):
 def get_request(request):
   if request.is_ajax():
     #gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
-    inputString=request.GET.get('term')
+    inputString=urllib2.quote(request.GET.get('term'))
     #games=gb.search(inputString)
     games = s.getList(inputString, 0, 'id', 'name')
     results = []
