@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}{{user.name}}{% endblock %}
-
+{% block title %}Account Management{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/stylesheets/fc-webicons.css">
+{% endblock %}
 {% block content %}
 {%load filters%}
 <div class="row">
@@ -59,8 +61,10 @@
                   <li><a href="/trades/game/{{key.game_listed.giant_bomb_id}}">{{key.game_listed.name}}</a></li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
+                  <li>Share: <a class="fc-webicon facebook small" href="https://www.facebook.com/dialog/feed?app_id=381605281928154&link=http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}&picture={{key.game_listed.image_url}}&name={{key.game_listed.name}}&description=Trade%20Your%20Games%20In%20WeTradeFun&redirect_uri=http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}&t={{key.game_listed.name}}">Share on Facebook</a><a class="fc-webicon twitter small" href="http://twitter.com/home?status=I%20have%20{{key.game_listed.name}}%20listed%20in%20WeTradeFun- http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}">Share on Twitter</a></li>
                 </br>
                   <a href="#currentListings" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
+                  
                 </ul>
               </td>
               <td>
