@@ -64,7 +64,7 @@ def parseFieldsJson(file, params):
   for x in data:
     x['genres'] = []
     x['platforms'] = []
-    if x['image'] != None:
+    if 'image' in params and x['image'] != None:
       x['image'] = x['image']['icon_url']
     #get the platform and genre
     if getGen and getPlat:

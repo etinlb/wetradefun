@@ -189,7 +189,7 @@
                     <li class="button-bar">
                       <ul class="button-group">
                         {% if transaction.receiver_has_been_rated %}
-                        <li class="small success button">Already rated
+                        <li class="small success button">Already Rated
                         </li>
                       {% else %}
                         <li class="small dropdown button">
@@ -257,9 +257,9 @@
   <div id="edit_password" class="reveal-modal medium">
     <h2>What would you like to change it to?</h2>
     <div class="ui-widget">
-      <input type="text" id="old_password" placeholder="Old Password"/>
-      <input type="text" id="new_password" placeholder="New Password"/>
-      <input type="text" id="confirm_password" placeholder="Confirm Password"/>
+      <input type="password" id="old_password" placeholder="Old Password"/>
+      <input type="password" id="new_password" placeholder="New Password"/>
+      <input type="password" id="confirm_password" placeholder="Confirm Password"/>
       <a class="button" href="#" onclick="edit_password()">Submit</a>
     </div>
   </div>
