@@ -12,18 +12,14 @@
       
       <div class="seven columns">
         <ul class="pricing-table">
-          <li class="title"><h3>{{game.name}}</h3></li>
+          <li class="title"><h3>{{game.name}}</h3>
+          </li>
           {% for k,v in listings.items %}
             <li class="price twelve columns" id="li_copies">
               <div class="nine left" id="copies">{{v}} {{k}} cop{{ v|pluralize:"y,ies" }} avaliable</div>
               <div class="three right">
-                {% if in_wishlist %}
-                  <a class="tiny success button twelve" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
-                  <a data-platform="{{k}}" href="#" class="make_offer_button radius button twelve" data-reveal-id="new_offer_confirmation">Make an offer</a>
-                {% else %}                  
-                  <a class="tiny button twelve" id="wishlist" href="#" onclick="get_request_addtowishlist()">+ Wishlist</a>
-                  <a data-platform="{{k}}" href="#" class="make_offer_button tiny button left twelve" data-reveal-id="new_offer_confirmation">Make an offer</a>
-                {% endif %}
+                  <a data-platform="{{k}}" class="make_offer_button small button left twelve"{% if user.is_authenticated %}href="#"  data-reveal-id="new_offer_confirmation"{% else %} href="/users/sign_in" {% endif %}>Make an offer</a>
+                
               </div>
             </li>
           {% empty %}
@@ -32,9 +28,16 @@
           <li class="description">{{game.deck}}</li>          
           <li class="bullet-item">Platform(s): {%for platform in game.platforms%} {{platform}}{% if forloop.last %}{% else %}, {% endif %}  {%endfor%}</li>
           <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
-          <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a></li>
+          <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a>
+          <div class="two right">{% if in_wishlist %}
+                            <a class="small success button twelve" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
+                      {% else %}                  
+                            <a class="small button twelve" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
+                      {% endif %}</div></li>
           <li class="cta-button"> 
-            <a href="#" class="radius button" data-reveal-id="new_listing_confirmation">Publish a listing</a>
+
+            <div class="centered"><a class="radius button" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in" {% endif %}>Publish a listing</a></div>
+            
           </li>
         </ul>
 
@@ -76,25 +79,34 @@
 
 
     <div id="new_offer_confirmation" class="reveal-modal medium">
-      <h2>Which game would you like to offer?</h2>
-      <div class="six columns" id="listed">
-        <h5>You are making an offer for this game:</h5>
-        <div class="ui-widget">
-          <h6>Platform:</h6>
-          <p id="platform"></p>
+      <div class="row">
+        <div class="six columns" id="listed">
+          <h5>You are making an offer for this game:</h5>
+          <div class="twelve columns">
+            <ul>
+              <li>
+                <strong>Name: </strong>{{game.name}}
+              </li>
+              <li>
+                <strong>Platform: </strong><span id="platform"></span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="six columns" id="offered">
-        <label for="searchgame_game_name">Game name: </label>
-        <input type="text" id="searchgame_game_name" placeholder="Call of Duty" onkeyup="get_request_searchgame()"/>
-        
-
-        <input type="hidden" id="searchgame_game_id"/>
+        <div class="six columns" id="offered">
+          <h5>Which game would you like to offer?</h5>
+          <label for="searchgame_game_name">Game Name: </label>
+          <input type="text" id="searchgame_game_name" placeholder="Enter a game name..." onkeyup="get_request_searchgame()"/>       
+          <input type="hidden" id="searchgame_game_id"/>
+          <form id="offer_platform" class="custom">
+            
+          </form>
+        </div>
       </div>
       
 
-    <div id="search_game_result"></div>
-      <a class="button" href="#" onclick="get_request_makeOffer()">Accept</a>
+      <div id="search_game_result"></div>
+      <a class="success button" id="accept-trade-button" href="#" onclick="get_request_makeOffer()">Accept</a>
 
       <a class="alert button" href="#" onclick="$('#new_offer_confirmation').trigger('reveal:close')">Cancel</a>
       <a class="close-reveal-modal">&#215;</a>
@@ -109,6 +121,7 @@ $(document).ready(function(){
     var plat = $(this).data('platform');
     console.log(plat);
     $('#platform').text(plat);
+    $('#offer_platform').hide();
    });
 });
 
@@ -167,12 +180,13 @@ function get_request_makeOffer(){
     game1_id : $('#searchgame_game_id').val(),
     // message : $('#message').val(),
     game2_id : {{ game.id }},
-    platform: $('#platform').val()
-
+    r_platform: $('#platform').text(),
+    s_platform: $('input[name=platform]:checked', '#offer_platform').val()
     }, 
     function(data){
       console.log(data);
       $('#new_offer_confirmation').trigger('reveal:close');
+      location.reload();
     }
   );
   return false;
@@ -181,13 +195,32 @@ function get_request_makeOffer(){
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({
       source: "/trades/get_request/",
-      change: function (event, ui) {$("#searchgame_game_id").val(ui.item.id)}
+      select: function (event, ui) {
+        $("#searchgame_game_id").val(ui.item.id);
+        get_request_platform();
+      }
     });
 }
+
 function get_request_platform(){
-  $('#platform').autocomplete({    
-    source: "/trades/get_platform/"+$('#searchgame_game_id').val(),
-  });
+  $.get(
+    "/trades/get_platform/"+$('#searchgame_game_id').val(),
+    {
+    }, 
+    function(data){
+      $('#offer_platform').empty();
+      var response = JSON.parse(data);
+      console.log(typeof(response));
+      for (var key in response) {
+        if (response.hasOwnProperty(key)) {
+          console.log(response[key]);
+          $('<input type="radio" name="platform" value="'+response[key]+'"> '+response[key]+'<br>').appendTo('#offer_platform');
+        }        
+      }
+      console.log(response[0]);
+      $('#offer_platform').fadeIn();
+    }
+  );
 }
 
 

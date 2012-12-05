@@ -8,24 +8,23 @@
   <div class="twelve columns">
     <h3>Dashboard</h3>
 
-    <dl class="tabs">
+    <dl class="tabs contained">
       <dd class="active"><a href="#myInformation">My Information</a></dd>
-      <dd><a href="#currentListings">Current Listings</a></dd>
-      <dd><a href="#currentOffers">Current Offers</a></dd>
-      <dd><a href="#tradeHistory">Trade History</a></dd>
-      <dd><a href="#viewWishlist">View Wishlist</a><dd>
+      <dd class="hide-for-small"><a href="#currentListings">Current Listings</a></dd>
+      <dd class="hide-for-small"><a href="#currentOffers">Current Offers</a></dd>
+      <dd class="hide-for-small"><a href="#tradeHistory">Trade History</a></dd>
+      <dd class="hide-for-small"><a href="#viewWishlist">View Wishlist</a></dd>
     </dl>
-
-    <ul class="tabs-content">
+    <ul class="tabs-content contained">
       <li class="active" id="myInformationTab">
         <table class="eight columns">
           <tbody>
              <tr>
               <td>My Rating</td>
-              {% if user.rating == None %}
+              {% if userprofiler.rating == 0 %}
               <td>Unrated</td>
               {% else %}
-              <td>{{user.rating}}</td>
+              <td>{{userprofiler.rating|floatformat:2}}</td>
               {% endif %}
             </tr>
             <tr>
@@ -34,7 +33,7 @@
             </tr>
             <tr>
               <td>********</td>
-              <td><a>edit password</a></td>
+              <td><a href="#" data-reveal-id="edit_password">edit password</a></td>
             </tr>
           </tbody>
         </table>
@@ -56,9 +55,10 @@
               </td>
               <td>
                 <ul class="no-bullet">
-                  <li>{{key.game_listed.name}}</li>
+                  <li><a href="/trades/game/{{key.game_listed.giant_bomb_id}}">{{key.game_listed.name}}</a></li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
+                </br>
                   <a href="#currentListings" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
                 </ul>
               </td>
@@ -67,26 +67,31 @@
                   <li><!-- list item for every offer-->
                     <ul class="no-bullet">
                       {% for offer in value %}
+                        {% ifequal offer.status 'offered'%}
                       <li>
                         <a href="/trades/game/{{offer.sender_game.giant_bomb_id}}">{{offer.sender_game.name}}</a>
+                      </li>
+                      <li>
+                        Platform: {{offer.sender_game.platform}}
                       </li>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
-                            <a href="#" onclick="get_request_acceptoffer({{offer.pk}})"  class="small button">Accept Offer</a>
+                            <a href="#currentListings" onclick="get_request_acceptoffer({{offer.pk}})"  class="small button">Accept Offer</a>
                           </li>
                           <li>
-                            <a href="#" onclick="get_request_declineoffer({{offer.pk}})" class="small alert button">Decline Offer</a>
+                            <a href="#currentListings" onclick="get_request_declineoffer({{offer.pk}})" class="small alert button">Decline Offer</a>
                           </li>                          
                         </ul>
                       </li>
                       <li>
-                        <p>This is great quality</p>
+                        <!-- The message should go here -->
                       </li>
+                      <hr>
+                        {% endifequal %}
                       {% endfor %}
                     </ul>
                   </li>
-                  <hr>
                 </ul>
               </td>
             </tr>
@@ -116,22 +121,24 @@
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
-                        The other part accepted your deal. Confirm it to finish
+                        <b><font color="green">ACCEPTED</font></b></br>Confirm the trade below.
                     {% endifequal %}
                     {% ifequal offer.status 'offered' %}
-                        Waiting for the other part to accept your deal
+                        <b><font color="black">OFFERED</font></b></br>Please wait for a reply.
                     {% endifequal %}
-
                   </li>
+
+                </br>
+
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
                         {% ifequal offer.status 'accepted' %}
-                        <a href="#" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
+                        <a href="#currentOffers" onclick="get_request_confirmoffer({{offer.pk}})" class="small button">Confirm Trade</a>
                         {% endifequal %}
                       </li>
                       <li>
-                        <a href="#" onclick="get_request_deleteoffer({{offer.pk}})" class="small button">Cancel Trade</a>
+                        <a href="#currentOffers" onclick="get_request_deleteoffer({{offer.pk}})" class="small alert button">Cancel Trade</a>
                       </li>
                     </ul>
                   </li>
@@ -148,7 +155,7 @@
             <tr>
               <th>Game Listed</th>
               <th>Game Offered</th>
-              <th>Completion Date</th>
+              <th>Date Completed</th>
               <th>User Contact</th>
             </tr>
           </thead>
@@ -168,22 +175,30 @@
                         {{transaction.sender.user.username}}</br>
                         {{transaction.sender.user.email}}
                       {% endif %}
-                  </li>
+                      </li>
+                    
+                  
                     <li class="button-bar">
                       <ul class="button-group">
+                        {% if transaction.receiver_has_been_rated %}
+                        <li class="small success button">Already rated
+                        </li>
+                      {% else %}
                         <li class="small dropdown button">
                           Rate User
                           <ul>
-                            <li><a href="#" onclick="rate_user(5)">5: Excellent</a></li>
-                            <li><a href="#" onclick="rate_user(4)">4: Good</a></li>
-                            <li><a href="#" onclick="rate_user(3)">3: Acceptable</a></li>
-                            <li><a href="#" onclick="rate_user(2)">2: Would Not Trade Again</a></li>
-                            <li><a href="#" onclick="rate_user(1)">1: Criminal</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
+                            <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
                           </ul>
                         </li>
-                        <li><a href="#" class="small button" onclick="report_user()">Report User</a></li>
+                        {% endif %}
+                        <li><a href="#" class="small alert button" onclick="report_user()">Report User</a></li>
                       </ul>
                     </li>
+                    
                 </ul>
               </td>
             </tr>
@@ -206,7 +221,7 @@
               <td><a href= "/trades/game/{{item.wishlist_game.giant_bomb_id}}"><img class="miniature-management" src="{{item.wishlist_game.image_url}}" /></a></td>
               <td><p>{{item.wishlist_game.name}}</td>
               <td>
-                <a href="#" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
+                <a href="#viewWishlist" class="small button" onclick ="get_request_removefromwishlist({{item.wishlist_game.giant_bomb_id}})">Remove Item</a>
               </td>
             </tr>
             {% endfor %}
@@ -221,14 +236,25 @@
   </div>
 </div>
 
-<div id="edit_email" class="reveal-modal medium">
-      <h2>What would you like to change it to?</h2>
-        <div class="ui-widget">
-          <label for="new_email">Game name: </label>
-          <input type="text" id="new_email" placeholder="{{user.email}}"/>
-          <a class="button" href="#" onclick="edit_email({{user.email}})">Accept</a>
-        </div>
-</div>
+  <div id="edit_email" class="reveal-modal medium">
+    <h2>What would you like to change it to?</h2>
+    <div class="ui-widget">
+      <input type="text" id="old_email" placeholder="Old Email"/>
+      <input type="text" id="new_email" placeholder="New Email"/>
+      <input type="text" id="confirm_email" placeholder="Confirm Email"/>
+      <a class="button" href="#" onclick="edit_email()">Submit</a>
+    </div>
+  </div>
+
+  <div id="edit_password" class="reveal-modal medium">
+    <h2>What would you like to change it to?</h2>
+    <div class="ui-widget">
+      <input type="text" id="old_password" placeholder="Old Password"/>
+      <input type="text" id="new_password" placeholder="New Password"/>
+      <input type="text" id="confirm_password" placeholder="Confirm Password"/>
+      <a class="button" href="#" onclick="edit_password()">Submit</a>
+    </div>
+  </div>
 
 {% endblock %}
 
@@ -240,19 +266,39 @@ function get_request_removefromwishlist(wishlist_game_id){
     {game_id: wishlist_game_id},
     function(data){
       console.log(data);
-      // TODO: reload page onto wishlist tab
+      location.reload();
     }
   );
   return false;
 }
-function edit_email(new_email){
-  ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$
+function edit_email(){
   $.get(
-    "/user/edit_email",
-    {new_email : new_email},
+    "/users/edit_email/", 
+    {oemail: $('#old_email').val(),
+    nemail: $('#new_email').val(), 
+    cemail: $('#confirm_email').val()},
+
     function(data){
       console.log(data);
-    });
+      location.reload();
+    }
+  );
+  return false;
+
+}
+function edit_password(){
+  $.get(
+    "/users/edit_password/", 
+    {opassword: $('#old_password').val(), 
+    npassword: $('#new_password').val(), 
+    cpassword: $('#confirm_password').val()},
+
+    function(data){
+      console.log(data);
+      location.reload();
+    }
+  );
+  return false;
 }
 
 function get_request_removelisting(listing_primary_id){
@@ -286,7 +332,6 @@ function get_request_confirmoffer(transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto current offers tab
     }
   );
   return false;
@@ -299,7 +344,6 @@ function get_request_declineoffer(transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto current offers tab
     }
   );
   return false;
@@ -317,6 +361,21 @@ function get_request_deleteoffer(transaction_primary_id){
   );
   return false;
 }
+
+function get_request_rateuser(rating, transaction_primary_id){
+  $.get(
+    "/trades/rate_user/", 
+    {desired_rating: rating,
+    transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
+
 
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({
@@ -349,10 +408,6 @@ function get_request_wishlist(){
 </script>
 {% endblock %}
   <!-- End Main Content and Sidebar -->
-
-
-
- 
 
 <!-- Included JS Files (Compressed) -->
 <script src="javascripts/jquery.js"></script>
