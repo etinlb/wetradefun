@@ -15,7 +15,7 @@ import re
 import search as s
 import datetime
 
-# import mails
+import mails
 
 def game_details(request, game_id):
   # Is the game in wishlist?
