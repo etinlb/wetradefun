@@ -16,5 +16,5 @@ urlpatterns = patterns('',
     url(r'^delete_offer/$', 'trades.views.delete_offer'),
     url(r'^get_request/$', 'trades.views.get_request'),
     url(r'^get_platform/(?P<game_id>\d+)/$', 'trades.views.get_platform'),
-    url(r'^rate_user/$', 'trades.views.rate_user'),x
+    url(r'^rate_user/$', 'trades.views.rate_user'),
 )
