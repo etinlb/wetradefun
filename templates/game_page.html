@@ -18,7 +18,7 @@
             <li class="price twelve columns" id="li_copies">
               <div class="nine left" id="copies">{{v}} {{k}} cop{{ v|pluralize:"y,ies" }} avaliable</div>
               <div class="three right">
-                  <a data-platform="{{k}}" class="make_offer_button small button left twelve"{% if user.is_authenticated %}href="#"  data-reveal-id="new_offer_confirmation"{% else %} href="/users/sign_in" {% endif %}>Make an offer</a>
+                  <a data-platform="{{k}}" class="make_offer_button small button left twelve"{% if user.is_authenticated %}href="#"  data-reveal-id="new_offer_confirmation"{% else %} href="/users/sign_in?next={{request.path}}" {% endif %}>Make an offer</a>
                 
               </div>
             </li>
@@ -32,11 +32,11 @@
           <div class="right">{% if in_wishlist %}
                             <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">- Wishlist</a>
                       {% else %}                  
-                            <a class="tiny button right" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
+                            <a class="tiny button right" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in?next={{request.path}}" {% endif %}>+ Wishlist</a>
                       {% endif %}</div></li>
           <li class="cta-button"> 
 
-            <div class="centered"><a class="radius button" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in" {% endif %}>Publish a listing</a></div>
+            <div class="centered"><a class="radius button" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in?next={{request.path}}" {% endif %}>Publish a listing</a></div>
             
           </li>
         </ul>

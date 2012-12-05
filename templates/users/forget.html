@@ -6,7 +6,7 @@
 
 <div class="seven columns centered panel">
   <form action="" method="post">
-    <h3>Log In</h3>
+    <h3>Password Recovery</h3>
 
     <div class="row collapse fieldWrapper">
       {{ form.username.errors }}
@@ -18,19 +18,20 @@
       </div>            
     </div>
     <div class="row collapse fieldWrapper">
-      {{ form.password.errors }}
+      {{ form.email.errors }}
       <div class="three columns">
-        <label for="id_password">Password</label>
+        <label for="id_email">Email</label>
       </div>
       <div class="nine columns">
-        {{ form.password }}
+        {{ form.email }}
       </div>            
     </div>
     <button type="submit" class="radius button">Submit</button>
-    <div class="right"><a href="/users/sign_up">Don't have an account?</a><br/>
-    <a href="/users/forget">Forgot your password?</a></div>
+    <div class="right">
+    <a href="/users/sign_up">Don't have an account?</a><br/>
+    <a href="/users/sign_in">Already have an account?</a>
+    </div>
   </form>
 </div>
-<!-- s -->
 
 {% endblock %}
