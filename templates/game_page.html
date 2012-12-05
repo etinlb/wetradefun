@@ -30,8 +30,8 @@
           <li class="bullet-item">Genres: {%for genre in game.genres%} {{genre}}{% if forloop.last %}{% else %}, {% endif %}{%endfor%}</li>
           <li class="bullet-item"><a class="secondary button" target="_new" href={{game.site_detail_url}}>See it on GiantBomb.com &raquo;</a>
           </li>
-          <li class="cta-button"> 
 
+          <li class="cta-button"> 
             <div class="centered"><a class="radius button" {% if user.is_authenticated %} href="#" data-reveal-id="new_listing_confirmation"{% else %} href="/users/sign_in" {% endif %}>Publish a listing</a></div>
             <div class="two right">{% if in_wishlist %}
                             <a class="tiny success button right" id="wishlist" href="#" onclick="get_request_removefromwishlist()">- Wishlist</a>
