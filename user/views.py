@@ -15,6 +15,8 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.db.models import Q
 
+import mails
+
 import search as s
 # from trades.forms import SearchForm
 
@@ -36,9 +38,19 @@ def forget(request):
             except User.DoesNotExist:
                 messages.add_message(request, messages.ERROR, 'Username and Email does not exist')
                 return render_to_response('users/forget.html', {'form': form,},context_instance=RequestContext(request))
-            user.set_password("WeTradeFun")
+            random_pass = User.objects.make_random_password(length=10, 
+              allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789')
+            user.set_password(random_pass)
             user.save()
-            messages.add_message(request, messages.SUCCESS, 'Your password is reset to WeTradeFun')
+            messages.add_message(request, messages.SUCCESS, 'Check your email, a random password has been sent')
+            mails.send(
+              'Your new password',
+              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+              user.username, 
+              user.email, 
+              'Here is your new password: '+random_pass+
+              '\n\n http://wetradefun.appspot.com'
+              )
         else:
             messages.add_message(request, messages.ERROR, 'Your form is incorrect')
     else:
@@ -61,6 +73,8 @@ def sign_in(request):
                   login(request, user)
                   # Redirect to a success page.
                   messages.add_message(request, messages.SUCCESS, 'Welcome %s!' % user.username)
+                  if not request.GET.get("next") or request.GET.get("next")=="/users/sign_in":
+                    return HttpResponseRedirect("/")
                   return HttpResponseRedirect(request.GET.get("next"))
                 else:
                   # Return a 'disabled account' error message
