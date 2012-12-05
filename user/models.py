@@ -11,10 +11,6 @@ class UserProfile(models.Model):
   #rating = models.IntegerField()
   #num_of_ratings = models.IntegerField()
 
-class Message (models.Model):
-  content = models.CharField(max_length=128)
-  datePosted = models.DateTimeField(auto_now_add=True)
-
 class Userrating (models.Model):
   rating = models.IntegerField()
   sender = models.ForeignKey(UserProfile, related_name='Userrating_sender')
