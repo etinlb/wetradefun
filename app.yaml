@@ -37,3 +37,4 @@ handlers:
 
 - url: /.*
   script: djangoappengine.main.application
+  login: admin
