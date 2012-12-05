@@ -159,29 +159,31 @@ def sign_up(request):
 
 @login_required(login_url='/users/sign_in/')
 def edit_email(request):
+  message_success="";
+  message_error="";
   if request.is_ajax():
     old_email = request.GET.get('oemail')
     new_email = request.GET.get('nemail')
     confirmed_email = request.GET.get('cemail')
     current_user = request.user.get_profile().user
-
     if(old_email != current_user.email):
-      message = "Old email is incorrect!"
+      message_error = "Old email is incorrect!"
     elif (new_email != confirmed_email):
-      message = "New emails don't match!"
+      message_error = "New emails don't match!"
     else:
       current_user.email = new_email
       current_user.save()
-      message = "Your email has been sucessfully changed"
+      message_success = "Your email has been sucessfully changed"
   else:
     message = "Not AJAX"
-
-
-  messages.success(request, message)
-  return HttpResponse(message)
+  messages.add_message(request, messages.ERROR, message_error)
+  messages.add_message(request, messages.SUCCESS, message_success)
+  return HttpResponse()
 
 @login_required(login_url='/users/sign_in/')
 def edit_password(request):
+  message_success="";
+  message_error="";
   if request.is_ajax():
     old_password = request.GET.get('opassword')
     new_password = request.GET.get('npassword')
@@ -189,16 +191,15 @@ def edit_password(request):
     current_user = request.user.get_profile().user
 
     if not current_user.check_password(old_password):
-      message = "Old password is incorrect!"
+      message_error = "Old password is incorrect!"
     elif new_password != confirmed_password:
-      message = "New passwords don't match!"
+      message_error = "New passwords don't match!"
     else:
       current_user.set_password(new_password)
       current_user.save()
-      message = "Your password has been sucessfully changed"
+      message_success = "Your password has been sucessfully changed"
   else:
     message = "Not AJAX"
-
-  messages.success(request, message)
-
-  return HttpResponse(message)
+  messages.add_message(request, messages.ERROR, message_error)
+  messages.add_message(request, messages.SUCCESS, message_success)
+  return HttpResponse()
