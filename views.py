@@ -21,7 +21,6 @@ from user.sort import *
 def searchresults(request):
     return HttpResponse("You're looking at the search results.")
 
-
 # This big pro homepage should have (ideally):
 
 #1.most traded games: all time
@@ -58,8 +57,6 @@ def contact_us(request):
     context_instance=RequestContext(request))
 def no_game_found(request):
     return render(request, 'staticpages/no_game_found.html')
-    
-
 
 def getMostTradedGames():
     i = 0
@@ -176,5 +173,4 @@ def getMostListedGames():
         j = j + 1
 
     return topRatedListings
-
 
