@@ -140,6 +140,7 @@ def accept_offer(request):
               ' has accepted the offer you made for ' + transaction.current_listing.game_listed.name + 
               '\n\n http://wetradefun.appspot.com'
               )
+
       message= "Offer accepted"
     else:
       message = "No such trade exists"
@@ -244,18 +245,25 @@ def delete_offer(request):
 
 @login_required(login_url='/users/sign_in/')
 def remove_listing(request):
+  alreadyaccepted = False
   if request.is_ajax():
     listing = Currentlist.objects.get(pk = request.GET.get('listing_id'))
     if (listing != None):
       trans = Transaction.objects.filter(current_listing = listing)
-      for t in trans:
-        t.delete()
-      
-      game_listed = listing.game_listed
-      game_listed.num_of_listings -= 1
-      game_listed.save()
-      message = "You have deleted your listing for " + listing.game_listed.name
-      listing.delete()
+      for s in trans:
+        if (s.status == "accepted" or s == "confirmed"):
+          alreadyaccepted = True
+      if alreadyaccepted == False:
+        for t in trans:
+          t.delete()
+        
+        game_listed = listing.game_listed
+        game_listed.num_of_listings -= 1
+        game_listed.save()
+        message = "You have deleted your listing for " + listing.game_listed.name
+        listing.delete()
+      else:
+        message = "You cannot remove this listing because you have already accepted an offer for it"
     else:
       message = "This listing does not exist"
   else:
@@ -286,11 +294,12 @@ def make_offer(request):
             transaction.save()
             mails.send(
               'Someone has made an offer for your game!',
-              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
-              listing.user.user.username, 
+              'Webmaster', 'wetradefun.webmaster@gmail.com',
+              listing.user.user.email, 
               listing.user.user.email, 
               'Good news! Someone has made an offer for your game ' + listing.game_listed.name + 
-              '\n\n http://wetradefun.appspot.com'              
+              '\n\n http://wetradefun.appspot.com'     
+
               )
 
         messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
