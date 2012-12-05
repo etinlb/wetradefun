@@ -85,7 +85,7 @@
     <div id="new_offer_confirmation" class="reveal-modal medium">
       <div class="row">
         <div class="six columns" id="listed">
-          <h5>You are making an offer for this game:</h5>
+          <h5>You are making an offer on this game:</h5>
           <div class="twelve columns">
             <ul>
               <li>
@@ -100,10 +100,12 @@
         <div class="six columns" id="offered">
           <h5>Which game would you like to offer?</h5>
           <label for="searchgame_game_name">Game Name: </label>
-          <input type="text" id="searchgame_game_name" placeholder="Enter a game name..." onkeyup="get_request_searchgame()"/>       
+          <input type="text" id="searchgame_game_name" placeholder="Enter a game name..." onkeyup="get_request_searchgame()"/> 
           <input type="hidden" id="searchgame_game_id"/>
+          <label for="searchgame_comment">Comments:</label>
+          <input type="text" id="searchgame_comment" placeholder="The quality of this game is..."/>
           <form id="offer_platform" class="custom">
-            
+
           </form>
         </div>
       </div>
@@ -178,6 +180,7 @@ function get_request_publishListing(){
 
 function get_request_makeOffer(){
   console.log($('#searchgame_game_id').val());
+  console.log($('#searchgame_comment').val());
   $.get(
     "/trades/make_offer/", 
     {
@@ -185,7 +188,8 @@ function get_request_makeOffer(){
     // message : $('#message').val(),
     game2_id : {{ game.id }},
     r_platform: $('#platform').text(),
-    s_platform: $('input[name=platform]:checked', '#offer_platform').val()
+    s_platform: $('input[name=platform]:checked', '#offer_platform').val(),
+    comment : $('#searchgame_comment').val()
     }, 
     function(data){
       console.log(data);
