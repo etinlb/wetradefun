@@ -81,6 +81,9 @@
                         Platform: {{offer.sender_game.platform}}
                         {{accepted_offer_dict.key}}
                       </li>
+                      <li>{{offer.sender_message}}</li>
+                      <label for="response_comment">Comments:</label>
+                      <input type="text" id="response_comment" placeholder="Respond to the offer"/>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
@@ -137,7 +140,7 @@
                   </li>
 
                 </br>
-
+                  <li>{{offer.receiver_comment}}</li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
@@ -189,7 +192,7 @@
                     <li class="button-bar">
                       <ul class="button-group">
                         {% if transaction.receiver_has_been_rated %}
-                        <li class="small success button">Already rated
+                        <li class="small success button">Already Rated
                         </li>
                       {% else %}
                         <li class="small dropdown button">
@@ -257,9 +260,9 @@
   <div id="edit_password" class="reveal-modal medium">
     <h2>What would you like to change it to?</h2>
     <div class="ui-widget">
-      <input type="text" id="old_password" placeholder="Old Password"/>
-      <input type="text" id="new_password" placeholder="New Password"/>
-      <input type="text" id="confirm_password" placeholder="Confirm Password"/>
+      <input type="password" id="old_password" placeholder="Old Password"/>
+      <input type="password" id="new_password" placeholder="New Password"/>
+      <input type="password" id="confirm_password" placeholder="Confirm Password"/>
       <a class="button" href="#" onclick="edit_password()">Submit</a>
     </div>
   </div>
@@ -324,7 +327,8 @@ function get_request_removelisting(listing_primary_id){
 function get_request_acceptoffer(transaction_primary_id){
   $.get(
     "/trades/accept_offer/", 
-    {transaction_id: transaction_primary_id},
+    {transaction_id: transaction_primary_id,
+    accept_comment : $('#accept_comment').val()},
     function(data){
       console.log(data);
       location.reload();

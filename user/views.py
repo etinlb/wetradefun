@@ -15,6 +15,8 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.db.models import Q
 
+import mails
+
 import search as s
 # from trades.forms import SearchForm
 
@@ -36,9 +38,19 @@ def forget(request):
             except User.DoesNotExist:
                 messages.add_message(request, messages.ERROR, 'Username and Email does not exist')
                 return render_to_response('users/forget.html', {'form': form,},context_instance=RequestContext(request))
-            user.set_password("WeTradeFun")
+            random_pass = User.objects.make_random_password(length=10, 
+              allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789')
+            user.set_password(random_pass)
             user.save()
-            messages.add_message(request, messages.SUCCESS, 'Your password is reset to WeTradeFun')
+            messages.add_message(request, messages.SUCCESS, 'Check your email, a random password has been sent')
+            mails.send(
+              'Your new password',
+              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+              user.username, 
+              user.email, 
+              'Here is your new password: '+random_pass+
+              '\n\n http://wetradefun.appspot.com'
+              )
         else:
             messages.add_message(request, messages.ERROR, 'Your form is incorrect')
     else:
@@ -61,6 +73,8 @@ def sign_in(request):
                   login(request, user)
                   # Redirect to a success page.
                   messages.add_message(request, messages.SUCCESS, 'Welcome %s!' % user.username)
+                  if not request.GET.get("next") or request.GET.get("next")=="/users/sign_in":
+                    return HttpResponseRedirect("/")
                   return HttpResponseRedirect(request.GET.get("next"))
                 else:
                   # Return a 'disabled account' error message
@@ -112,13 +126,6 @@ def account_management(request):
     hist.extend(hist_as_receiver)
   
   sort.sort(hist, 'dateTraded', "desc")
-
-  if len(current_listings) == 0:
-    messages.success(request, "Got any old games? Go ahead and post a listing for them.")
-  if len(current_offers) == 0:
-    messages.success(request, "You don't have any active offers, go ahead and browse for a new game.")
-  if len(hist) == 0:
-    messages.success(request, "Don't worry if your history is empty, that will fill up as soon as you complete a trade.")  
   
   return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
@@ -145,7 +152,10 @@ def sign_up(request):
                 form.cleaned_data['password'],)
             user_profile = UserProfile.objects.create(user = user, rating = 0, num_of_ratings = 0)
             user_profile.save()
-            messages.add_message(request, messages.SUCCESS, 'Thanks for registering %s' % user.username)
+            messages.success(request, 'Thanks for registering %s' % user.username)
+            messages.success(request, "Got any old games? Go ahead and post a listing for them.")
+            messages.success(request, "You don't have any active offers, go ahead and browse for a new game.")
+            messages.success(request, "Don't worry if your history is empty, that will fill up as soon as you complete a trade.")  
             user = authenticate(username=form.cleaned_data['username'], password = form.cleaned_data['password'])
             if user is not None:
               # Login the user
