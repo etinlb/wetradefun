@@ -11,11 +11,11 @@ class Currentlist(models.Model):
   user = models.ForeignKey(UserProfile)
   giantBombID = models.IntegerField() # DO NOT USE ANYMORE, WILL BE REMOVED SOON!!
   game_listed = models.ForeignKey('Game') # , related_name='listed_name')
-  status = models.CharField(max_length=64) # OPEN/CLOSED/DELETED
+  status = models.CharField(max_length=64) # OPEN/CLOSED
   datePosted = models.DateTimeField(auto_now_add=True) 
 
 class Transaction(models.Model):
-  status = models.CharField(max_length=64) # OFFERED/ACCEPTED/CONFIRMED/DELETED
+  status = models.CharField(max_length=64) # OFFERED/ACCEPTED/CONFIRMED/DEFERRED
   dateRequested = models.DateTimeField(auto_now_add=True)
   dateTraded = models.DateTimeField(null=True)
   sender = models.ForeignKey(UserProfile) # , related_name='Transaction_sender')
