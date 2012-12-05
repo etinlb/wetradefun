@@ -392,3 +392,35 @@ def add_message(request):
   else:
     message="Not AJAX"
   return HttpResponse(message)
+
+@login_required(login_url='/users/sign_in/')
+def report_user(request):
+  if request.is_ajax():
+    message = ""
+    transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
+    userprofile = request.user.get_profile()
+    if (userprofile == transaction.sender or userprofile == transaction.current_listing.user):
+      if (userprofile == transaction.sender):
+        if (transaction.receiver_has_been_reported == None):
+          userrating = transaction.current_listing.user
+          transaction.receiver_has_been_reported = True
+          transaction.save()
+        else:
+          message = "Error, You have already reported that user!"
+
+      elif (userprofile == transaction.current_listing.user):
+        if (transaction.sender_has_been_reported == None):
+          userrating = transaction.sender
+          transaction.sender_has_been_reported = True
+          transaction.save()
+        else:
+          message = "Error, You have already reported that user!"
+      userrating.getReported = 1
+      message = "You have reported " + str(userrating.user.username)
+      userrating.save()
+    else:
+      message = "This trade does not exist"
+  else:
+    message = "Not AJAX"
+  messages.success(request, message)
+  return HttpResponse(message)

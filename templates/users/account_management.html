@@ -22,10 +22,14 @@
              <tr>
               <td>My Rating</td>
               {% if userprofiler.rating == 0 %}
-              <td>Unrated</td>
+              <td>Unrated
               {% else %}
-              <td>{{userprofiler.rating|floatformat:2}}</td>
+              <td>{{userprofiler.rating|floatformat:2}}
               {% endif %}
+              {% if userprofiler.getReported == 1 %}
+              You got reported! Be careful!</td>
+              {% endif %}
+              </td>
             </tr>
             <tr>
               <td>{{user.email}}</td>
@@ -226,7 +230,21 @@
                             </li>
                           {% endif %}
                         {% endif %}
-                        <li><a href="#" class="small alert button" onclick="report_user()">Report User</a></li>
+                        {% if user == transaction.sender.user %}
+                          {% if transaction.receiver_has_been_reported %}
+                            <li class="small success button">Already reported
+                            </li>
+                          {% else %}
+                            <li><a href="#" class="small alert button" onclick="report_user({{transaction.pk}})">Report User</a></li>
+                          {% endif %}
+                        {% else %}
+                          {% if transaction.sender_has_been_reported %}
+                            <li class="small success button">Already reported
+                            </li>
+                          {% else %}
+                            <li><a href="#" class="small alert button" onclick="report_user({{transaction.pk}})">Report User</a></li>
+                          {% endif %}
+                        {% endif %}
                       </ul>
                     </li>
                     
@@ -407,6 +425,18 @@ function get_request_rateuser(rating, transaction_primary_id){
   return false;
 }
 
+function report_user(transaction_primary_id){
+  $.get(
+    "/trades/report_user/", 
+    {transaction_id: transaction_primary_id},
+    function(data){
+      console.log(data);
+      location.reload();
+      // TODO: reload page onto wishlist tab
+    }
+  );
+  return false;
+}
 
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({

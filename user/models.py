@@ -8,6 +8,7 @@ class UserProfile(models.Model):
   address = models.CharField(max_length=64, null=True)
   rating = models.FloatField(null=True) #NEEDS TO HAVE NULL=True
   num_of_ratings = models.IntegerField(null=True)
+  getReported = models.IntegerField(null=True)
   #rating = models.IntegerField()
   #num_of_ratings = models.IntegerField()
 

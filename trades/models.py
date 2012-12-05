@@ -24,6 +24,8 @@ class Transaction(models.Model):
   current_listing = models.ForeignKey('Currentlist')
   sender_has_been_rated = models.BooleanField(null=True)
   receiver_has_been_rated = models.BooleanField(null=True)
+  sender_has_been_reported = models.BooleanField(null=True)
+  receiver_has_been_reported = models.BooleanField(null=True)
   receiver = models.ForeignKey(UserProfile, related_name='Transaction_receiver')
   # receiver_game = models.ForeignKey('Game', related_name='Transaction_receiver_game')
   # receiver_message = models.ForeignKey('Message', related_name='Transaction_receiver_message', null=True)
