@@ -40,6 +40,7 @@ def homepage(request):
 
 def how_to_use(request):
     return render(request, 'staticpages/how_to_use.html')
+
 def contact_us(request):
     if request.method == 'POST': # If the form has been submitted...
         form = ContactForm(request.POST)
@@ -55,6 +56,7 @@ def contact_us(request):
       'form': form,
     },
     context_instance=RequestContext(request))
+    
 def no_game_found(request):
     return render(request, 'staticpages/no_game_found.html')
 
