@@ -136,10 +136,13 @@
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
-                        <b><font color="green">ACCEPTED</font></b></br>Confirm the trade below.
+                      <b><font color="green">ACCEPTED</font></b></br>Confirm the trade below.
                     {% endifequal %}
                     {% ifequal offer.status 'offered' %}
-                        <b><font color="black">OFFERED</font></b></br>Please wait for a reply.
+                      <b><font color="black">OFFERED</font></b></br>Please wait for a reply.
+                    {% endifequal %}
+                    {% ifequal offer.status 'deferred' %}
+                      <b><font color="orange">DEFERRED</font></b></br>The lister has accepted another offer.</br>(will be re-offered if the trade fails)
                     {% endifequal %}
                   </li>
 

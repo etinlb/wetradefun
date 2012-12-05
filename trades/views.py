@@ -16,7 +16,7 @@ import search as s
 import datetime
 import urllib2
 
-import mails
+# import mails
 
 def game_details(request, game_id):
   # Is the game in wishlist?
@@ -135,23 +135,23 @@ def accept_offer(request):
       if (transaction.status == "offered" and already_accepted == False):
         transaction.status = "accepted"
         transaction.receiver_message = r_message
+        messages.success(request, "You have successfully accepted the trade offer")
+        transaction.save()
 
         for ot in other_trans:
           if (ot.pk != transaction.pk and ot.status == "offered"):
             ot.status = "deferred"
             ot.save()
 
-        messages.success(request, "You have successfully accepted the trade offer")
-        transaction.save()
-        mails.send(
-              'Someone has accepted an offer you done!',
-              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
-              transaction.sender.user.username, 
-              transaction.sender.user.email, 
-              'Good news! '+request.user.get_profile().user.username+
-              ' has accepted the offer you made for ' + transaction.current_listing.game_listed.name + 
-              '\n\n http://wetradefun.appspot.com'
-              )
+        # mails.send(
+        #       'Someone has accepted an offer you done!',
+        #       'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+        #       transaction.sender.user.username, 
+        #       transaction.sender.user.email, 
+        #       'Good news! '+request.user.get_profile().user.username+
+        #       ' has accepted the offer you made for ' + transaction.current_listing.game_listed.name + 
+        #       '\n\n http://wetradefun.appspot.com'
+        #       )
 
       message= "Offer accepted"
     else:
@@ -175,16 +175,16 @@ def confirm_offer(request):
         message = "Congratulations, you have completed your transaction"
         transaction.save()
 
-        mails.send(
-              'Congrats! Your transaction has been completed!',
-              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
-              transaction.current_listing.user.user.username, 
-              transaction.current_listing.user.user.email, 
-              'Good news! Your transaction for '+ transaction.current_listing.game_listed.name +
-              ' has been completed by '+request.user.get_profile().user.username+
-              '. Here is the contact email: '+ request.user.get_profile().user.email + 
-              '\n\n http://wetradefun.appspot.com'
-              )
+        # mails.send(
+        #       'Congrats! Your transaction has been completed!',
+        #       'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+        #       transaction.current_listing.user.user.username, 
+        #       transaction.current_listing.user.user.email, 
+        #       'Good news! Your transaction for '+ transaction.current_listing.game_listed.name +
+        #       ' has been completed by '+request.user.get_profile().user.username+
+        #       '. Here is the contact email: '+ request.user.get_profile().user.email + 
+        #       '\n\n http://wetradefun.appspot.com'
+        #       )
 
         currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
         # currentlisting_user = currentlisting.user
@@ -259,7 +259,7 @@ def delete_offer(request):
         message="This trade is no longer available or has already been confirmed"
     else:
       message = "This trade does not exist"
-    message = 'Deleted'  
+    message = 'This trade has been deleted'
   else:
     message="Not AJAX"
   messages.error(request, message)
@@ -296,6 +296,7 @@ def remove_listing(request):
 @login_required(login_url='/users/sign_in/')
 def make_offer(request):
   message = ""
+
   if request.user.is_authenticated():
     if request.is_ajax():
       userprofile = request.user.get_profile()
@@ -305,27 +306,33 @@ def make_offer(request):
       s_game = get_game_table_by_id(request.GET.get('game1_id'), s_platform) # sender game / game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), r_platform) # receiver game / game listed
       s_message = request.GET.get('offer_comment') # <---- CHANGE THIS BASED ON TEMPLATES
-      if (s_game.giant_bomb_id == r_game.giant_bomb_id):
-        messages.error(request, "These two games are the same games for the same platforms")
+      
+      if (s_game == r_game):
+        messages.error(request, "You cannot offer the same game for the same platform")
       else:
         for listing in Currentlist.objects.filter(game_listed = r_game, status = "open"):
           if (listing.user == userprofile):
-            message = "Cannot offer a game to your own listing"
-            messages.error(request,"You can't offer games to yourself. The offer you made to yourself has been canceled.")
-
+            message = "You cannot offer a game to your own listing"
+            messages.error(request,"You can't offer a game to yourself. Your offer was made to the other listings.")
           else:
-            transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing, sender_message = s_message)
-            transaction.save()
-            mails.send(
-              'Someone has made an offer for your game!',
-              'Webmaster', 'wetradefun.webmaster@gmail.com',
-              listing.user.user.email, 
-              listing.user.user.email, 
-              'Good news! Someone has made an offer for your game ' + listing.game_listed.name + 
-              '\n\n http://wetradefun.appspot.com')
+            if (Transaction.objects.filter(current_listing = listing, status = "deferred").count() != 0):
+              transaction = Transaction.objects.create(status = "deferred", sender = userprofile, sender_game = s_game, current_listing = listing, sender_message = s_message)
+              message += "DEFERRED\n"
+              transaction.save()
+            else:
+              transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing, sender_message = s_message)
+              message += "OFFERED\n"
+              transaction.save()
 
-        messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
-      message = "success"
+            # mails.send(
+            #   'Someone has made an offer for your game!',
+            #   'Webmaster', 'wetradefun.webmaster@gmail.com',
+            #   listing.user.user.email, 
+            #   listing.user.user.email, 
+            #   'Good news! Someone has made an offer for your game ' + listing.game_listed.name + 
+            #   '\n\n http://wetradefun.appspot.com')
+
+        messages.success(request, "You have made an offer for " + r_game.name + " (" + r_game.platform + ")")
     else:
       message = "Not AJAX"
   else:
