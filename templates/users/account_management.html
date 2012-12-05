@@ -82,6 +82,8 @@
                         {{accepted_offer_dict.key}}
                       </li>
                       <li>{{offer.sender_message}}</li>
+                      <label for="response_comment">Comments:</label>
+                      <input type="text" id="response_comment" placeholder="Respond to the offer"/>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
@@ -138,7 +140,7 @@
                   </li>
 
                 </br>
-
+                  <li>{{offer.receiver_comment}}</li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
@@ -326,7 +328,7 @@ function get_request_acceptoffer(transaction_primary_id){
   $.get(
     "/trades/accept_offer/", 
     {transaction_id: transaction_primary_id,
-    accept_comment : },
+    accept_comment : $('#accept_comment').val()},
     function(data){
       console.log(data);
       location.reload();
