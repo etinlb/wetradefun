@@ -136,7 +136,9 @@ def accept_offer(request):
               'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
               transaction.sender.user.username, 
               transaction.sender.user.email, 
-              'Good news! '+request.user.get_profile().user.username+' has accepted the offer you made for ' + transaction.current_listing.name
+              'Good news! '+request.user.get_profile().user.username+
+              ' has accepted the offer you made for ' + transaction.current_listing.game_listed.name + 
+              '\n\n http://wetradefun.appspot.com'
               )
       message= "Offer accepted"
     else:
@@ -159,6 +161,17 @@ def confirm_offer(request):
         transaction.dateTraded = datetime.datetime.now()
         message = "Congratulations, you have completed your transaction"
         transaction.save()
+
+        mails.send(
+              'Congrats! Your transaction has been completed!',
+              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+              transaction.current_listing.user.user.username, 
+              transaction.current_listing.user.user.email, 
+              'Good news! Your transaction for '+ transaction.current_listing.game_listed.name +
+              ' has been completed by '+request.user.get_profile().user.username+
+              '. Here is the contact email: '+ request.user.get_profile().user.email + 
+              '\n\n http://wetradefun.appspot.com'
+              )
 
         currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
         # currentlisting_user = currentlisting.user
@@ -276,7 +289,8 @@ def make_offer(request):
               'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
               listing.user.user.username, 
               listing.user.user.email, 
-              'Good news! Someone has made an offer for your game ' + listing.game_listed.name
+              'Good news! Someone has made an offer for your game ' + listing.game_listed.name + 
+              '\n\n http://wetradefun.appspot.com'              
               )
 
         messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
