@@ -1,11 +1,16 @@
 from django.template import Context, loader
 # from polls.models import Poll
 from django.http import HttpResponse
+from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, render
 from django.http import Http404
+from forms import ContactForm
+from django.contrib import messages
 
 import search as s
 from django.db.models import Avg, Max, Min, Count
+
+import mails
 
 from trades.models import *
 from user.sort import *
@@ -15,7 +20,6 @@ from user.sort import *
 
 def searchresults(request):
     return HttpResponse("You're looking at the search results.")
-
 
 # This big pro homepage should have (ideally):
 
@@ -37,11 +41,22 @@ def homepage(request):
 def how_to_use(request):
     return render(request, 'staticpages/how_to_use.html')
 def contact_us(request):
-    return render(request, 'staticpages/contact_us.html')
+    if request.method == 'POST': # If the form has been submitted...
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            text = form.cleaned_data['text']
+            mails.send('Contacting', name, email, 'Webmaster', 'wetradefun.webmaster@gmail.com', text)
+            messages.add_message(request, messages.SUCCESS, 'Thanks for contacting!')
+    else:
+        form = ContactForm()
+    return render_to_response('staticpages/contact_us.html', {
+      'form': form,
+    },
+    context_instance=RequestContext(request))
 def no_game_found(request):
     return render(request, 'staticpages/no_game_found.html')
-    
-
 
 def getMostTradedGames():
     i = 0
@@ -158,5 +173,4 @@ def getMostListedGames():
         j = j + 1
 
     return topRatedListings
-
 

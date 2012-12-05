@@ -72,7 +72,7 @@ lang="{% firstof LANGUAGE_CODE 'en' %}">
               <li class="divider"></li>
               <li><a href="/users/sign_out">Logout</a></li>
             {%else%}
-            <a href="/users/sign_in">Login</a>
+            <a href="/users/sign_in?next={{request.path}}">Login</a>
             <ul class="dropdown">
               <li><a href="/users/sign_up">Create Account</a></li>
             </ul>
