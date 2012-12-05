@@ -61,7 +61,7 @@ def sign_in(request):
                   login(request, user)
                   # Redirect to a success page.
                   messages.add_message(request, messages.SUCCESS, 'Welcome %s!' % user.username)
-                  return HttpResponseRedirect('/')
+                  return HttpResponseRedirect(request.GET.get("next"))
                 else:
                   # Return a 'disabled account' error message
                   messages.add_message(request, messages.ERROR, 'Your account is disabled')
@@ -119,7 +119,7 @@ def account_management(request):
     messages.success(request, "You don't have any active offers, go ahead and browse for a new game.")
   if len(hist) == 0:
     messages.success(request, "Don't worry if your history is empty, that will fill up as soon as you complete a trade.")  
-  # assert False
+  
   return render(request, 'users/account_management.html', {
     'current_listings': current_listings,
     'wishlist': wishlist,
