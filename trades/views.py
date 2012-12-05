@@ -15,6 +15,8 @@ import re
 import search as s
 import datetime
 
+import mails
+
 def game_details(request, game_id):
   # Is the game in wishlist?
   in_wishlist = False
@@ -262,6 +264,13 @@ def make_offer(request):
           else:
             transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
             transaction.save()
+            mails.send(
+              'Someone has made an offer for your game!',
+              'Webmaster', 'wetradefun.webmaster@gmail.com',
+              listing.user.user.email, 
+              listing.user.user.email, 
+              'Good news! Someone has made an offer for your game' + listing.game_listed.name
+              )
 
         messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
       message = "success"
