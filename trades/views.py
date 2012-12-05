@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 import datetime, random, sha
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
 from django.contrib import messages
@@ -46,6 +46,9 @@ def search(request):
   if request.GET:
     query = request.GET['term']
     offset = request.GET['offset']
+  else:
+    return HttpResponseRedirect("/")
+
 
   # Replace all runs of whitespace with a single +
   query = re.sub(r"\s+", '+', query)
