@@ -15,7 +15,7 @@ import re
 import search as s
 import datetime
 
-import mails
+# import mails
 
 def game_details(request, game_id):
   # Is the game in wishlist?
@@ -134,15 +134,15 @@ def accept_offer(request):
         transaction.status = "accepted"
         messages.success(request, "You have successfully accepted the trade offer")
         transaction.save()
-        mails.send(
-              'Someone has accepted an offer you done!',
-              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
-              transaction.sender.user.username, 
-              transaction.sender.user.email, 
-              'Good news! '+request.user.get_profile().user.username+
-              ' has accepted the offer you made for ' + transaction.current_listing.game_listed.name + 
-              '\n\n http://wetradefun.appspot.com'
-              )
+        # mails.send(
+        #       'Someone has accepted an offer you done!',
+        #       'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+        #       transaction.sender.user.username, 
+        #       transaction.sender.user.email, 
+        #       'Good news! '+request.user.get_profile().user.username+
+        #       ' has accepted the offer you made for ' + transaction.current_listing.game_listed.name + 
+        #       '\n\n http://wetradefun.appspot.com'
+        #       )
 
       message= "Offer accepted"
     else:
@@ -166,16 +166,16 @@ def confirm_offer(request):
         message = "Congratulations, you have completed your transaction"
         transaction.save()
 
-        mails.send(
-              'Congrats! Your transaction has been completed!',
-              'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
-              transaction.current_listing.user.user.username, 
-              transaction.current_listing.user.user.email, 
-              'Good news! Your transaction for '+ transaction.current_listing.game_listed.name +
-              ' has been completed by '+request.user.get_profile().user.username+
-              '. Here is the contact email: '+ request.user.get_profile().user.email + 
-              '\n\n http://wetradefun.appspot.com'
-              )
+        # mails.send(
+        #       'Congrats! Your transaction has been completed!',
+        #       'We Trade Fun Team', 'wetradefun.webmaster@gmail.com',
+        #       transaction.current_listing.user.user.username, 
+        #       transaction.current_listing.user.user.email, 
+        #       'Good news! Your transaction for '+ transaction.current_listing.game_listed.name +
+        #       ' has been completed by '+request.user.get_profile().user.username+
+        #       '. Here is the contact email: '+ request.user.get_profile().user.email + 
+        #       '\n\n http://wetradefun.appspot.com'
+        #       )
 
         currentlisting = Currentlist.objects.get(pk = transaction.current_listing.pk)
         # currentlisting_user = currentlisting.user
@@ -241,6 +241,7 @@ def delete_offer(request):
         message="This trade is no longer available or has already been confirmed"
     else:
       message = "This trade does not exist"
+    message = 'Deleted'  
   else:
     message="Not AJAX"
   messages.error(request, message)
@@ -295,15 +296,15 @@ def make_offer(request):
           else:
             transaction = Transaction.objects.create(status = "offered", sender = userprofile, sender_game = s_game, current_listing = listing)
             transaction.save()
-            mails.send(
-              'Someone has made an offer for your game!',
-              'Webmaster', 'wetradefun.webmaster@gmail.com',
-              listing.user.user.email, 
-              listing.user.user.email, 
-              'Good news! Someone has made an offer for your game ' + listing.game_listed.name + 
-              '\n\n http://wetradefun.appspot.com'     
+            # mails.send(
+            #   'Someone has made an offer for your game!',
+            #   'Webmaster', 'wetradefun.webmaster@gmail.com',
+            #   listing.user.user.email, 
+            #   listing.user.user.email, 
+            #   'Good news! Someone has made an offer for your game ' + listing.game_listed.name + 
+            #   '\n\n http://wetradefun.appspot.com'     
 
-              )
+            #   )
 
         messages.success(request, "You have made an offer for " + r_game.name + " for the " + r_game.platform)
       message = "success"
