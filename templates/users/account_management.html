@@ -11,14 +11,14 @@
     <h3>Dashboard</h3>
 
     <dl class="tabs contained">
-      <dd class="active"><a href="#myInformation">My Information</a></dd>
-      <dd class="hide-for-small"><a href="#currentListings">Current Listings</a></dd>
+      <dd class="hide-for-small"><a href="#myInformation">My Information</a></dd>
+      <dd class="active"><a href="#currentListings">Current Listings</a></dd>
       <dd class="hide-for-small"><a href="#currentOffers">Current Offers</a></dd>
       <dd class="hide-for-small"><a href="#tradeHistory">Trade History</a></dd>
       <dd class="hide-for-small"><a href="#viewWishlist">View Wishlist</a></dd>
     </dl>
     <ul class="tabs-content">
-      <li class="active" id="myInformationTab">
+      <li id="myInformationTab">
         <table class="twelve columns">
           <tbody>
              <tr>
@@ -40,7 +40,7 @@
           </tbody>
         </table>
       </li>
-      <li id="currentListingsTab">
+      <li class="active" id="currentListingsTab">
         <table class="twelve columns">
           <thead>
             <tr>
@@ -85,6 +85,9 @@
                         Platform: {{offer.sender_game.platform}}
                         {{accepted_offer_dict.key}}
                       </li>
+                      <li>{{offer.sender_message}}</li>
+                      <label for="response_comment">Comments:</label>
+                      <input type="text" id="response_comment" placeholder="Respond to the offer"/>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
@@ -141,7 +144,7 @@
                   </li>
 
                 </br>
-
+                  <li>{{offer.receiver_comment}}</li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
@@ -328,7 +331,8 @@ function get_request_removelisting(listing_primary_id){
 function get_request_acceptoffer(transaction_primary_id){
   $.get(
     "/trades/accept_offer/", 
-    {transaction_id: transaction_primary_id},
+    {transaction_id: transaction_primary_id,
+    accept_comment : $('#accept_comment').val()},
     function(data){
       console.log(data);
       location.reload();
