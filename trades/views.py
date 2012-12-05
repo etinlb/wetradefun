@@ -123,7 +123,7 @@ def accept_offer(request):
   if request.is_ajax():
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
     other_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
-    r_message = request.GET.get('comment')
+    r_message = request.GET.get('accept_comment')
     if (transaction != None):
 
       for ot in other_trans:
@@ -303,7 +303,7 @@ def make_offer(request):
       s_platform = request.GET.get('s_platform')
       s_game = get_game_table_by_id(request.GET.get('game1_id'), s_platform) # sender game / game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), r_platform) # receiver game / game listed
-      s_message = request.GET.get('comment') # <---- CHANGE THIS BASED ON TEMPLATES
+      s_message = request.GET.get('offer_comment') # <---- CHANGE THIS BASED ON TEMPLATES
       if (s_game.giant_bomb_id == r_game.giant_bomb_id):
         messages.error(request, "These two games are the same games for the same platforms")
       else:
