@@ -38,7 +38,7 @@
               {% if in_wishlist %}
                 <a class="radius success button left" id="wishlist" href="#" onclick="get_request_removefromwishlist()">In Wishlist</a>
               {% else %}                  
-                <a class="radius button left" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in" {% endif %}>+ Wishlist</a>
+                <a class="radius button left" id="wishlist" {% if user.is_authenticated %}href="#" onclick="get_request_addtowishlist()" {% else %} href="/users/sign_in?next={{request.path}}" {% endif %}>+ Wishlist</a>
               {% endif %}
             </div>
             
