@@ -22,7 +22,6 @@ def game_details(request, game_id):
   # Is the game in wishlist?
   in_wishlist = False
   if request.user.is_authenticated():
-    # TODO make this work when game isn't found in game table, i.e add it to there
     try:
       wish_game = Game.objects.get(giant_bomb_id = game_id, platform = '')
       if Wishlist.objects.filter(user = request.user.get_profile(), wishlist_game = wish_game):
@@ -39,7 +38,7 @@ def game_details(request, game_id):
           v = Game.objects.get(giant_bomb_id = game_id, platform = k[0]).num_of_listings
           platforms_count[k[0]] = v
   except Currentlist.DoesNotExist:
-      games_listed = 0 #why is this here?
+      games_listed = 0
   return render(request,'game_page.html', {'game': game, 'listings': platforms_count, 'in_wishlist': in_wishlist,})
 
 
@@ -58,7 +57,6 @@ def search(request):
     'deck', 'id', 'site_detail_url')
   if results == None:
     return render_to_response('staticpages/no_game_found.html')
-  # TODO make it get the number of listings
   for x in results:
     x['number_of_listing'] = Currentlist.objects.filter(giantBombID=x['id'], status = 'open').count()
   if x['number_of_listing'] == None:
@@ -118,7 +116,6 @@ def remove_from_wish_list(request):
 
 @login_required(login_url='/users/sign_in/')
 def accept_offer(request):
-  #TODO verify if this is correct
   already_accepted = False
 
   if request.is_ajax():
@@ -162,7 +159,6 @@ def accept_offer(request):
 
 @login_required(login_url='/users/sign_in/')
 def confirm_offer(request):
-  #TODO verify if this is correct
   if request.is_ajax():
     transaction = Transaction.objects.get(pk = request.GET.get('transaction_id'))
     senders_game = transaction.sender_game
@@ -199,13 +195,11 @@ def confirm_offer(request):
         for othertransactions in users_other_offers:
           if othertransactions.current_listing.game_listed == transaction.current_listing.game_listed:
             if othertransactions != transaction:
-              # message += "HII"
               othertransactions.delete()
 
         #deletes the offer from the listings
         for otheroffers in listing_other_offers:
           if otheroffers != transaction:
-            # message += "ASDA"
             otheroffers.delete()
 
       else:
@@ -305,7 +299,7 @@ def make_offer(request):
       s_platform = request.GET.get('s_platform')
       s_game = get_game_table_by_id(request.GET.get('game1_id'), s_platform) # sender game / game offered
       r_game = get_game_table_by_id(request.GET.get('game2_id'), r_platform) # receiver game / game listed
-      s_message = request.GET.get('offer_comment') # <---- CHANGE THIS BASED ON TEMPLATES
+      s_message = request.GET.get('offer_comment')
       
       if (s_game == r_game):
         messages.error(request, "You cannot offer the same game for the same platform")
@@ -399,9 +393,7 @@ def rate_user(request):
 
 def get_request(request):
   if request.is_ajax():
-    #gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
     inputString=urllib2.quote(request.GET.get('term'))
-    #games=gb.search(inputString)
     games = s.getList(inputString, 0, 'id', 'name')
     results = []
     for game in games:
@@ -411,14 +403,6 @@ def get_request(request):
       game_json['label']=game['name']
       results.append(game_json)
     message=json.dumps(results)
-    # results=[]
-    # for game in games:
-    #   game_json={}
-    #   game_json['id']=game.id 
-    #   game_json['value']=game.name 
-    #   game_json['label']=game.name
-    #   results.append(game_json)
-    # message=json.dumps(results)
   else:
     message="Not AJAX"
   return HttpResponse(message)
@@ -428,7 +412,6 @@ def get_platform(request, game_id):
   if request.is_ajax(): 
     gb=giantbomb.Api('c815f273a0003ab1adf7284a4b2d61ce16d3d610')
     id=request.GET.get('id')
-    #platforms=gb.getPlatforms(inputString)
     results = s.getGameDetsById(game_id, 'platforms')
     platforms = results['platforms']
     results = []
@@ -457,7 +440,7 @@ def add_message(request):
     if request.method == 'POST': # If the form has been submitted..
       transaction = Transaction.objects.filter(transaction_id = request.GET.get('transaction_id'))
       userprofile = request.user.get_profile()
-      usermessage = Message(content = request.POST) #??
+      usermessage = Message(content = request.POST)
       usermessage.save()
       if transaction.receiver == userprofile:
         transaction.receiver_message = usermessage

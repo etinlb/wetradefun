@@ -375,7 +375,6 @@ function get_request_deleteoffer(transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto wishlist tab
     }
   );
   return false;
@@ -389,12 +388,10 @@ function get_request_rateuser(rating, transaction_primary_id){
     function(data){
       console.log(data);
       location.reload();
-      // TODO: reload page onto wishlist tab
     }
   );
   return false;
 }
-// <!-- comment -->
 
 function get_request_searchgame(){
     $("#searchgame_game_name").autocomplete({
@@ -417,7 +414,6 @@ function get_request_wishlist(){
   function(data){
       console.log();
       location.reload();
-      //location.reload();
     }
   );
     return false;

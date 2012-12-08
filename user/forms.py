@@ -9,18 +9,6 @@ class LoginForm(forms.Form):
   username = forms.CharField()
   password = forms.CharField(widget=forms.PasswordInput)
 
-  # def clean(self):
-  #   try:
-  #     if self.cleaned_data['email'] and User.objects.filter(email=self.cleaned_data['email']).exclude(username=self.cleaned_data['username']).count():
-  #       raise forms.ValidationError("Email addresses must be unique.")
-  #     if self.cleaned_data['username'] and User.objects.filter(username=self.cleaned_data['username']).exclude(email=self.cleaned_data['email']).count():
-  #       raise forms.ValidationError("Usernames must be unique.")
-  #   except KeyError:
-  #     # didn't find what we expected in data - fields are blank on front end.  Fields
-  #     # are required by default so we don't need to worry about validation
-  #     pass
-  #   return self.cleaned_data
-
 class ForgetForm(forms.Form):
   username = forms.CharField()
   email = forms.EmailField()

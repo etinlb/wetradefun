@@ -18,7 +18,6 @@ from django.db.models import Q
 import mails
 
 import search as s
-# from trades.forms import SearchForm
 
 @login_required(login_url='/users/sign_in/')
 def sign_out(request):
@@ -26,7 +25,6 @@ def sign_out(request):
   return HttpResponseRedirect('/users/sign_in')
 
 def forget(request):
-  # If it's 
   if request.user.is_authenticated():
     return HttpResponseRedirect('/')
   else:
@@ -58,7 +56,6 @@ def forget(request):
   return render_to_response('users/forget.html', {'form': form,},context_instance=RequestContext(request))
 
 def sign_in(request):
-  # If it's 
   if request.user.is_authenticated():
     return HttpResponseRedirect('/')
   else:
@@ -93,10 +90,6 @@ def sign_in(request):
 
 @login_required(login_url='/users/sign_in/')
 def account_management(request):
-  # if request.method == 'POST':
-  #   form = LoginForm(request.POST)
-  #   if form.is_valid():
-  #     newPassword = form.get_cleaned_data['new_password']
   listing_dict = {}
   accepted_offer_dict = {}
   userprofiler = request.user.get_profile()
