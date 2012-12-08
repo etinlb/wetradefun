@@ -56,7 +56,7 @@ def contact_us(request):
       'form': form,
     },
     context_instance=RequestContext(request))
-    
+
 def no_game_found(request):
     return render(request, 'staticpages/no_game_found.html')
 
@@ -153,25 +153,45 @@ def getMostWishlistedGames():
 
 def getMostListedGames():
 
-    orderedListing = []
-    k = 0
-    if Game.objects.count() != 0:
-        orderedListing = list(Game.objects.all())
-        while (k < len(orderedListing)):
-            for listing in orderedListing:
-                if listing.name == orderedListing[k].name and orderedListing[k] != listing:
-                    orderedListing[k].num_of_listings += listing.num_of_listings
-                    orderedListing.remove(listing)
-            k += 1
-        sort(orderedListing, 'num_of_listings', 'desc')
+    list_of_ids = Currentlist.objects.values_list('giantBombID', flat=True)
+
+    dict_of_number_of_ids = {}
+    for game_id in list_of_ids:
+      dict_of_number_of_ids[game_id] = Currentlist.objects.filter(giantBombID = game_id, status = 'open').count()
+
+    import operator
+    sorted_x = sorted(dict_of_number_of_ids.iteritems(), key=operator.itemgetter(1))
+    sorted_x.reverse()
 
     topRatedListings = []
-    j = 0
-
-    while (j < len(orderedListing) and j != 4):
-        if orderedListing[j].num_of_listings != 0:
-            topRatedListings.append(orderedListing[j])
-        j = j + 1
-
+    counter = 0
+    for tup in sorted_x:
+      if counter == 4:
+        break
+      game = Game.objects.filter(giant_bomb_id = tup[0])[0]
+      topRatedListings.append(game)
+      counter += 1
+      
     return topRatedListings
 
+    # orderedListing = []
+    # k = 0
+    # if Game.objects.count() != 0:
+    #     orderedListing = list(Game.objects.all())
+    #     while (k < len(orderedListing)):
+    #         for listing in orderedListing:
+    #             if listing.name == orderedListing[k].name and orderedListing[k] != listing:
+    #                 orderedListing[k].num_of_listings += listing.num_of_listings
+    #                 orderedListing.remove(listing)
+    #         k += 1
+    #     sort(orderedListing, 'num_of_listings', 'desc')
+
+    # topRatedListings = []
+    # j = 0
+
+    # while (j < len(orderedListing) and j != 4):
+    #     if orderedListing[j].num_of_listings != 0:
+    #         topRatedListings.append(orderedListing[j])
+    #     j = j + 1
+
+    # return topRatedListings

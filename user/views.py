@@ -108,12 +108,10 @@ def account_management(request):
     except Transaction.DoesNotExist:
        accepted_offer_dict[listing] = []
 
-
-  # assert False  
-
-  #assert false
-  current_offers = list(Transaction.objects.filter(status = 'offered', sender = request.user.get_profile()))   
+  current_offers = list(Transaction.objects.filter(status = 'offered', sender = request.user.get_profile()))
+  current_offers_deferred = list(Transaction.objects.filter(status = 'deferred', sender = request.user.get_profile()))
   current_offers_accepted = list(Transaction.objects.filter(status = 'accepted', sender = request.user.get_profile()))
+  current_offers.extend(current_offers_deferred)
   current_offers.extend(current_offers_accepted)
   sort.sort(current_offers, 'dateRequested', "desc")
   wishlist = list(Wishlist.objects.filter(user = request.user.get_profile()))

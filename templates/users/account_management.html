@@ -61,7 +61,7 @@
                   <li><a href="/trades/game/{{key.game_listed.giant_bomb_id}}">{{key.game_listed.name}}</a></li>
                   <li>Platform: {{key.game_listed.platform}}</li>
                   <li>Posted: {{key.datePosted}}</li>
-                  <li>Share: <a class="fc-webicon facebook small" href="https://www.facebook.com/dialog/feed?app_id=381605281928154&link=http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}&picture={{key.game_listed.image_url}}&name={{key.game_listed.name}}&description=Trade%20Your%20Games%20In%20WeTradeFun&redirect_uri=http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}&t={{key.game_listed.name}}">Share on Facebook</a><a class="fc-webicon twitter small" href="http://twitter.com/home?status=I%20have%20{{key.game_listed.name}}%20listed%20in%20WeTradeFun- http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}">Share on Twitter</a></li>
+                  <li>Share: <a target="_blank" class="fc-webicon facebook small" href="https://www.facebook.com/dialog/feed?app_id=381605281928154&link=http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}&picture={{key.game_listed.image_url}}&name={{key.game_listed.name}}&description=Trade%20Your%20Games%20In%20WeTradeFun&redirect_uri=http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}&t={{key.game_listed.name}}">Share on Facebook</a> <a target="_blank" class="fc-webicon twitter small" href="http://twitter.com/home?status=I%20have%20{{key.game_listed.name}}%20listed%20in%20WeTradeFun- http://wetradefun.appspot.com/trades/game/{{key.game_listed.giant_bomb_id}}">Share on Twitter</a></li>
                 </br>
                   <a href="#currentListings" onclick="get_request_removelisting({{key.id}})" class="small alert button">Remove Listing</a>
                   
@@ -85,9 +85,9 @@
                         Platform: {{offer.sender_game.platform}}
                         {{accepted_offer_dict.key}}
                       </li>
-                      <li>{{offer.sender_message}}</li>
+                      <li><b>Offer Comment:</b><br>{{offer.sender_message}}</li>
                       <label for="response_comment">Comments:</label>
-                      <input type="text" id="response_comment" placeholder="Respond to the offer"/>
+                      <input type="text" id="accept_comment" placeholder="Respond to the offer"/>
                       <li class="button-bar">
                         <ul class="button-group">
                           <li>
@@ -136,15 +136,18 @@
                 <ul class="no-bullet">
                   <li>
                     {% ifequal offer.status 'accepted' %}
-                        <b><font color="green">ACCEPTED</font></b></br>Confirm the trade below.
+                      <b><font color="green">ACCEPTED</font></b></br>Confirm the trade below.
                     {% endifequal %}
                     {% ifequal offer.status 'offered' %}
-                        <b><font color="black">OFFERED</font></b></br>Please wait for a reply.
+                      <b><font color="black">OFFERED</font></b></br>Please wait for a reply.
+                    {% endifequal %}
+                    {% ifequal offer.status 'deferred' %}
+                      <b><font color="orange">DEFERRED</font></b></br>The lister has accepted another offer.</br>(will be re-offered if the trade fails)
                     {% endifequal %}
                   </li>
 
-                </br>
-                  <li>{{offer.receiver_comment}}</li>
+                </br>         
+                  <li id="offer_message"><b>Response:</b><br>{{offer.receiver_message}}</li>
                   <li class="button-bar">
                     <ul class="button-group">
                       <li>
@@ -177,8 +180,8 @@
           <tbody>
             {% for transaction in history %}
             <tr>
-              <td><a href="#"><img class="miniature-management" src="{{transaction.current_listing.game_listed.image_url}}" /></a></td>
-              <td><a href= "#"><img class="miniature-management" src="{{transaction.sender_game.image_url}}" /></a></td>
+              <td><a href="#"><img class="miniature-management" src="{{transaction.current_listing.game_listed.image_url}}" /></a><br><b>Response:</b><br>{{transaction.receiver_message}}</td>
+              <td><a href= "#"><img class="miniature-management" src="{{transaction.sender_game.image_url}}" /></a><br><b>Offer Comment:</b><br>{{transaction.sender_message}}</td>
               <td>{{transaction.dateTraded}}</td>
               <td>
                 <ul class="no-bullet">
@@ -190,26 +193,26 @@
                         {{transaction.sender.user.username}}</br>
                         {{transaction.sender.user.email}}
                       {% endif %}
-                      </li>
-                    
+                  </li>
                   
                     <li class="button-bar">
                       <ul class="button-group">
-                        {% if transaction.receiver_has_been_rated %}
-                        <li class="small success button">Already Rated
-                        </li>
-                      {% else %}
-                        <li class="small dropdown button">
-                          Rate User
-                          <ul>
-                            <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
-                            <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
-                          </ul>
-                        </li>
+                        {% if user == transaction.sender.user and transaction.receiver_has_been_rated or user == transaction.current_listing.user.user and transaction.sender_has_been_rated %}
+                          <li class="small button">Already Rated
+                          </li>
+                        {% else %}
+                          <li class="small dropdown button">
+                            Rate User
+                            <ul>
+                              <li><a href="#" onclick="get_request_rateuser(5, {{transaction.pk}})">5: Excellent</a></li>
+                              <li><a href="#" onclick="get_request_rateuser(4, {{transaction.pk}})">4: Good</a></li>
+                              <li><a href="#" onclick="get_request_rateuser(3, {{transaction.pk}})">3: Acceptable</a></li>
+                              <li><a href="#" onclick="get_request_rateuser(2, {{transaction.pk}})">2: Poor</a></li>
+                              <li><a href="#" onclick="get_request_rateuser(1, {{transaction.pk}})">1: Criminal</a></li>
+                            </ul>
+                          </li>
                         {% endif %}
+
                         <li><a href="#" class="small alert button" onclick="report_user()">Report User</a></li>
                       </ul>
                     </li>
