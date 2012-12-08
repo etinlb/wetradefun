@@ -10,8 +10,3 @@ class UserProfile(models.Model):
   num_of_ratings = models.IntegerField(null=True)
   #rating = models.IntegerField()
   #num_of_ratings = models.IntegerField()
-
-class Userrating (models.Model):
-  rating = models.IntegerField()
-  sender = models.ForeignKey(UserProfile, related_name='Userrating_sender')
-  receiver = models.ForeignKey(UserProfile, related_name='Userrating_receiver')
