@@ -180,8 +180,8 @@
           <tbody>
             {% for transaction in history %}
             <tr>
-              <td><a href="#"><img class="miniature-management" src="{{transaction.current_listing.game_listed.image_url}}" /></a><br><b>Response:</b><br>{{transaction.receiver_message}}</td>
-              <td><a href= "#"><img class="miniature-management" src="{{transaction.sender_game.image_url}}" /></a><br><b>Offer Comment:</b><br>{{transaction.sender_message}}</td>
+              <td><a href="/trades/game/{{transaction.current_listing.game_listed.giant_bomb_id}}"><img class="miniature-management" src="{{transaction.current_listing.game_listed.image_url}}" /></a><br><b>Response:</b><br>{{transaction.receiver_message}}</td>
+              <td><a href= "/trades/game/{{transaction.sender_game.giant_bomb_id}}"><img class="miniature-management" src="{{transaction.sender_game.image_url}}" /></a><br><b>Offer Comment:</b><br>{{transaction.sender_message}}</td>
               <td>{{transaction.dateTraded}}</td>
               <td>
                 <ul class="no-bullet">
