@@ -241,7 +241,7 @@ def delete_offer(request):
     all_trans = Transaction.objects.filter(current_listing = transaction.current_listing)
     
     if transaction != None:
-      if ((userprofile == transaction.sender) and ((transaction.status == "offered") or (transaction.status == "accepted"))):
+      if ((userprofile == transaction.sender) and ((transaction.status == "offered") or (transaction.status == "accepted") or (transaction.status == "deffered"))): 
         for ot in all_trans:
           if (ot.pk != transaction.pk and ot.status == "deferred"):
             ot.status = "offered"
